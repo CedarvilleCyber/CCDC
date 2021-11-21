@@ -1,0 +1,7 @@
+#! /bin/bash
+
+# Get current version
+verNum=$(cat /mnt/swarm/ver.txt)
+
+# Restore backup
+tar -xzvf /mnt/swarm/$verNum.swarm

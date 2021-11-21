@@ -1,0 +1,9 @@
+#! /bin/bash
+read -p "Enter username: " username
+read -s -p "Enter password: " password
+
+pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+useradd -m -p "$pass" "$username"
+
+echo
+echo "User added"

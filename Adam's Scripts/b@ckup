@@ -1,0 +1,22 @@
+#! /bin/bash
+
+# Default current version of backup
+verNum=1
+
+# Create backup directory
+if [ ! -e /mnt/swarm ]
+    then
+        mkdir /mnt/swarm
+fi
+
+# Get current version number
+if [ -e /mnt/swarm/ver.txt ]
+    then
+        verNum=$(cat /mnt/swarm/ver.txt)
+        verNum=$(($verNum+1))
+        rm -f /mnt/swarm/ver.txt
+fi
+
+# Create backup
+tar -czvf /mnt/swarm/$verNum.swarm /var /etc /home
+echo "$verNum" >> /mnt/swarm/ver.txt
