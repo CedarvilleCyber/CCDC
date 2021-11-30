@@ -2,11 +2,11 @@
 
 if [[ `id -u` -ne 0 ]]
 then
-	echo "Please run as root"
+	echo "Requires super user privileges"
 	#exit 1
 fi
 
-#detect os flavor to know which package manager to use
+#detect os flavor to know which files to monitor by default
 os=`cat /etc/os-release | grep "^ID=.*$" | sed -e 's/ID=//'`
 
 #Install
@@ -26,12 +26,15 @@ export SPLUNK_HOME=/opt/splunkforwarder
 #----------------SSL--------------#
 #=================================#
 mkdir $SPLUNK_HOME/etc/auth/mycerts
-echo "Downloading from splunk server..."
-scp -T root@172.20.241.20:"~/quarantine/mycerts/myCombinedServerCertificate.pem ~/quarantine/mycerts/myCACertificate.pem" $SPLUNK_HOME/etc/auth/mycerts
-read -p "Enter client SSL password: " sslpwd
+read -p "Enter Splunk Server IP: " serverip
+echo "Downloading certificates from splunk server..."
+scp -T root@$serverip:"~/quarantine/mycerts/myCombinedServerCertificate.pem ~/quarantine/mycerts/myCACertificate.pem" $SPLUNK_HOME/etc/auth/mycerts
+
+read -p "Enter SSL password: " sslpwd
+
 cat << EOF > $SPLUNK_HOME/etc/system/local/outputs.conf
 [tcpout:data]
-server=172.20.241.20:9997
+server=$serverip:9997
 disabled = 0
 useSSL = true
 clientCert = $SPLUNK_HOME/etc/auth/mycerts/myCombinedServerCertificate.pem
@@ -41,7 +44,7 @@ sslCommonNameToCheck = David Stirn
 sslVerifyServerCert = true 
 EOF
 
-cat << EOF >$SPLUNK_HOME/etc/system/local/server.conf
+cat << EOF > $SPLUNK_HOME/etc/system/local/server.conf
 [sslConfig]
 sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/myCACertificate.pem
 EOF
@@ -49,3 +52,4 @@ EOF
 
 #Start
 $SPLUNK_HOME/bin/splunk start --accept-license
+$SPLUNK_HOME/bin/splunk enable boot-start

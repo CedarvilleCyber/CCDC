@@ -26,8 +26,8 @@ export SPLUNK_HOME=/opt/splunk
 #=================================#
 mkdir $SPLUNK_HOME/etc/auth/mycerts
 cd ~root
-git clone https://github.com/davidmstirn/quarantine.git
-cp ~root/quarantine/mycerts/myCombinedServerCertificate.pem ~root/quarantine/mycerts/myCACertificate.pem $SPLUNK_HOME/etc/auth/mycerts
+git clone https://github.com/CedarvilleCyber/CCDC.git
+cp ~root/CCDC/splunk/mycerts/myCombinedServerCertificate.pem ~root/quarantine/mycerts/myCACertificate.pem $SPLUNK_HOME/etc/auth/mycerts
 
 read -p "Enter server SSL password: " sslpwd
 cat << EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
@@ -42,10 +42,11 @@ sslVersions *,-ssl2
 sslCommonNameToCheck = David Stirn 
 EOF
 
-cat << EOF >$SPLUNK_HOME/etc/system/local/server.conf
+cat << EOF > $SPLUNK_HOME/etc/system/local/server.conf
 [sslConfig]
 sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/myCACertificate.pem
 EOF
 
 #Start
-$SPLUNK_HOME/bin/splunk start --accept-license
+$SPLUNK_HOME/bin/splunk restart --accept-license
+$SPLUNK_HOME/bin/splunk enable boot-start
