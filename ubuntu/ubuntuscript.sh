@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#Ubuntu Server Script
-
+#Ubuntu Server/Workstation Script
 
 if [ "$(id -u)" != "0" ]; then
     echo "You must be the superuser to run this script" >&2
@@ -10,11 +9,9 @@ fi
 
 clear
 echo
-echo "Attempting to execute Ubuntu Server Script."
+echo "Attempting to execute script."
 echo "Do you wish to proceed? (Y/N)"
-echo
 echo "You are"; whoami;
-echo
 echo "Your current working directory is"; pwd;
 echo
 read cont
@@ -24,6 +21,16 @@ if [ "$cont" = "N" ] || [ "$cont" = "n" ]; then
 fi
 clear
 
+#updateOS
+	echo "Updating operating system..."
+	apt update -y
+	apt upgrade -y
+	apt install unattended-upgrades -y
+	apt-get autoremove -y
+	apt-get autoclean -y
+	apt-get check -y
+	echo "Operating system updated."
+	clear
 
 #applicationStop
 	echo "Stopping telnet..."
@@ -54,7 +61,6 @@ clear
 
 	echo "Removing nc..."
 	apt-get purge nc -y
-	clear
 
 #applicationInstall
 	echo "Installing GUFW..."
@@ -85,17 +91,5 @@ clear
 
 	echo "Installing Fail2Ban"
 	apt-get install fail2ban
-	clear
-
-#updateOS
-	echo "Updating operating system..."
-	apt update -y
-	apt upgrade -y
-	apt install unattended-upgrades -y
-	apt-get autoremove -y
-	apt-get autoclean -y
-	apt-get check -y
-	echo "Operating system updated."
-	clear
 
 echo "SCRIPT COMPLETE"
