@@ -3,20 +3,8 @@
 if [[ `id -u` -ne 0 ]]
 then
 	echo "Please run as root"
-	#exit 1
+	exit 1
 fi
-
-#detect os flavor to know which package manager to use
-os=`cat /etc/os-release | grep "^ID=.*$" | sed -e 's/ID=//'`
-
-#Install
-#wget https://download.splunk.com/products/universalforwarder/releases/8.2.3/linux/splunkforwarder-8.2.3-cd0848707637-Linux-x86_64.tgz
-#tar -xf splunkforwarder-8.2.3-cd0848707637-Linux-x86_64.tgz -C ~/dev
-#if [[ $? -ne 0 ]]
-#then
-#	echo "Failed to install, check network settings and try again"
-#	exit 1
-#fi
 
 #Setup
 export SPLUNK_HOME=/opt/splunk
@@ -25,26 +13,57 @@ export SPLUNK_HOME=/opt/splunk
 #----------------SSL--------------#
 #=================================#
 mkdir $SPLUNK_HOME/etc/auth/mycerts
-cd ~root
-git clone https://github.com/CedarvilleCyber/CCDC.git
-cp ~root/CCDC/splunk/mycerts/myCombinedServerCertificate.pem ~root/quarantine/mycerts/myCACertificate.pem $SPLUNK_HOME/etc/auth/mycerts
+export OPENSSL_CONF=$SPLUNK_HOME/openssl/openssl.cnf
 
+#Create root certificate
+echo "Creating Root CA"
+$SPLUNK_HOME/bin/genRootCA.sh -pd $SPLUNK_HOME/etc/auth/mycerts
+
+#Create indexer certificate
+indexername="Indexer"
+echo "Creating Indexer Cert"
+$SPLUNK_HOME/bin/splunk createssl server-cert -d $SPLUNK_HOME/etc/auth/mycerts -n $indexername -c Cedarville
+
+#PS3="Create Forwarder Cert?"
+#select option in "Continue" "Quit";
+#do
+#	case $option in
+#		Continue)
+#			#Create forwarder certificate
+#			read -p "Enter forwarder name (arbitrary): " forwardername
+#			$SPLUNK_HOME/bin/splunk createssl server-cert -d $SPLUNK_HOME/etc/auth/mycerts -n $forwardername -c Cedarville;;
+#		Quit)	break;;
+#		*)	break;;
+#	esac
+#done
+
+#Create forwarder certificates
+echo "Creating Forwarder Certs"
+declare -a machines=("Docker-Remote"
+		     "Debian-DNS-NTP")
+for m in "${machines[@]}"
+do
+	echo "Creating Cert for: " + "$m"
+	$SPLUNK_HOME/bin/splunk createssl server-cert -d $SPLUNK_HOME/etc/auth/mycerts -n "$m" -c Cedarville
+done
+
+#Server conf
 read -p "Enter server SSL password: " sslpwd
 cat << EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 [splunktcp-ssl:9997]
 disabled=0
 
 [SSL]
-serverCert = $SPLUNK_HOME/etc/auth/mycerts/myCombinedServerCert.pem
+serverCert = $SPLUNK_HOME/etc/auth/mycerts/$indexername.pem
 sslPassword = $sslpwd
 requireClientCert = true
 sslVersions *,-ssl2
-sslCommonNameToCheck = David Stirn 
+sslCommonNameToCheck = Cedarville
 EOF
 
 cat << EOF > $SPLUNK_HOME/etc/system/local/server.conf
 [sslConfig]
-sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/myCACertificate.pem
+sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/cacert.pem
 EOF
 
 #Start
