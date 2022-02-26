@@ -33,8 +33,10 @@ $SPLUNK_HOME/bin/splunk createssl server-cert -d $SPLUNK_HOME/etc/auth/mycerts -
 
 #Create forwarder certificates
 echo "Creating Forwarder Certs"
-machines=("Debian-DNS-NTP"
+machines=("Docker-Remote"
+	  "Debian-DNS-NTP"
 	  "Ubuntu-Web"
+	  "AD-DNS-DHCP"
 	  "Ubuntu-Wkst"
 	  "Splunk"
 	  "CentOS-E-comm"
