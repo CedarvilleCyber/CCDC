@@ -9,6 +9,13 @@ fi
 #Setup
 export SPLUNK_HOME=/opt/splunk
 
+$SPLUNK_HOME/bin/splunk add index syslog
+$SPLUNK_HOME/bin/splunk add index auth
+$SPLUNK_HOME/bin/splunk add index boot
+$SPLUNK_HOME/bin/splunk add index kern
+$SPLUNK_HOME/bin/splunk add index cron
+$SPLUNK_HOME/bin/splunk add index web
+
 #=================================#
 #----------------SSL--------------#
 #=================================#
@@ -23,19 +30,6 @@ $SPLUNK_HOME/bin/genRootCA.sh -pd $SPLUNK_HOME/etc/auth/mycerts
 indexername="Indexer"
 echo "Creating Indexer Cert"
 $SPLUNK_HOME/bin/splunk createssl server-cert -d $SPLUNK_HOME/etc/auth/mycerts -n $indexername -c Cedarville
-
-#PS3="Create Forwarder Cert?"
-#select option in "Continue" "Quit";
-#do
-#	case $option in
-#		Continue)
-#			#Create forwarder certificate
-#			read -p "Enter forwarder name (arbitrary): " forwardername
-#			$SPLUNK_HOME/bin/splunk createssl server-cert -d $SPLUNK_HOME/etc/auth/mycerts -n $forwardername -c Cedarville;;
-#		Quit)	break;;
-#		*)	break;;
-#	esac
-#done
 
 #Create forwarder certificates
 echo "Creating Forwarder Certs"
@@ -52,7 +46,21 @@ do
 done
 
 #Server conf
-read -p "Enter server SSL password: " sslpwd
+getpasswd()
+{
+	read -sp "Enter SSL password: " sslpwd
+	echo ""
+	read -sp "Verify SSL password: " sslpwd2
+	echo ""
+}
+
+getpasswd
+while [ "$sslpwd" != "$sslpwd2" ]
+do
+	echo "Passwords do not match, try again"
+	getpasswd
+done
+
 cat << EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 [splunktcp-ssl:9997]
 disabled=0

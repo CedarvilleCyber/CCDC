@@ -11,11 +11,10 @@ then
 	exit 1
 fi
 
-#detect os flavor to know which files to monitor by default
-os=`cat /etc/os-release | grep "^ID=.*$" | sed -e 's/ID=//'`
-
 #Install
-wget https://download.splunk.com/products/universalforwarder/releases/8.2.3/linux/splunkforwarder-8.2.3-cd0848707637-Linux-x86_64.tgz
+#This wget isn't necessary because the forwarder is packaged with the script
+#wget https://download.splunk.com/products/universalforwarder/releases/8.2.3/linux/splunkforwarder-8.2.3-cd0848707637-Linux-x86_64.tgz
+echo "Installing Forwarder"
 tar -xf splunkforwarder-8.2.3-cd0848707637-Linux-x86_64.tgz -C /opt
 if [[ $? -ne 0 ]]
 then
@@ -262,7 +261,20 @@ scp $splunkuname@$serverip:"/tmp/$certfile" "$SPLUNK_HOME/etc/auth/mycerts"
 ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/cacert.pem /tmp; sudo chmod go+r /tmp/$certfile"
 scp $splunkuname@$serverip:"/tmp/cacert.pem" "$SPLUNK_HOME/etc/auth/mycerts"
 
-read -sp "Enter SSL password: " sslpwd
+getpasswd()
+{
+	read -sp "Enter SSL password: " sslpwd
+	echo ""
+	read -sp "Verify SSL password: " sslpwd2
+	echo ""
+}
+
+getpasswd
+while [ "$sslpwd" != "$sslpwd2" ]
+do
+	echo "Passwords do not match, try again"
+	getpasswd
+done
 
 cat << EOF > $SPLUNK_HOME/etc/system/local/outputs.conf
 [tcpout:splunkssl]
