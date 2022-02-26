@@ -41,7 +41,10 @@ select machine in "${machines[@]}"
 do
 	case $machine in
 		"Debian-DNS-NTP")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			[default]
+			host=$machine
+
 			[monitor:///var/log/syslog]
 			index=syslog
 			sourcetype=syslog
@@ -49,21 +52,200 @@ do
 			[monitor:///var/log/auth.log]
 			index=auth
 			sourcetype=linux-secure
+
+			[monitor:///var/log/faillog]
+			index=auth
+
+			[monitor:///var/log/boot.log]
+			index=boot
+
+			[monitor:///var/log/dmesg]
+			index=kern
+			sourcetype=dmseg
+
+			[monitor:///var/log/kern.log]
+			index=kern
+
+			[monitor:///var/log/cron]
+			index=cron
+			
+			EOF
+			break;;
+	  	"Ubuntu-Web")
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			[default]
+			host=$machine
+
+			[monitor:///var/log/syslog]
+			index=syslog
+			sourcetype=syslog
+
+			[monitor:///var/log/auth.log]
+			index=auth
+			sourcetype=linux-secure
+
+			[monitor:///var/log/faillog]
+			index=auth
+
+			[monitor:///var/log/boot.log]
+			index=boot
+
+			[monitor:///var/log/dmesg]
+			index=kern
+			sourcetype=dmseg
+
+			[monitor:///var/log/kern.log]
+			index=kern
+
+			[monitor:///var/log/cron]
+			index=cron
+			
+			[monitor:///var/log/apache2/error.log]
+			index=web
+			
+			[monitor:///var/log/apache2/access.log]
+			index=web
+			
+			EOF
+			break;;
+		"Ubuntu-Wkst")
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			[default]
+			host=$machine
+
+			[monitor:///var/log/syslog]
+			index=syslog
+			sourcetype=syslog
+
+			[monitor:///var/log/auth.log]
+			index=auth
+			sourcetype=linux-secure
+
+			[monitor:///var/log/faillog]
+			index=auth
+
+			[monitor:///var/log/boot.log]
+			index=boot
+
+			[monitor:///var/log/dmesg]
+			index=kern
+			sourcetype=dmseg
+
+			[monitor:///var/log/kern.log]
+			index=kern
+
+			[monitor:///var/log/cron]
+			index=cron
+			
+			EOF
+			break;;
+	  	"Splunk")
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			[default]
+			host=$machine
+
+			[monitor:///var/log/messages]
+			index=syslog
+			sourcetype=syslog
+
+			[monitor:///var/log/secure]
+			index=auth
+			sourcetype=linux-secure
+
+			[monitor:///var/log/faillog]
+			index=auth
+
+			[monitor:///var/log/boot.log]
+			index=boot
+
+			[monitor:///var/log/dmesg]
+			index=kern
+			sourcetype=dmseg
+
+			[monitor:///var/log/kern.log]
+			index=kern
+
+			[monitor:///var/log/cron]
+			index=cron
+			
+			EOF
+			break;;
+	  	"CentOS-E-comm")
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			[default]
+			host=$machine
+
+			[monitor:///var/log/messages]
+			index=syslog
+			sourcetype=syslog
+
+			[monitor:///var/log/secure]
+			index=auth
+			sourcetype=linux-secure
+
+			[monitor:///var/log/faillog]
+			index=auth
+
+			[monitor:///var/log/boot.log]
+			index=boot
+
+			[monitor:///var/log/dmesg]
+			index=kern
+			sourcetype=dmseg
+
+			[monitor:///var/log/kern.log]
+			index=kern
+
+			[monitor:///var/log/cron]
+			index=cron
+			
+			[monitor:///var/log/httpd/error_log]
+			index=web
+			
+			[monitor:///var/log/httpd/access_log]
+			index=web
+			
+			[monitor:///var/log/mysqld.log]
+			index=web
+			
+			EOF
+			break;;
+	  	"Fedora-Webmail-WebApps")
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			[default]
+			host=$machine
+
+			[monitor:///var/log/messages]
+			index=syslog
+			sourcetype=syslog
+
+			[monitor:///var/log/secure]
+			index=auth
+			sourcetype=linux-secure
+
+			[monitor:///var/log/faillog]
+			index=auth
+
+			[monitor:///var/log/boot.log]
+			index=boot
+
+			[monitor:///var/log/dmesg]
+			index=kern
+			sourcetype=dmseg
+
+			[monitor:///var/log/kern.log]
+			index=kern
+
+			[monitor:///var/log/cron]
+			index=cron
+			
+			[monitor:///var/log/maillog]
+			index=web
+			
 			EOF
 			break;;
 	esac
 done
-
-cp $SPLUNK_HOME/etc/system/default/inputs.conf $SPLUNK_HOME/etc/system/local
-cat << EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
-[monitor:///var/log/syslog]
-index=syslog
-sourcetype=syslog
-
-[monitor:///var/log/auth.log]
-index=auth
-sourcetype=linux-secure
-EOF
 
 #=================================#
 #----------------SSL--------------#
