@@ -284,7 +284,7 @@ disabled = 0
 clientCert = $SPLUNK_HOME/etc/auth/mycerts/$certfile
 useClientSSLCompression = true
 sslPassword = $sslpwd
-sslCommonNameToCheck = Cedarville
+sslCommonNameToCheck = cedarville.indexer
 sslVerifyServerCert = true 
 EOF
 
