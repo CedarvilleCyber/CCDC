@@ -427,7 +427,7 @@ netsh advfirewall firewall add rule name="DNS In UDP from Internal" dir=in actio
 netsh advfirewall firewall add rule name="DNS In UDP from ANY" dir=in action=allow enable=no profile=any localport=53  protocol=udp
 
 :: SMB AUTH 445
-netsh advfirewall firewall add rule name="PORT 445 SMB In" dir=in action=allow enable=yes profile=any localport=445 protocol=tcp remoteip=%WebMail%,%PAMI%, %2016Docker%
+:: netsh advfirewall firewall add rule name="PORT 445 SMB In" dir=in action=allow enable=yes profile=any localport=445 protocol=tcp remoteip=%WebMail%,%PAMI%, %2016Docker%
 
 :: Replication
 netsh advfirewall firewall add rule name="MSRPC IN from Mail, PAN, Docker" dir=in action=allow enable=yes profile=any localport=135 remoteip=%WebMail%,%PAMI%, %2016Docker% protocol=tcp
