@@ -1,0 +1,14 @@
+hosts		= ad.frog.com:389
+ldap_version	= 3
+auth_bind	= yes
+dn		= proftpd
+dnpass		= !Password123
+base		= cn=users,dc=frog,dc=com
+scope		= subtree
+deref		= never
+user_filter	= (userPrincipalName=%u)
+pass_filter	= (userPrincipalName=%u)
+pass_filter	= userPassword=password
+default_pass_scheme = CRYPT
+user_attrs	= =home=/var/vmail/vmail1/%Ld/%Ln/Maildir,=mail=maildir:/var/vmail/vmail1/%Ld/%Ln/Maildir/
+
