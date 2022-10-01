@@ -1,23 +1,31 @@
-﻿Getting Started with Postfix and Dovecot 
-VM:
+﻿Getting Started with Postfix and Dovecot VM:
 https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/21/Live/i386/Fedora-Live KDE-i686-21-5.iso 
+
 Other Credit: 
 https://linuxtechlab.com/setting-mail-server-postfix-dovecot-squirrelmail/ 
 https://www.linuxquestions.org/questions/linux-software-2/dovecot-postfix-setup-issues 4175525933/ 
+
 Explanations: 
 https://ccm.net/contents/116-how-email-works-mta-mda-mua 
 https://www.socketlabs.com/blog/smtp-or-imap/ 
 Installing Postfix 
+
 1. Check for available postfix packages 
 sudo yum list available | grep postfix 
+
 2. Install the postfix package 
 sudo yum install postfix 
-3. Obtain hostname and domain name (you will use them in the next step) hostname 
+
+3. Obtain hostname and domain name (you will use them in the next step)
+hostname 
+
 4. Edit the configuration for postfix 
 Notes:  
-• If the hostname is fully qualified, then the format of the local domain will be  localdomain.tld 
-• The hostname for this tutorial is assumed to be localhost.localdomain • Line numbers can be viewed in vi by :set number 
-• Goto line in vi can be executed by :<line number> 
+    • If the hostname is fully qualified, then the format of the local domain will be  localdomain.tld 
+    • The hostname for this tutorial is assumed to be localhost.localdomain
+    • Line numbers can be viewed in vi by :set number 
+    • Goto line in vi/vim can be executed by <number> SHIFT-G
+
 sudo vi /etc/postfix/main.cf 
 On Line 75:  
 myhostname = localhost.localdomain
@@ -30,72 +38,108 @@ inet_interfaces = all
 On Line 119: 
 inet_protocols = all 
 On Line 165 (comment out other mydestinations): 
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain On Line 264: 
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+On Line 264: 
 mynetworks = 127.0.0.0/24 
 On Line 419: 
 home_mailbox = Maildir/ 
+
 5. For each user, make a Maildir directory in their home directory 
 sudo mkdir Maildir 
+(NOTE: All users must have lowercase names)
+
 6. Ensure that postfix is the mail transfer agent 
-sudo alternatives –config mta  
+sudo alternatives --config mta  
 Follow prompts to select postfix 
+
 7. Restart postfix 
 sudo systemctl restart postfix 
+
 8. Enable postfix 
 sudo systemctl enable postfix 
+
 9. Generate aliases.db in /etc 
 sudo newaliases
 Testing Postfix 
+
+
 1. Open telnet connection 
 telnet localhost smtp 
+
 2. connect to the mail server 
 ehlo localhost 
+
 3. Enter the username of the sender  
 mail from:<mailuser> 
+
 4. Enter the username of the recipient 
 rcpt to:<mailuser> 
+
 5. Enter mail body 
 data 
-6. Type a message and end with carriage return, “.”, and another carriage return 7. Quit telnet session 
+
+6. Type a message and end with carriage return, “.”, and another carriage return
+
+7. Quit telnet session 
 quit 
+
 8. Check the new mail in user home > Maildir > new 
+
 OR 
+
 1. Send mail from user 
 sendmail <mailuser> 
-2. Enter message and carriage return. 
+
+2. Enter message and end with carriage return, “.”, and another carriage return. 
+
 3. Check the new mail in user home > Maildir > new
+
 Installing Dovecot 
+
 1. Install dovecot 
 sudo yum install dovecot 
+
 2. Allow appropriate protocols in the dovecot config file 
 sudo vi /etc/dovecot/dovecot.conf 
 Line 24: 
 protocols = imap pop3 lmtp 
+
 3. Set the mailbox location 
-sudo vi /etc/dovecot/conf.d/10-mail.conf (mailbox locations and namespaces) Line 30: 
+sudo vi /etc/dovecot/conf.d/10-mail.conf (mailbox locations and namespaces)
+Line 30: 
 mail_location = maildir:~/Maildir 
+
 4. Set the authorization parameters 
 sudo vi /etc/dovecot/conf.d/10-auth.conf 
 Line 10: 
-disable_plaintext_auth = yes 
+disable_plaintext_auth = no 
 Line 100: 
 auth_mechanisms = plain login 
+
 5. Set service dictionary parameters 
 sudo vi /etc/dovecot/conf.d/10-master.conf 
 Lines 115-117: 
 mode = 0600 
 user = postfix 
 group = postfix 
+
 6. Restart dovecot 
-sudo sytemctl restart dovecot 
+sudo systemctl restart dovecot 
+
 7. Enable dovecot 
 sudo systemctl enable dovecot
+
 Testing Dovecot 
+
 1. Start a telnet session 
 telnet localhost pop3 
-2. Enter the username and password user <username> 
+
+2. Enter the username and password
+user <username> 
 pass <password> 
+
 3. Retrieve mail 
 retr 1 
+
 4. Quit telnet session 
 quit
