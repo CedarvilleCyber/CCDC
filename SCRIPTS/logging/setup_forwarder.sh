@@ -1,59 +1,10 @@
 #!/bin/bash
 
-read -p "Is forwarder installed [y/n]? " installed
-
-if [[ "$installed" = "n" ]] #installed
-then
-
-if [[ `id -u` -ne 0 ]]
-then
-	echo "Requires super user privileges"
-	exit 1
-fi
-
-#Install
-useradd -m splunk
-groupadd splunk
-
-export SPLUNK_HOME=/opt/splunkforwarder
-mkdir $SPLUNK_HOME
-
-echo "Installing Forwarder"
-flavors=("Debian"
-	  "RedHat")
-
-select flavor in "${flavors[@]}"
-do
-	case $flavor in
-		"Debian")
-			mv splunkforwarder-9.0.1-82c987350fde-linux-2.6-amd64.deb $SPLUNK_HOME
-			cd $SPLUNK_HOME
-			dpkg -i splunkforwarder-9.0.1-82c987350fde-linux-2.6-amd64.deb
-			break;;
-		"RedHat")
-			chmod 644 splunkforwarder-9.0.1-82c987350fde-linux-2.6-x86_64.rpm
-			mv splunkforwarder-9.0.1-82c987350fde-linux-2.6-x86_64.rpm $SPLUNK_HOME
-			cd $SPLUNK_HOME
-			rpm -i splunkforwarder-9.0.1-82c987350fde-linux-2.6-x86_64.rpm
-			break;;
-	esac
-done
-
-chown -R splunk:splunk $SPLUNK_HOME
-			
-if [[ $? -ne 0 ]]
-then
-	echo "Failed to install, check network settings and try again"
-	exit 1
-fi
-
-else
-
 #===============================#
 #-------------Setup-------------#
 #===============================#
 
-su - splunk
+export SPLUNK_HOME=/opt/splunkforwarder
 
 machines=("Debian-DNS-NTP"
 	  "Ubuntu-Web"
@@ -286,9 +237,9 @@ ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/$certfile /t
 scp $splunkuname@$serverip:"/tmp/$certfile" "$SPLUNK_HOME/etc/auth/mycerts"
 ssh -l $splunkuname $serverip "sudo rm -rf /tmp/$certfile"
 
-ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/cacert.pem /tmp; sudo chmod go+r /tmp/$certfile"
+ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/cacert.pem /tmp; sudo chmod go+r /tmp/cacert.pem"
 scp $splunkuname@$serverip:"/tmp/cacert.pem" "$SPLUNK_HOME/etc/auth/mycerts"
-ssh -l $splunkuname $serverip "sudo rm -rf /tmp/$certfile"
+ssh -l $splunkuname $serverip "sudo rm -rf /tmp/cacert.pem"
 
 getpasswd()
 {
@@ -313,7 +264,7 @@ disabled = 0
 clientCert = $SPLUNK_HOME/etc/auth/mycerts/$certfile
 useClientSSLCompression = true
 sslPassword = $sslpwd
-sslCommonNameToCheck = cedarville.indexer
+sslCommonNameToCheck = indexer.cedarville
 sslVerifyServerCert = true 
 EOF
 
@@ -322,8 +273,3 @@ cat << EOF > $SPLUNK_HOME/etc/system/local/server.conf
 sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/cacert.pem
 EOF
 
-#Start
-sudo $SPLUNK_HOME/bin/splunk restart --accept-license
-sudo $SPLUNK_HOME/bin/splunk enable boot-start
-
-fi #installed
