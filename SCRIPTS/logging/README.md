@@ -12,4 +12,6 @@ The shell scripts present here will configure the splunk server and install splu
 3. There should be no prompts for extra information if run with the parameters and should run in under a minute.
 
 ### Client (Forwarder)
+1. Know the Splunk Server IP, the admin user, and the admin user's password
+2. Run the [client setup script](install_and_setup_forwarder.sh) on the machine, responding to the Splunk Login prompts and entering the SSL password. Only install the universal forwarder once.
 
