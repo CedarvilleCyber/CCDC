@@ -66,6 +66,4 @@ case "$DIST_FAM" in
         exit 1
 esac
 
-clear
-
 exit 0
