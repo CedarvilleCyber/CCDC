@@ -43,7 +43,7 @@ cp ./freshclam.conf /etc/clamav/freshclam.conf
 cp ./clamd.conf /etc/clamav/clamd.conf
 
 # running freshclam in daemon mode to update signature database; runs 24 times per day according to config file
-su - clamav -c "/usr/local/bin/freshclam -d --config-file=/etc/clamav/freshclam.conf"
+su - clamav -c "/usr/local/bin/freshclam -d --log=/var/log/freshclam.log --config-file=/etc/clamav/freshclam.conf"
 # start clamd daemon; runs as clamav so that on access scanning will work
 su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can specify socket if necessary
 
@@ -53,10 +53,9 @@ su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can
 
 # NOTE: this should probably be moved to a separate window
 echo "Scanning with ClamAV"
-# log file specified in the config file
 # add --quiet?
 # if read errors persist, it may be due to -m (multiscan), this seems to be a known bug
-clamdscan -i -m --fdpass --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /*
+clamdscan -i -m --fdpass --move=/root/quarantine --log=/var/log/clamav.log --config-file=/etc/clamav/clamd.conf /*
 
 
 echo "Installing Rootkit Hunter"
