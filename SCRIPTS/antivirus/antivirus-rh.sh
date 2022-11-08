@@ -55,7 +55,7 @@ su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can
 echo "Scanning with ClamAV"
 # add --quiet?
 # if read errors persist, it may be due to -m (multiscan), this seems to be a known bug
-clamdscan -i -m --fdpass --move=/root/quarantine --log=/var/log/clamav.log --config-file=/etc/clamav/clamd.conf /*
+clamdscan -i --fdpass --quiet --move=/root/quarantine --log=/var/log/clamav.log --config-file=/etc/clamav/clamd.conf /*
 
 
 echo "Installing Rootkit Hunter"
