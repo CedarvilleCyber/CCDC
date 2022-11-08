@@ -20,8 +20,8 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-echo "Installing Rootkit Hunter"
-apt-get install rkhunter -y
+#echo "Installing Rootkit Hunter"
+#apt-get install rkhunter -y
 
 # rootkit hunter is currently unused
 
