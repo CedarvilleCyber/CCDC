@@ -58,7 +58,7 @@ clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/
 
 
 echo "Installing Rootkit Hunter"
-apt-get install rkhunter
+apt-get install rkhunter -y
 
 # rootkit hunter is currently unused
 
