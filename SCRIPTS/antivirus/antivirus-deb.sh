@@ -20,6 +20,11 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
+#echo "Installing Rootkit Hunter"
+#apt-get install rkhunter -y
+
+# rootkit hunter is currently unused
+
 echo "Installing ClamAV"
 apt-get install clamav clamav-daemon -y
 
@@ -56,11 +61,6 @@ echo "Scanning with ClamAV"
 # if read errors persist, it may be due to -m (multiscan), this seems to be a known bug
 clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /
 
-
-echo "Installing Rootkit Hunter"
-apt-get install rkhunter
-
-# rootkit hunter is currently unused
 
 echo "SCRIPT COMPLETE"
 
