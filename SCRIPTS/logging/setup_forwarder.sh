@@ -231,11 +231,15 @@ certfile=$machine.pem
 echo "$certfile"
 
 read -p "Enter Splunk Server IP: " serverip
-read -p "Enter Splunk Server Username: " splunkuname
-read -p "Enter this machine's IP address: " myip
-read -p "Enter this machine's Username: " myusername
+read -p "Enter username: " splunkuname
 echo "Downloading certificates from splunk server..."
-ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/$certfile /tmp; sudo chmod go+r /tmp/$certfile; scp $myusername@$myip:'$SPLUNK_HOME/etc/auth/mycerts' '/tmp/$certfile'; sudo rm -rf /tmp/$certfile; sudo cp /opt/splunk/etc/auth/mycerts/cacert.pem /tmp; sudo chmod go+r /tmp/cacert.pem; scp $myusername@$myip:'$SPLUNK_HOME/etc/auth/mycerts' '/tmp/cacert.pem'; sudo rm -rf /tmp/cacert.pem"
+ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/$certfile /tmp; sudo chmod go+r /tmp/$certfile"
+scp $splunkuname@$serverip:"/tmp/$certfile" "$SPLUNK_HOME/etc/auth/mycerts"
+ssh -l $splunkuname $serverip "sudo rm -rf /tmp/$certfile"
+
+ssh -l $splunkuname $serverip "sudo cp /opt/splunk/etc/auth/mycerts/cacert.pem /tmp; sudo chmod go+r /tmp/cacert.pem"
+scp $splunkuname@$serverip:"/tmp/cacert.pem" "$SPLUNK_HOME/etc/auth/mycerts"
+ssh -l $splunkuname $serverip "sudo rm -rf /tmp/cacert.pem"
 
 getpasswd()
 {
