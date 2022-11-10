@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Debian antivirus script (CCDC 2023)
-#     installs and runs ClamAV and RootkitHunter
+#     installs and runs ClamAV
 #
 # NOTE: this script must be run with root privileges
 # NOTE: read through script before including in a machine script; you may wish to execute
@@ -20,11 +20,6 @@ if [ "$(id -u)" != "0" ]; then
     exit 1
 fi
 
-#echo "Installing Rootkit Hunter"
-#apt-get install rkhunter -y
-
-# rootkit hunter is currently unused
-
 echo "Installing ClamAV"
 apt-get install clamav clamav-daemon -y
 
@@ -41,27 +36,32 @@ chown clamav /var/log/clamav.log
 mkdir /root/quarantine
 chmod 700 /root/quarantine
 chown clamav /root/quarantine
+mkdir /var/clamav
+chmod 700 /var/clamav
+chown clamav /var/clamav
+mkdir /var/clamav/tmp
+chmod 700 /var/clamav/tmp
+chown clamav /var/clamav/tmp
 
 # copying config files from local directory to the location they are typically accessed from
-cp ./freshclam.conf /etc/clamav/freshclam.conf
-cp ./clamd.conf /etc/clamav/clamd.conf
+cp ./freshclam.conf /etc/clamav/freshclam.conf #freshclam.conf must exist in the same directory as a script runnning this one
+cp ./clamd.conf /etc/clamav/clamd.conf #clamd.conf must exist in the same directory as a script running this one
 
 # running freshclam in daemon mode to update signature database; runs 24 times per day according to config file
-su - clamav -c "/usr/local/bin/freshclam -d --config-file=/etc/clamav/freshclam.conf"
+freshclam -d --config-file=/etc/clamav/freshclam.conf
+#su - clamav -c "/usr/local/bin/freshclam -d --config-file=/etc/clamav/freshclam.conf"
 # start clamd daemon; runs as clamav so that on access scanning will work
-su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can specify socket if necessary
+clamd --config-file=/etc/clamav/clamd.conf
+#su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can specify socket if necessary
 
 # start ClamAV on access scanning; currently disabled due to high potential for issues
+# edit clamd.conf before running
 #echo "Starting On Access Scanning with ClamAV"
 #clamonacc
 
 # NOTE: this should probably be moved to a separate window
 echo "Scanning with ClamAV"
-# add --quiet?
-# if read errors persist, it may be due to -m (multiscan), this seems to be a known bug
 clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /
 
 
 echo "SCRIPT COMPLETE"
-
-exit 0
