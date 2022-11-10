@@ -36,6 +36,7 @@ chown clamav /var/log/clamav.log
 mkdir /root/quarantine
 chmod 700 /root/quarantine
 chown clamav /root/quarantine
+# creating tmp file for clamav
 mkdir /var/clamav
 chmod 700 /var/clamav
 chown clamav /var/clamav
