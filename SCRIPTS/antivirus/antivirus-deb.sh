@@ -49,12 +49,10 @@ cp ./freshclam.conf /etc/clamav/freshclam.conf
 cp ./clamd.conf /etc/clamav/clamd.conf
 
 # running freshclam in daemon mode to update signature database
-freshclam -d --log=/var/log/freshclam.log --config-file=/etc/clamav/freshclam.conf
-#su - clamav -c "/usr/local/bin/freshclam -d --config-file=/etc/clamav/freshclam.conf"
+su - clamav -c "/usr/local/bin/freshclam -d --log=/var/log/freshclam.log --config-file=/etc/clamav/freshclam.conf"
 
 # start clamd daemon; runs as clamav so that on access scanning will work
-clamd --config-file=/etc/clamav/clamd.conf
-#su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can specify socket if necessary
+su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf"
 
 # start ClamAV on access scanning; currently disabled due to high potential for issues
 # edit clamd.conf before running
