@@ -3,7 +3,7 @@
 
 
 #check if user is root
-if ["$(id -u)" != "0"]; then
+if [ "$(id -u)" != "0" ]; then
 	printf "You must be root!\n"
 	exit 1
 fi
@@ -15,16 +15,16 @@ printf "Systems may stop temporarily\n"
 
 
 #determine packet manager in use
-if [$(which apt-get)]; then
+if [ $(which apt-get) ]; then
 	pm="apt-get"
 fi
-if [$(which yum)]; then
+if [ $(which yum) ]; then
 	pm="yum"
 fi
 
 
 #apt-get
-if [$pm == "apt-get"]; then
+if [ $pm == "apt-get" ]; then
 
 	#updates list of available packages/versions
 	apt-get update -y
@@ -45,7 +45,7 @@ fi
 
 
 #yum
-if [$pm == "yum"]; then
+if [ $pm == "yum" ]; then
 
 	#updates all packages
 	yum update -y
