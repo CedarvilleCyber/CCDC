@@ -7,7 +7,7 @@
 # NOTE: read through script before including in a machine script; you may wish to execute
 #       some commands in a separate window for monitoring
 # NOTE: if you need to run a new scan and want to do so in the foreground, run
-#       "clamscan -i -r --fdpass --move=/root/quarantine --log=/var/log/clamav.log --config-file=/etc/clamav/clamd.conf /"
+#       "clamscan -i -r --move=/root/quarantine --log=/var/log/clamav.log /"
 # NOTE: config files live in /etc/clamav/
 # NOTE: log files live in /var/log/
 # NOTE: quarantine directory is /root/quarantine
@@ -49,7 +49,7 @@ cp ./freshclam.conf /etc/clamav/freshclam.conf
 cp ./clamd.conf /etc/clamav/clamd.conf
 
 # running freshclam in daemon mode to update signature database
-su - clamav -c "/usr/local/bin/freshclam -d --log=/var/log/freshclam.log --config-file=/etc/clamav/freshclam.conf"
+su - clamav -c "/usr/local/bin/freshclam --log=/var/log/freshclam.log --config-file=/etc/clamav/freshclam.conf"
 
 # start clamd daemon; runs as clamav so that on access scanning will work
 su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf"
@@ -61,7 +61,9 @@ su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf"
 
 # NOTE: this should probably be moved to a separate window
 echo "Scanning with ClamAV"
-clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /
+# using clamscan due to issues with clamdscan; may implement in the future after further experimentation
+clamscan -i -r --move=/root/quarantine --log=/var/log/clamav.log /
+#clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /
 
 
 echo "SCRIPT COMPLETE"
