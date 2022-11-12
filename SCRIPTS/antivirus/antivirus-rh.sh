@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# Debian antivirus script (CCDC 2023)
-#     installs and runs ClamAV and RootkitHunter
-#     will need to be tested on a redhat distro
+# Redhat antivirus script (CCDC 2023)
+#     installs and runs ClamAV
 #
 # NOTE: this script must be run with root privileges
 # NOTE: read through script before including in a machine script; you may wish to execute
 #       some commands in a separate window for monitoring
 # NOTE: if you need to run a new scan and want to do so in the foreground, run
-#       "clamscan -i -r --fdpass --move=/root/quarantine --log=/var/log/clamav.log --config-file=/etc/clamav/clamd.conf /"
+#       "clamscan -i -r --move=/root/quarantine --log=/var/log/clamav.log /"
 # NOTE: config files live in /etc/clamav/
 # NOTE: log files live in /var/log/
 # NOTE: quarantine directory is /root/quarantine
@@ -37,32 +36,34 @@ chown clamav /var/log/clamav.log
 mkdir /root/quarantine
 chmod 700 /root/quarantine
 chown clamav /root/quarantine
+# creating tmp file for clamav
+mkdir /var/clamav
+chmod 700 /var/clamav
+chown clamav /var/clamav
+mkdir /var/clamav/tmp
+chmod 700 /var/clamav/tmp
+chown clamav /var/clamav/tmp
 
 # copying config files from local directory to the location they are typically accessed from
 cp ./freshclam.conf /etc/clamav/freshclam.conf
 cp ./clamd.conf /etc/clamav/clamd.conf
 
-# running freshclam in daemon mode to update signature database; runs 24 times per day according to config file
-su - clamav -c "/usr/local/bin/freshclam -d --config-file=/etc/clamav/freshclam.conf"
+# running freshclam in daemon mode to update signature database
+su - clamav -c "/usr/local/bin/freshclam --log=/var/log/freshclam.log --config-file=/etc/clamav/freshclam.conf"
+
 # start clamd daemon; runs as clamav so that on access scanning will work
-su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf" # can specify socket if necessary
+su - clamav -c "/usr/local/bin/clamd --config-file=/etc/clamav/clamd.conf"
 
 # start ClamAV on access scanning; currently disabled due to high potential for issues
+# edit clamd.conf before running
 #echo "Starting On Access Scanning with ClamAV"
-#clamonacc
+#clamonacc --fdpass --config-file=/etc/clamav/clamd.conf
 
 # NOTE: this should probably be moved to a separate window
 echo "Scanning with ClamAV"
-# add --quiet?
-# if read errors persist, it may be due to -m (multiscan), this seems to be a known bug
-clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /*
+# using clamscan due to issues with clamdscan; may implement in the future after further experimentation
+clamscan -i -r --move=/root/quarantine --log=/var/log/clamav.log /
+#clamdscan -i --fdpass --quiet --move=/root/quarantine --config-file=/etc/clamav/clamd.conf /
 
-
-echo "Installing Rootkit Hunter"
-yum install rkhunter
-
-# rootkit hunter is currently unused
 
 echo "SCRIPT COMPLETE"
-
-exit 0
