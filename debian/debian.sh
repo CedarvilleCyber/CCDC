@@ -113,6 +113,8 @@ apt-get install fail2ban -y
 apt-get install ufw -y
 ufw allow dns
 ufw allow ntp
+ufw allow http
+ufw allow https
 ufw enable
 
 printf "Make sure there are no werid rules in iptables and ufw!\n"
