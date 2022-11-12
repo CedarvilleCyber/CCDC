@@ -45,19 +45,6 @@ if [ $input == "N" ] || [ $input == "n" ]; then
 	exit 0
 fi
 
-
-# update
-printf "Updating Packages...\n"
-
-# update updates list of availible packages and versions
-apt-get update -y
-# upgrade actually install the newer versions
-apt-get upgrade -y
-# autoremove removes packages that are no longer required
-apt-get autoremove -y
-# autoclean removes the downloaded packages becuase they are already installed
-apt-get autoclean -y
-
 printf "Packages Updated!\n"
 
 
@@ -243,12 +230,24 @@ fi
 
 # Write login banner
 
-# Before Entering a Password
-printf "\nOnly authorized users are welcome on this system. If you are not authorized, do not continue. Make sure you have proper reason and ability to access this system.\n\nAll network activity is being logged and monitored. These logs can be used to investigate and prosecute unauthorized access.\n\n" > /etc/issue.net
+chmod 700 ../SCRIPTS/login_banners/login_banners.sh
+../SCRIPTS/login_banners/login_banners.sh
 
-# After Entering a Password
-printf "\nOnly authorized users are welcome on this system. If you are not authorized, do not continue. Make sure you have proper reason and ability to access this system.\n\nAll network activity is being logged and monitored. These logs can be used to investigate and prosecute unauthorized access.\n\n" > /etc/motd
+# logging stuff
 
+cd ../SCRIPTS/logging/
+./install_and_setup_forwarder.sh
+cd ../../debian/
+
+# update OS
+
+chmod 700 ../SCRIPTS/osupdater/osupdater.sh
+../SCRIPTS/osupdater/osupdater.sh
+
+# password policy
+
+chmod 700 ../SCRIPTS/password_policy/password_policy.sh
+../SCRIPTS/password_policy/password_policy.sh
 
 printf "${info}Done!${reset}\n\n"
 
