@@ -233,12 +233,6 @@ fi
 chmod 700 ../SCRIPTS/login_banners/login_banners.sh
 ../SCRIPTS/login_banners/login_banners.sh
 
-# logging stuff
-
-cd ../SCRIPTS/logging/
-./install_and_setup_forwarder.sh
-cd ../../debian/
-
 # update OS
 
 chmod 700 ../SCRIPTS/osupdater/osupdater.sh
