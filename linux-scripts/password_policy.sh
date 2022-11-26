@@ -13,6 +13,12 @@ echo "Enter [Debian] if you are on DNS/NTP, Web, or Workstation"
 echo "Enter [RHEL] if you are on Ecomm, Splunk, or Webmail"
 read -p "Distribution family: " DIST_FAM
 
+while [[  DIST_FAM != "Debian" && DIST_FAM != "RHEL" ]]
+do
+    echo "Enter 'Debian' or 'RHEL' exactly"
+    read -p "Distribution family: " DIST_FAM
+done
+
 echo
 echo "Follow these steps to enforce the password policy."
 echo
@@ -60,10 +66,6 @@ case "$DIST_FAM" in
         echo "    And add the line:"
         echo "      'LOGIN_TIMEOUT 600'"
         ;;
-    
-    *)
-        echo "Re-run script and enter 'Debian' or 'RHEL' exactly"
-        exit 1
 esac
 
 exit 0
