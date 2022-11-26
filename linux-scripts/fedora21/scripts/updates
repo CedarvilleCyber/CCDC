@@ -1,0 +1,6 @@
+#! /bin/bash
+yum update libtasn1
+yum update libcurl
+yum update curl
+yum update tcpdump
+yum update polkit
