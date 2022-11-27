@@ -8,35 +8,34 @@ echo
 
 echo "This script gives the steps to implementing the password policy."
 echo
-echo "Configuration is different based on the distribution family used"
-echo "Enter [Debian] if you are on DNS/NTP, Web, or Workstation"
-echo "Enter [RHEL] if you are on Ecomm, Splunk, or Webmail"
-read -p "Distribution family: " DIST_FAM
+#/etc/os-release has entry ID= with name of distribution, read as a variable
+source /etc/os-release
 
-while [[  DIST_FAM != "Debian" && DIST_FAM != "RHEL" ]]
-do
-    echo "Enter 'Debian' or 'RHEL' exactly"
-    read -p "Distribution family: " DIST_FAM
-done
-
+echo "Follow these steps to enforce the password policy"
 echo
-echo "Follow these steps to enforce the password policy."
 echo
-case "$DIST_FAM" in
-    "Debian")
+case "$ID" in
+    "debian"|"ubuntu")
         # Possibly need to check libpam-cracklib is installed (not sure)
         
-        echo "# vi /etc/pam.d/common-password"
+        echo "Open /etc/pam.d/common-password in a text editor"
         # Prevent re-use of past 3 passwords
-        echo "    Add 'remember=3' to line with:"
+        echo "    Add 'remember=3' to line starting with:"
         echo "      'password   [success=1 default=ignore]  pam_unix.so'"
+        echo "    and change sha512 to sha256
         echo
         # Requires at least one of each lower, upper, digit, and symbol 
-        echo "    Add this line above the previous line: "
-        echo "      'password   required   pam_pwquality.so minclass=4 minlen=15'"
+        echo "    Add this line above the previous line:"
+        echo "      'password   required    pam_pwquality.so minclass=4 minlen=15'"
+        echo
+        echo "    The two lines should look like this:"
+        echo "      'password   required    pam_pwquality.so minclass=4 minlen=15'"
+        echo "      'password   [success=1 default=ignore]  pam_unix.so obscure \"
+        echo "           use_auth_tok first_try_pass sha256 minlen=15'"
+        echo
         echo
         # Set password expiration
-        echo "# vi /etc/login.defs"
+        echo "Open /etc/login.defs in a text editor"
         echo "    Find and set:"
         echo "      'PASS_MAX_DAYS 180'"
         echo "      'PASS_MIN_DAYS 0'"
@@ -46,18 +45,33 @@ case "$DIST_FAM" in
         echo "      'LOGIN_TIMEOUT 600'"
         ;;
         
-    "RHEL")
-        echo "# vi /etc/pam.d/system-auth"
+    "fedora"|"centos")
+    
+    ##########################################################################
+                                    ATTENTION
+    The Splunk vm system_auth file has changed, may need to make modifications
+    ##########################################################################
+    
+        echo "Open /etc/pam.d/system-auth in a text editor"
         # Prevent re-use of past 3 passwords
-        echo "    Add 'remember=3' to line with:"
+        echo "    Add 'remember=3' to line starting with:"
         echo "      'password   sufficient  pam_unix.so'"
+        echo "    and change sha512 to sha256 and remove nollok"
         echo
         # Requires at least one of each lower, upper, digit, and symbol 
         echo "    Add 'minclass=4 minlen=15' to line with:"
         echo "      'password   requisite   pam_pwquality.so'"
+        echo "    and remove authtok_type="
+        echo
+        echo "    The two lines should look like this:"
+        echo "      'password   requisite   pam_pwquality try_first_pass \"
+        echo "          local_users_only retry=3 minclass=4 minlen=15'"
+        echo "      'password   sufficient  pam_unix.so sha256 shadow /"
+        echo "          try_first_pass use_authtok remember=3'"
+        echo
         echo
         # Set password expiration
-        echo "# vi /etc/login.defs"
+        echo "Open /etc/login.defs in a text editor"
         echo "    Find and set:"
         echo "      'PASS_MAX_DAYS 180'"
         echo "      'PASS_MIN_DAYS 0'"
