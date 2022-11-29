@@ -1,5 +1,5 @@
 #!/bin/bash
-#linux hardening script
+#master linux hardening script
 clear
 
 #check if user is root
@@ -8,14 +8,14 @@ if [ "$(id -u)" != "0" ]; then
 	exit 1
 fi
 
-#chmod 744 all .sh files
+#chmod 744 all .sh files in immediate directory
 for f in $( ls ./ ); do
 	if [[ $f == *.sh ]]; then
 		chmod 744 $f
 	fi
 done
 
-#starts executing scripts
+#start executing scripts from here
 
 #establish log forwarder
 chmod 700 logging/install_and_setup_forwarder.sh
