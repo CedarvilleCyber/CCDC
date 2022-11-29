@@ -3,7 +3,7 @@
 clear
 
 echo
-echo "---------------- 2023 CU CCDC Password Policy Guide ----------------"
+echo "---------------- CU CCDC Password Policy Guide ----------------"
 echo
 
 echo "This script gives the steps to implementing the password policy."
