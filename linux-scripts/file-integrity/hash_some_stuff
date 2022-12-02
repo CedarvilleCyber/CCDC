@@ -7,7 +7,7 @@
 #
 # Use this script from crontab:
 # */15 * * * * integrity_check.sh [file ...]
-#testing
+#remove
 
 # Change to your preferred location
 SHA1DB=/var/sha1db
