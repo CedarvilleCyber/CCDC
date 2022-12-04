@@ -15,9 +15,7 @@ echo "Follow these steps to enforce the password policy"
 echo
 echo
 case "$ID" in
-    "debian"|"ubuntu")
-        # Possibly need to check libpam-cracklib is installed (not sure)
-        
+    "debian"|"ubuntu")        
         echo "Open /etc/pam.d/common-password in a text editor"
         # Prevent re-use of past 3 passwords
         echo "    Add 'remember=3' to line starting with:"
