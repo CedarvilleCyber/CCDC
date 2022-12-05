@@ -1,4 +1,4 @@
-# -------------------------- Cedarville CCDC Team -------------------------#
+# -------------------------- Cedarville CCDC Team ------------------------ #
 # This is the modified login.defs file                                     #
 # It is used to automatically configure this file during competition       #
 #   by overwriting that file with this one, enforcing our password policy  #
@@ -6,7 +6,7 @@
 # The relevant lines have been collected together and brought to the top   #
 #   (after the comments, line 45) to make screenshotting the configuration #
 #   quicker and easier                                                     #
-# -------------------------------------------------------------------------#
+# ------------------------------------------------------------------------ #
 
 #
 # /etc/login.defs - Configuration control definitions for the login package.
