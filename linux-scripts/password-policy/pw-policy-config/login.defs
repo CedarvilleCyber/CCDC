@@ -51,10 +51,10 @@ MAIL_DIR        /var/mail
 #	PASS_WARN_AGE	Number of days warning given before a password expires.
 # LOGIN_TIMEOUT Max time in seconds for login
 #
-PASS_MAX_DAYS	99999
+PASS_MAX_DAYS	180
 PASS_MIN_DAYS	0
 PASS_WARN_AGE	7
-LOGIN_TIMEOUT		60
+LOGIN_TIMEOUT	600
 
 
 
