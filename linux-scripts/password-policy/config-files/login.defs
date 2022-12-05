@@ -1,3 +1,13 @@
+# -------------------------- Cedarville CCDC Team -------------------------#
+# This is the modified login.defs file                                     #
+# It is used to automatically configure this file during competition       #
+#   by overwriting that file with this one, enforcing our password policy  #
+#                                                                          #
+# The relevant lines have been collected together and brought to the top   #
+#   (after the comments, line 45) to make screenshotting the configuration #
+#   quicker and easier                                                     #
+# -------------------------------------------------------------------------#
+
 #
 # /etc/login.defs - Configuration control definitions for the login package.
 #
@@ -5,10 +15,6 @@
 # If unspecified, some arbitrary (and possibly incorrect) value will
 # be assumed.  All other items are optional - if not specified then
 # the described action or option will be inhibited.
-#
-# Comment lines (lines beginning with "#") and blank lines are ignored.
-#
-# Modified for Linux.  --marekm
 
 # REQUIRED for useradd/userdel/usermod
 #   Directory where mailboxes reside, _or_ name of file, relative to the
@@ -34,6 +40,23 @@
 # no more supported
 MAIL_DIR        /var/mail
 #MAIL_FILE      .mail
+
+
+
+#
+# Password aging controls:
+#
+#	PASS_MAX_DAYS	Maximum number of days a password may be used.
+#	PASS_MIN_DAYS	Minimum number of days allowed between password changes.
+#	PASS_WARN_AGE	Number of days warning given before a password expires.
+# LOGIN_TIMEOUT Max time in seconds for login
+#
+PASS_MAX_DAYS	99999
+PASS_MIN_DAYS	0
+PASS_WARN_AGE	7
+LOGIN_TIMEOUT		60
+
+
 
 #
 # Enable logging and display of /var/log/faillog login failure info.
@@ -156,17 +179,6 @@ UMASK		022
 #HOME_MODE	0700
 
 #
-# Password aging controls:
-#
-#	PASS_MAX_DAYS	Maximum number of days a password may be used.
-#	PASS_MIN_DAYS	Minimum number of days allowed between password changes.
-#	PASS_WARN_AGE	Number of days warning given before a password expires.
-#
-PASS_MAX_DAYS	99999
-PASS_MIN_DAYS	0
-PASS_WARN_AGE	7
-
-#
 # Min/max values for automatic uid selection in useradd
 #
 UID_MIN			 1000
@@ -199,11 +211,6 @@ SUB_GID_COUNT		    65536
 # an authentication module that does not enforce PAM_MAXTRIES.
 #
 LOGIN_RETRIES		5
-
-#
-# Max time in seconds for login
-#
-LOGIN_TIMEOUT		60
 
 #
 # Which fields may be changed by regular users using chfn - use
