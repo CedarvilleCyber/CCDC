@@ -1,20 +1,26 @@
-auth required pam_env.so
-auth sufficient pam_fprintd.so
-auth sufficient pam_unix.so nullok try_first_pass
-auth requisite pam_succeed_if.so uid >= 1000 quiet_success
-auth required pam_deny.so
+# -------------------------- Cedarville CCDC Team -------------------------#
+# This is the modified system-auth file for Fedora-based distributions     #
+# It is used to automatically configure this file during competition       #
+#   by overwriting that file with this one, enforcing our password policy  #
+# -------------------------------------------------------------------------#
 
-account required pam_unix.so
-account sufficient pam_localuser.so
-account sufficient pam_succeed_if.so uid < 1000 quiet
-account required pam_permit.so
+auth    required    pam_env.so
+auth    sufficient  pam_fprintd.so
+auth    sufficient  pam_unix.so nullok try_first_pass
+auth    requisite   pam_succeed_if.so uid >= 1000 quiet_success
+auth    required    pam_deny.so
 
-password requisite pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=
-password sufficient pam_unix.so sha512 shadow nullok try_first_pass use_authtok
-password required pam_deny.so
+account required    pam_unix.so
+account sufficient  pam_localuser.so
+account sufficient  pam_succeed_if.so uid < 1000 quiet
+account required    pam_permit.so
 
-session optional pam_keyinit.so revoke
-session required pam_limits.so
--session optional pam_systemd.so
-session [success=1 default=ignore] pam_succeed_if.so service in crond quiet use_uid
-session required pam_unix.so
+password requisite  pam_pwquality.so try_first_pass local_users_only retry=3 minclass=4 minlen=15
+password sufficient pam_unix.so sha256 shadow try_first_pass use_authtok remember=3
+password required   pam_deny.so
+
+session optional                    pam_keyinit.so revoke
+session required                    pam_limits.so
+-session optional                   pam_systemd.so
+session [success=1 default=ignore]  pam_succeed_if.so service in crond quiet use_uid
+session required                    pam_unix.so
