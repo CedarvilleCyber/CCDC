@@ -1,7 +1,5 @@
 #!/bin/bash
 
-clear
-
 # File contains the line "ID = [distribution]" and calling `source` makes it a variable 
 source /etc/os-release
 
@@ -23,5 +21,7 @@ esac
 # Distribution-independent config file
 cp /etc/login.defs ./pw-policy-config/login.defs_OLD
 cp ./pw-policy-config/login.defs /etc/login.defs
+
+echo "Password policy files updated."
 
 exit 0
