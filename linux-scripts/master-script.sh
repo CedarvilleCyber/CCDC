@@ -5,7 +5,7 @@ clear
 #check if user is root
 if [ "$(id -u)" != "0" ]; then
 	printf "You must be root!\n"
-	exit 1
+#	exit 1
 fi
 
 #chmod 744 all .sh files in immediate directory
@@ -15,7 +15,22 @@ for f in $( ls ./ ); do
 	fi
 done
 
+# Load os-release environment vars
+#	this makes ID and ID_LIKE
+#	among others available for use
+#	in this script 
+source /etc/os-release
+
 #start executing scripts from here
+if [[ ( $ID = centos ) && ( $VERSION_ID = 7* )]]
+then
+	
+elif [[ ( $ID = somethingelse ) ]]
+then
+	echo "Insert machine specific scripts here with your own elif block"
+else
+	echo "$ID does not have custom scripts"
+fi
 
 #establish log forwarder
 chmod 700 logging/install_and_setup_forwarder.sh
