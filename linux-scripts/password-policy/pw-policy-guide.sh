@@ -3,7 +3,7 @@
 clear
 
 echo
-echo "---------------- CU CCDC Password Policy Guide ----------------"
+echo "---------------------------------- CU CCDC Password Policy Guide -----------------------------------"
 echo
 
 echo "This script gives the steps to implementing the password policy."
@@ -41,9 +41,6 @@ case "$ID" in
         echo "      'PASS_MAX_DAYS 180'"
         echo "      'PASS_MIN_DAYS 0'"
         echo "      'PASS_WARN_AGE 7'"
-        echo
-        echo "    And a little further down:"
-        echo "      'LOGIN_TIMEOUT 600'"
         ;;
         
     "fedora"|"centos")
@@ -74,10 +71,10 @@ case "$ID" in
         echo "      'PASS_MAX_DAYS 180'"
         echo "      'PASS_MIN_DAYS 0'"
         echo "      'PASS_WARN_AGE 7'"
-        echo
-        echo "    And add the line:"
-        echo "      'LOGIN_TIMEOUT 600'"
         ;;
 esac
+
+echo "Once you have made these changes, you have successfully enforced our password policy!"
+echo "----------------------------------------------------------------------------------------------------"
 
 exit 0
