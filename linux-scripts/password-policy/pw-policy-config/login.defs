@@ -4,7 +4,7 @@
 #   by overwriting that file with this one, enforcing our password policy  #
 #                                                                          #
 # The relevant lines have been collected together and brought to the top   #
-#   (after the comments, line 45) to make screenshotting the configuration #
+#   (after the comments, line 36) to make screenshotting the configuration #
 #   quicker and easier                                                     #
 # ------------------------------------------------------------------------ #
 
@@ -28,16 +28,6 @@
 #      - MAIL_FILE defines the location of the users mail spool files as the
 #        fully-qualified filename obtained by prepending the user home
 #        directory before $MAIL_FILE
-#
-# NOTE: This is no more used for setting up users MAIL environment variable
-#       which is, starting from shadow 4.0.12-1 in Debian, entirely the
-#       job of the pam_mail PAM modules
-#       See default PAM configuration files provided for
-#       login, su, etc.
-#
-# This is a temporary situation: setting these variables will soon
-# move to /etc/default/useradd and the variables will then be
-# no more supported
 MAIL_DIR        /var/mail
 #MAIL_FILE      .mail
 
@@ -46,16 +36,15 @@ MAIL_DIR        /var/mail
 #
 # Password aging controls:
 #
-#	PASS_MAX_DAYS	Maximum number of days a password may be used.
-#	PASS_MIN_DAYS	Minimum number of days allowed between password changes.
-#	PASS_WARN_AGE	Number of days warning given before a password expires.
+# PASS_MAX_DAYS	Maximum number of days a password may be used.
+# PASS_MIN_DAYS	Minimum number of days allowed between password changes.
+# PASS_WARN_AGE	Number of days warning given before a password expires.
 # LOGIN_TIMEOUT Max time in seconds for login
 #
 PASS_MAX_DAYS	180
 PASS_MIN_DAYS	0
 PASS_WARN_AGE	7
 LOGIN_TIMEOUT	600
-
 
 
 #
