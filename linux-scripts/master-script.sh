@@ -18,8 +18,11 @@ done
 # Load os-release environment vars
 #	this makes ID and ID_LIKE
 #	among others available for use
-#	in this script 
-source /etc/os-release
+#	in this script and all scripts
+#	called by this script. However,
+#	we should set the env vars in all
+#	scripts so they are independent
+. /etc/os-release
 
 #start executing scripts from here
 if [[ ( $ID = centos ) && ( $VERSION_ID = 7* )]]
@@ -38,7 +41,7 @@ cd logging
 ./install_and_setup_forwarder.sh
 cd..
 
-./login_banners.sh
+./login-banners.sh
 ./osupdater.sh
 
 #password policy done manually

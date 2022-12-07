@@ -13,5 +13,7 @@ echo $BANNER | tee /etc/ssh/sshd-banner > /dev/null
 echo "Banner /etc/ssh/sshd-banner" | tee -a /etc/ssh/sshd_config > /dev/null
 
 # TODO check if redhat or debian and run one or the other
+. /etc/os-release
+
 sudo /etc/init.d/sshd restart
 sudo /etc/init.d/ssh restart
