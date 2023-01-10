@@ -1,12 +1,14 @@
-# Script to setup cronjobs
+#!/bin/bash
 
-# install cron
-# TODO might not be as simple as what is shown below
+# TODO might not be as simple as what I have below
 if [ "$ID" == "centos" ] || [ "$ID" == "fedora" ]
 then
     yum install cronie
+    service crond start
 else
     apt-get install cron
+    service cron start
 fi
 
-# TODO setup my cron job for file integrity checking (crontab -e?)
+# list cronjobs here
+echo '*/3 * * * * root webpage_check.sh' >> /etc/crontab

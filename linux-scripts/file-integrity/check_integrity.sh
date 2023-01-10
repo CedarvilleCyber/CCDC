@@ -4,9 +4,6 @@
 #
 # Check file integrity based on SHA1 digest.
 # Requires sha1sum.
-#
-# Use this script from crontab:
-# */3 * * * * integrity_check.sh [file ...]
 
 
 # Change to your preferred location
