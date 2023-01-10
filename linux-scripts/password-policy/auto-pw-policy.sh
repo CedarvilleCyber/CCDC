@@ -1,10 +1,11 @@
+# This script:
+# 1. Backs-up original configuration files to pw-policy-config folder, appends _OLD to file name
+# 2. Overwrites configuration file with pre-written one in pw-policy-config folder
+
 #!/bin/bash
 
 # File contains the line "ID = [distribution]" and calling `source` makes it a variable 
 source /etc/os-release
-
-# Backs-up original configuration files to pw-policy-config folder, appends _OLD to name
-# Overwrites configuration file with pre-written one in pw-policy-config folder
 
 # Distribution-dependent config file
 case $ID in
@@ -23,5 +24,4 @@ cp /etc/login.defs ./pw-policy-config/login.defs_OLD
 cp ./pw-policy-config/login.defs /etc/login.defs
 
 echo "Password policy files updated."
-
 exit 0
