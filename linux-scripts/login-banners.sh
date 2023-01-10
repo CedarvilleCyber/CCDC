@@ -12,8 +12,13 @@ echo $BANNER | tee -a /etc/issue /etc/issue.net > /dev/null
 echo $BANNER | tee /etc/ssh/sshd-banner > /dev/null
 echo "Banner /etc/ssh/sshd-banner" | tee -a /etc/ssh/sshd_config > /dev/null
 
-# TODO check if redhat or debian and run one or the other
+# check if redhat or debian and run one or the other
+# TODO might be a better idea for master script to ask user which one it is 
 . /etc/os-release
 
-sudo /etc/init.d/sshd restart
-sudo /etc/init.d/ssh restart
+if [ "$ID" == "centos" ] || [ "$ID" == "fedora" ]
+then
+    /etc/init.d/sshd restart
+else
+   /etc/init.d/ssh restart
+fi
