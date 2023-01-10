@@ -20,5 +20,5 @@ if [ "$ID" == "centos" ] || [ "$ID" == "fedora" ]
 then
     /etc/init.d/sshd restart
 else
-   /etc/init.d/ssh restart
+    /etc/init.d/ssh restart
 fi
