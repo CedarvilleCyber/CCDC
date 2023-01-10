@@ -6,9 +6,11 @@
 # Requires sha1sum.
 #
 # Use this script from crontab:
-# */15 * * * * integrity_check.sh [file ...]
+# */3 * * * * integrity_check.sh [file ...]
+
 
 # Change to your preferred location
+# TODO what if there are duplicate filenames?  Maybe make directories in sha1db
 SHA1DB=/var/sha1db
 
 # sha1sum is required
@@ -55,6 +57,7 @@ do
 		fi
 		diff $SHA1FILE.new $SHA1FILE >/dev/null 2>&1
 		if [ "$?" != "0" ]; then
+			# TODO Where do we want to send alerts?
 			echo "SHA1 changed! Security breach?"
 			echo -n "Old digest: "; cat $SHA1FILE
 			echo -n "New digest: "; cat $SHA1FILE.new
