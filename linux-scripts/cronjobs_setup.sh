@@ -10,5 +10,6 @@ else
     service cron start
 fi
 
-# list cronjobs here
-echo '*/3 * * * * root webpage_check.sh' >> /etc/crontab
+# create cronjobs here
+# TODO set SCRIPTS env variable
+echo "*/3 * * * * root $SCRIPTS/file-integrity/webpage_check.sh" >> /etc/crontab
