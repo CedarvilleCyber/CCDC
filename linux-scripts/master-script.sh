@@ -1,13 +1,13 @@
 #!/bin/bash
-#master linux hardening script
+# master linux hardening script
 
-#check if user is root
+# check if user is root
 if [[ $(id -u) != "0" ]]; then
-	printf "You must be root!\n"
-#	exit 1
+    printf "You must be root!\n"
+    exit 1
 fi
 
-#chmod 744 all .sh files in immediate directory
+# chmod 744 all .sh files in immediate directory
 for f in $( ls ./ ); do
 	if [[ $f == *.bash ]]; then
 		chmod 744 $f
@@ -16,8 +16,7 @@ done
 
 # get os
 echo "Please enter the number of the present operating system."
-echo "If the OS is correct but not the version, just pick the"
-echo "correct machine based on the names listed after the hyphen"
+echo "Pick the correct machine if the OS is correct but version is wrong."
 
 echo "1 for CentOS 6 - Splunk Server"
 echo "2 for CentOS 7 - EComm Server"
@@ -28,19 +27,17 @@ echo "6 for Fedora 21 - Webmail Server"
 echo "7 for Pan OS 9.0.0 - Palo Alto Firewall"
 
 read OS
-export OS
 
-
-if [ $OS = "1" ]
-then
-elif [ $OS = "1" ]
-then
-	echo "Insert machine specific scripts here with your own elif block"
-else
-	echo "$ID does not have custom scripts"
-fi
-
-
+case $OS in
+    1) ./centos6.bash  ;;
+    2) ./centos7.bash  ;;
+    3) ./ubuntu12.bash ;;
+    4) ./ubuntu14.bash ;;
+    5) ./debian8.bash  ;;
+    6) ./fedora21.bash ;;
+    7) ./panos.bash    ;;
+    *)  echo -n "unknown OS, should have been a number between 1 & 7" ;;
+esac
 
 #establish log forwarder
 chmod 700 logging/install_and_setup_forwarder.sh
