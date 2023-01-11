@@ -39,7 +39,8 @@ directories=(/etc/cron.d /var/spool/cron/crontabs)
 
 for file in ${files[@]}; do
     echo "Cronjobs from the $file file:"
-    cat $file | grep -E '^[0-9]|^\*' | awk '{ORS=" "; print "\t"; for (i=7; i<=NF; i++) print $i; print "\n"}'                                                                echo
+    cat $file | grep -E '^[0-9]|^\*' | awk '{ORS=" "; print "\t"; for (i=7; i<=NF; i++) print $i; print "\n"}'
+    echo
 done
 
 for dir in ${directories[@]}; do
@@ -47,5 +48,6 @@ for dir in ${directories[@]}; do
     for file in $dir/*; do
         echo "    Cronjobs from $file:"
         cat $file | grep -E '^[0-9]|^\*' | awk '{ORS=" "; print "\t"; for (i=7; i<=NF; i++) print $i; print "\n"}'
-        echo                                                                                                                                                                  done
+        echo
+    done
 done
