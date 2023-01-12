@@ -3,7 +3,7 @@
 #===============================#
 #-------------Setup-------------#
 #===============================#
-
+su splunk
 export SPLUNK_HOME=/opt/splunkforwarder
 
 machines=("Debian-DNS-NTP"
