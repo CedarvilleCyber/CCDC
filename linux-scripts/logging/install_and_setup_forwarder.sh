@@ -12,7 +12,7 @@ then
 	echo "Requires super user privileges"
 	exit 1
 fi
-
+apt-get install -y curl
 ./install_forwarder.sh
 if [[ $? -ne 0 ]]
 then
