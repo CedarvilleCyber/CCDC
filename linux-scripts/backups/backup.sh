@@ -20,13 +20,6 @@
 
 su root # TODO: work out kinks with leftover shell if present
 
-# TODO: get pkgr var
-
-if ! command -v zip &> /dev/null
-then
-    $pkgr install zip
-fi
-
 # backup directory environment variable housekeeping
 if [-z "${BAK_SCRIPT_WEB_DIR}"]
 then
