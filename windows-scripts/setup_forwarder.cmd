@@ -10,4 +10,4 @@ if %passwd% != %confpasswd%
   echo Passwords do not match. Try again.
   GOTO :passwd_section
 )
-msiexec.exe /i splunkuniversalforwarder_x86.msi CERTFILE=%certfile% CERTPASSWD=%passwd% RECEIVING_INDEXER="%splunk_ip:9997" WINEVENTLOG_SEC_ENABLE=1 WINEVENTLOG_SYS_ENABLE=1 AGREETOLICENSE=Yes /quiet
+msiexec.exe /i splunkuniversalforwarder_x86.msi CERTFILE=%certfile% CERTPASSWD=%passwd% RECEIVING_INDEXER="%splunk_ip%:9997" WINEVENTLOG_SEC_ENABLE=1 WINEVENTLOG_SYS_ENABLE=1 AGREETOLICENSE=Yes /quiet
