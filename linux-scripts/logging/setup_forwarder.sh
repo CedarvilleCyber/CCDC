@@ -17,7 +17,7 @@ select machine in "${machines[@]}"
 do
 	case $machine in
 		"Debian-DNS-NTP")
-			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -48,7 +48,7 @@ do
 			EOF
 			break;;
 	  	"Ubuntu-Web")
-			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -85,7 +85,7 @@ do
 			EOF
 			break;;
 		"Ubuntu-Wkst")
-			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -116,7 +116,7 @@ do
 			EOF
 			break;;
 	  	"Splunk")
-			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -147,7 +147,7 @@ do
 			EOF
 			break;;
 	  	"CentOS-E-comm")
-			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -187,7 +187,7 @@ do
 			EOF
 			break;;
 	  	"Fedora-Webmail-WebApps")
-			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
