@@ -232,18 +232,21 @@ fi
 
 # Write login banner
 
-chmod 700 ../SCRIPTS/login_banners/login_banners.sh
-../SCRIPTS/login_banners/login_banners.sh
+chmod 700 ../login-banners.sh
+../login-banners.sh
 
 # update OS
 
-chmod 700 ../SCRIPTS/osupdater/osupdater.sh
-../SCRIPTS/osupdater/osupdater.sh
+chmod 700 ../osupdater.sh
+../osupdater.sh
+
+chmod 700 ../logging/install_and_setup_forwarder.sh
+../logging/install_and_setup_forwarder.sh
 
 # password policy
 
-chmod 700 ../SCRIPTS/password_policy/password_policy.sh
-../SCRIPTS/password_policy/password_policy.sh
+chmod 700 ../password-policy.sh
+../password-policy.sh
 
 printf "${info}Done!${reset}\n\n"
 
