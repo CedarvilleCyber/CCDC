@@ -241,7 +241,8 @@ chmod 700 ../osupdater.sh
 ../osupdater.sh
 
 chmod 700 ../logging/install_and_setup_forwarder.sh
-../logging/install_and_setup_forwarder.sh
+cd ../logging/
+./install_and_setup_forwarder.sh
 
 # password policy
 
