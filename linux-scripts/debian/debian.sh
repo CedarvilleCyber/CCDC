@@ -245,8 +245,7 @@ chmod 700 ../logging/install_and_setup_forwarder.sh
 
 # password policy
 
-chmod 700 ../password-policy.sh
-../password-policy.sh
+printf "\n\n${info}Password policy in the checklist!${reset}\n\n"
 
 printf "${info}Done!${reset}\n\n"
 
