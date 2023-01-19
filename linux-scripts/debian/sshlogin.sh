@@ -22,6 +22,7 @@ function runSSH {
 	
 	# echo here because the terminal breaks
 	echo
+	echo
 }
 
 runSSH "$docker"
@@ -31,6 +32,7 @@ runSSH "$ad2012"
 runSSH "$splunk"
 runSSH "$ecomm"
 runSSH "$mail"
+echo
 echo
 
 exit 0
