@@ -52,65 +52,13 @@ for f in $( ls ./script-dependencies/ ); do
     fi
 done
 
-# Get OS from user
-printf "Please enter the number corresponding to this machine's OS:
-(if your version is not listed, just pick the appropriate OS)
-    [1] CentOS 6        (Splunk Server)
-    [2] CentOS 7        (EComm Server)
-    [3] Ubuntu 12.04    (Ubuntu Workstation)
-    [4] Ubuntu 14.04.2  (Ubuntu Web Server)
-    [5] Debian 8.5      (DNS/NTP Server)
-    [6] Fedora 21       (Webmail Server)
-    [7] Pan OS 9.0.0    (Palo Alto Firewall)
-    "
-
-read os
-
-case $os in
-    1)  
-    	DISTRO="redhat"
-        ./script-dependencies/centos6-splunk-server.sh
-        ;;
-    2)
-        DISTRO="redhat"
-        ./script-dependencies/centos7-ecomm.sh
-        ;;
-    3) 	
-    	DISTRO="debian"
-    	./script-dependencies/ubuntu12-workstation.sh
-    	;;
-    4) 	
-    	DISTRO="debian"
-    	./script-dependencies/ubuntu14-web-server.sh
-    	;;
-    5) 	
-    	DISTRO="debian"
-    	./script-dependencies/debian-dns-ntp.sh
-    	;;
-    6) 	
-    	DISTRO="redhat"
-    	./script-dependencies/fedora21-webmail.sh
-    	;;
-    7) 	
-    	read -p "Which distribution is your machine based on? [debian/redhat] " dist
-    	DISTRO=$dist
-    	./script-dependencies/panos-firewall.sh
-    	;;
-    *)  
-    	echo "Unknown OS, should have been a number between 1-7"
-    	read -p "Which distribution is your machine based on? [debian/redhat] " dist
-    	DISTRO=$dist
-    	read -p "What is the name of your machine script? " script_name
-    	./script-dependencies/$script_name
-    	;;
-esac
-
 # Set and export DISTRO_ID
 . /etc/os-release
 export DISTRO_ID=$ID
 
-# Export DISTRO
-export DISTRO
+# Get OS from user and export DISTRO
+read -p "Please enter your machine's distribution branch: [debian|redhat] " distro
+export DISTRO=$distro
 
 # Set and export PKG_MAN
 if [ "$DISTRO" == "debian" ]; then
@@ -135,13 +83,35 @@ export PKG_MAN
 # TODO: UPDATE SCRIPT
 ./script-dependencies/login-banners.sh
 
-# Update OS
-# TODO: UPDATE SCRIPT
-./script-dependencies/osupdater.sh
-
 # Clean Operating System
 # TODO: ADD TO SCRIPT
 ./script-dependencies/clean-os.sh
+
+# Get machine from user
+printf "Please enter the number corresponding to this machine's purpose:
+    [1] Splunk Server
+    [2] EComm Server
+    [3] Workstation
+    [4] Web Server
+    [5] DNS/NTP Server
+    [6] Webmail Server
+    [7] Firewall
+    "
+read machine
+
+case $machine in
+    1)  ./script-dependencies/centos6-splunk-server.sh  ;;
+    2)  ./script-dependencies/centos7-ecomm.sh  ;;
+    3) 	./script-dependencies/ubuntu12-workstation.sh  ;;
+    4) 	./script-dependencies/ubuntu14-web-server.sh  ;;
+    5)  ./script-dependencies/debian-dns-ntp.sh  ;;
+    6) 	./script-dependencies/fedora21-webmail.sh  ;;
+    7) 	./script-dependencies/panos-firewall.sh  ;;
+    *)  
+    	echo "Unknown machine, should have been a number between 1-7"
+    	read -p "What is the name of your machine script? " script_name
+    	./script-dependencies/$script_name  ;;
+esac
 
 # install antivirus
 ./script-dependencies/setup-antivirus.sh
@@ -155,6 +125,10 @@ END
 else
     echo "You can run /script-dependencies/antivirus-scan.sh to handle antivirus when you have the time."
 fi
+
+# Update OS
+# TODO: UPDATE SCRIPT
+./script-dependencies/osupdater.sh
 
 # Misc installs
 $PKG_MAN install vim -y
