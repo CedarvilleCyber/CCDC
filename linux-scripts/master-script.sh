@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Master script for linux (CCDC 2023)
+# Master script for linux
 #
 # Notes:
 # - System should be up-to-date (i.e., for debian: apt-get update && apt-get upgrade)
@@ -53,7 +53,6 @@ for f in $( ls ./script-dependencies/ ); do
 done
 
 # Get OS from user
-# TODO: UPDATE MACHINE SCRIPTS
 printf "Please enter the number corresponding to this machine's OS:
 (if your version is not listed, just pick the appropriate OS)
     [1] CentOS 6        (Splunk Server)
@@ -98,7 +97,7 @@ case $os in
     	./script-dependencies/panos-firewall.sh
     	;;
     *)  
-    	echo "Unknown OS, should have been a number between 1 & 7"
+    	echo "Unknown OS, should have been a number between 1-7"
     	read -p "Which distribution is your machine based on? [debian/redhat] " dist
     	DISTRO=$dist
     	read -p "What is the name of your machine script? " script_name
@@ -121,7 +120,7 @@ fi
 
 if [ "$DISTRO" == "redhat" ]; then
     echo "You are running a redhat-based distribution of linux"
-    PKG_MAN=apt-get
+    PKG_MAN=yum
 fi
 
 export PKG_MAN
@@ -144,9 +143,10 @@ export PKG_MAN
 # TODO: ADD TO SCRIPT
 ./script-dependencies/clean-os.sh
 
-# Run antivirus
+# install antivirus
 ./script-dependencies/setup-antivirus.sh
 
+# antivirus execution
 read -p "Do you want to run an antivirus scan now? This may take a while. [y/n] " antivirus
 if [ "$antivirus" == "y" ]; then
     ./script-dependencies/antivirus-scan.sh <<END
@@ -170,4 +170,4 @@ for f in $( ls $WK_DIR/ ); do
     fi
 done
 
-echo "... master-script complete!"
+echo "MASTER SCRIPT COMPLETE"
