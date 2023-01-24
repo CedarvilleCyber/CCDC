@@ -52,6 +52,8 @@ fi
 
 # small function to run a simple nmap scan
 function scan {
+	echo "Now Scanning $1..."
+	echo "Scan results for $1" >> ./dataFiles/openPorts.data
 	nmap $1 --max-retries 1 >> ./dataFiles/openPorts.data
 }
 
