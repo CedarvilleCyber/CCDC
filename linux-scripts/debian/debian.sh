@@ -92,7 +92,7 @@ printf "Removed!\n"
 systemctl start bind9
 
 # install sudo
-apt-get install sudo
+apt-get install sudo -y
 
 printf "Scanners and Configuring Firewall...\n"
 apt-get install clamav clamav-daemon -y
