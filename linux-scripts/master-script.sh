@@ -7,7 +7,7 @@ if [[ $(id -u) != "0" ]]; then
     exit 1
 fi
 
-# chmod 744 all .sh files in immediate directory
+# chmod 744 all .bash files in immediate directory
 for f in $( ls ./ ); do
 	if [[ $f == *.bash ]]; then
 		chmod 744 $f
