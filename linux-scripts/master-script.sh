@@ -140,7 +140,7 @@ cp -r /var $WK_DIR/backup/
 mkdir $WK_DIR/backup/home
 for f in $( ls $WK_DIR/ ); do
     if [[ $f != backup ]]; then
-        cp -r $f $WK_DIR/backup/home/
+        cp -r $WK_DIR/$f $WK_DIR/backup/home/
     fi
 done
 
