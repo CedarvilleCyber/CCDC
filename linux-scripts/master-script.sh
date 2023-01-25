@@ -30,7 +30,7 @@ read OS
 
 case $OS in
     1) ./centos6.bash  ;;
-    2) ./centos7.bash  ;;
+    2) ./ecomm/ecomm.sh  ;;
     3) ./ubuntu12.bash ;;
     4) ./ubuntu14.bash ;;
     5) ./debian8.bash  ;;
