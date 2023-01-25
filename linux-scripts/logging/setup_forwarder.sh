@@ -3,7 +3,6 @@
 #===============================#
 #-------------Setup-------------#
 #===============================#
-su splunk
 export SPLUNK_HOME=/opt/splunkforwarder
 
 machines=("Debian-DNS-NTP"
@@ -17,7 +16,7 @@ select machine in "${machines[@]}"
 do
 	case $machine in
 		"Debian-DNS-NTP")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -48,7 +47,7 @@ do
 			EOF
 			break;;
 	  	"Ubuntu-Web")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -85,7 +84,7 @@ do
 			EOF
 			break;;
 		"Ubuntu-Wkst")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -116,7 +115,7 @@ do
 			EOF
 			break;;
 	  	"Splunk")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -147,7 +146,7 @@ do
 			EOF
 			break;;
 	  	"CentOS-E-comm")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -187,7 +186,7 @@ do
 			EOF
 			break;;
 	  	"Fedora-Webmail-WebApps")
-			cat <<-EOF > $SPLUNK_HOME/etc/system/local/inputs.conf
+			cat <<-EOF >> $SPLUNK_HOME/etc/system/local/inputs.conf
 			[default]
 			host=$machine
 
@@ -256,7 +255,7 @@ do
 	getpasswd
 done
 
-cat << EOF > $SPLUNK_HOME/etc/system/local/outputs.conf
+cat << EOF >> $SPLUNK_HOME/etc/system/local/outputs.conf
 [tcpout:splunkssl]
 server = $serverip:9997
 compressed = true
@@ -268,7 +267,7 @@ sslCommonNameToCheck = indexer.cedarville
 sslVerifyServerCert = true 
 EOF
 
-cat << EOF > $SPLUNK_HOME/etc/system/local/server.conf
+cat << EOF >> $SPLUNK_HOME/etc/system/local/server.conf
 [sslConfig]
 sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/cacert.pem
 EOF

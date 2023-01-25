@@ -92,7 +92,7 @@ printf "Removed!\n"
 systemctl start bind9
 
 # install sudo
-apt-get install sudo
+apt-get install sudo -y
 
 printf "Scanners and Configuring Firewall...\n"
 apt-get install clamav clamav-daemon -y
@@ -232,18 +232,21 @@ fi
 
 # Write login banner
 
-chmod 700 ../SCRIPTS/login_banners/login_banners.sh
-../SCRIPTS/login_banners/login_banners.sh
+chmod 700 ../login-banners.sh
+../login-banners.sh
 
 # update OS
 
-chmod 700 ../SCRIPTS/osupdater/osupdater.sh
-../SCRIPTS/osupdater/osupdater.sh
+chmod 700 ../osupdater.sh
+../osupdater.sh
+
+chmod 700 ../logging/install_and_setup_forwarder.sh
+cd ../logging/
+./install_and_setup_forwarder.sh
 
 # password policy
 
-chmod 700 ../SCRIPTS/password_policy/password_policy.sh
-../SCRIPTS/password_policy/password_policy.sh
+printf "\n\n${info}Password policy in the checklist!${reset}\n\n"
 
 printf "${info}Done!${reset}\n\n"
 
