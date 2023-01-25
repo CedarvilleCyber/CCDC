@@ -7,12 +7,12 @@
 
 
 # Change to your preferred location
-# TODO what if there are duplicate filenames?  Maybe make directories in sha1db
 SHA1DB=/var/sha1db
 
 # sha1sum is required
 if [ ! -x `which sha1sum` ]; then
-	echo "This script requires sha1sum!"
+	echo $(basename $BASH_SOURCE)
+	echo " script requires sha1sum!"
 	exit 1
 fi
 
@@ -55,7 +55,7 @@ do
 		diff $SHA1FILE.new $SHA1FILE >/dev/null 2>&1
 		if [ "$?" != "0" ]; then
 			# TODO Where do we want to send alerts?
-			echo "SHA1 changed! Security breach?"
+			echo "SHA1 changed on file \"$SHA1FILE\"! Security breach?"
 			echo -n "Old digest: "; cat $SHA1FILE
 			echo -n "New digest: "; cat $SHA1FILE.new
 			RCODE=1
