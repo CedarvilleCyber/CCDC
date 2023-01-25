@@ -55,9 +55,7 @@ do
 		diff $SHA1FILE.new $SHA1FILE >/dev/null 2>&1
 		if [ "$?" != "0" ]; then
 			# TODO Where do we want to send alerts?
-			echo "SHA1 changed on file \"$SHA1FILE\"! Security breach?"
-			echo -n "Old digest: "; cat $SHA1FILE
-			echo -n "New digest: "; cat $SHA1FILE.new
+			echo "SHA1 changed on file \"$SHA1FILE\"! Security breach?" >> /var/file_integrity_alerts
 			RCODE=1
 		fi
 		mv $SHA1FILE.new $SHA1FILE 
