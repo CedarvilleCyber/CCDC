@@ -26,6 +26,8 @@ fi
 echo "Begin master-script ..."
 
 # Get home or working directory from user
+printf "Your current directory is: "
+pwd
 read -p "What is your home or primary working directory? " wk_dir
 export WK_DIR=$wk_dir
 
