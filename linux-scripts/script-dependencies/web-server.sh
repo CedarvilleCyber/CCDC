@@ -5,8 +5,8 @@
 # Notes:
 # - 
 
-echo "Begin ubuntu14-web-server ..."
+echo "Begin web-server script ..."
 
 # Put script here
 
-echo "... ubuntu114-web-server complete!"
+echo "... web-server script complete!"
