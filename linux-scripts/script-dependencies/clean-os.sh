@@ -5,7 +5,7 @@
 # Notes:
 # - 
 
-echo "Begin clean-os ..."
+echo "Begin clean-os script ..."
 
 printf "\n-------- Begin Clean OS --------\n\n" >> ../security-log.txt
 
@@ -35,5 +35,5 @@ ls -l . >> ../security-log.txt
 
 printf "\n--------- End Clean OS ---------\n\n" >> ../security-log.txt
 
-echo "... clean-os complete!"
+echo "... clean-os script complete!"
 
