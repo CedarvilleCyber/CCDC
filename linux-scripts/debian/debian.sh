@@ -92,14 +92,13 @@ printf "Removed!\n"
 systemctl start bind9
 
 # install sudo
-apt-get install sudo -y
+apt-get install sudo -y --force-yes
 
 printf "Scanners and Configuring Firewall...\n"
-apt-get install clamav clamav-daemon -y
-freshclam
-apt-get install lynis -y
-apt-get install fail2ban -y
-apt-get install ufw -y
+apt-get install clamav clamav-daemon -y --force-yes
+apt-get install lynis -y --force-yes
+apt-get install fail2ban -y --force-yes
+apt-get install ufw -y --force-yes
 ufw allow dns
 ufw allow ntp
 ufw allow http
@@ -110,9 +109,9 @@ printf "Make sure there are no werid rules in iptables and ufw!\n"
 printf "Do that manually!\n"
 
 # Install other stuff
-apt-get install libpam-pwquality -y
-apt-get install libpam-tmpdir -y
-apt-get install debian-goodies -y
+apt-get install libpam-pwquality -y --force-yes
+apt-get install libpam-tmpdir -y --force-yes
+apt-get install debian-goodies -y --force-yes
 
 # make .vimrc
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
@@ -121,7 +120,7 @@ printf "set nocompatible\nset backspace=indent,eol,start" > ~/.vimrc
 
 # Set up tmux
 printf "Setting up tmux...\n"
-apt-get install tmux -y
+apt-get install tmux -y --force-yes
 
 # name session Background
 # Have programs running in the background
@@ -194,7 +193,7 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	tmux send-keys -t "Bash" "./ntpRestart.sh"
 	
 	# Second window for ntp
-	apt-get install ntp -y
+	apt-get install ntp -y --force-yes
 	tmux new-window -t $SESSIONW:1 -n "NTPConfig"
 	tmux send-keys -t "NTPConfig" "vi /etc/ntp.conf" C-m
 
