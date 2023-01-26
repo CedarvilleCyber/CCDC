@@ -222,7 +222,7 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	sleep 0.1
 	# cd into the directory where master script is
 	tmux send-keys -t "Master" "cd ../"
-	tmux send-keys -t "Master" "../master-script.sh" C-m
+	tmux send-keys -t "Master" "master-script.sh" C-m
 
 	# Attach session
 	tmux attach-session -t $SESSIONW
