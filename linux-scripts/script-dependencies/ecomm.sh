@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Begin ecomm script ..."
+
 export SPLUNK_HOME=/opt/splunkforwarder
 
 
@@ -52,3 +54,4 @@ echo "password right after the key, without the space after the key. Press Go:"
 
 #Start
 
+echo "... ecomm script complete!"
