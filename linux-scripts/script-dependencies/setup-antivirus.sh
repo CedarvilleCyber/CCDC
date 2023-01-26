@@ -16,13 +16,24 @@ echo "Begin setup-antivirus ..."
 # Install clamav and clamav-daemon
 $PKG_MAN install clamav clamav-daemon -y
 
-# Stop freshclam service
-systemctl stop clamav-freshclam
+# Manually install database if not present
+if #database not present
+    mkdir /var/lib/clamav
+    curr_dir=$(pwd)
+    cd /var/lib/clamav
+    wget http://clamavdb.c3sl.ufpr.br/maincvd http://clamavdb.c3sl.ufpr.br/daily.cvd http://clamavdb.c3sl.ufpr.br/bytecode.cvd
+    cd curr_dir
+    freshclam
+else
+    # Stop freshclam service
+    systemctl stop clamav-freshclam
 
-# Run freshclam to update the signature database
-freshclam
+    # Run freshclam to update the signature database
+    freshclam
 
-# Start freshclam service
-systemctl start clamav-freshclam
+    # Start freshclam service
+    systemctl start clamav-freshclam
+    
+fi
 
 echo "... setup-antivirus complete!"
