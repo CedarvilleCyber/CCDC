@@ -11,7 +11,7 @@ if [[ $(id -u) != "0" ]]; then
     exit 1
 fi
 
-echo "Begin setup-antivirus ..."
+echo "Begin setup-antivirus script ..."
 
 # Install clamav and clamav-daemon
 $PKG_MAN install clamav clamav-daemon -y
@@ -36,4 +36,4 @@ else
     systemctl start clamav-freshclam
 fi
 
-echo "... setup-antivirus complete!"
+echo "... setup-antivirus script complete!"
