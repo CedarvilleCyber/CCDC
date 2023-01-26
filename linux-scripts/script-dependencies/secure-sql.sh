@@ -65,6 +65,9 @@ sleep 1
 tmux send-keys -t "work" "Y" C-m
 sleep 1
 tmux send-keys -t "work" "Y" C-m
+sleep 2
+
+printf "Done!\n"
 
 tmux kill-session -t "temp"
 
