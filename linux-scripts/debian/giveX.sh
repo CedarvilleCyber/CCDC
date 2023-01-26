@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# chmod 744 on all the scripts
+# chmod 755 on all the scripts
 
 # For all the files that end with .sh
 for f in $( ls ./ ); do
 	if [[ $f == *.sh ]]; then
-		chmod 744 $f
+		chmod 755 $f
 	fi
 done
 
