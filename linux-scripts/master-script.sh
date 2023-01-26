@@ -63,12 +63,12 @@ read -p "Please enter your machine's distribution branch: [debian|redhat] " dist
 export DISTRO=$distro
 
 # Set and export PKG_MAN
-if [ "$DISTRO" == "debian" ]; then
+if [[ $DISTRO == "debian" ]]; then
     echo "You are running a debian-based distribution of linux"
     PKG_MAN=apt-get
 fi
 
-if [ "$DISTRO" == "redhat" ]; then
+if [[ $DISTRO == "redhat" ]]; then
     echo "You are running a redhat-based distribution of linux"
     PKG_MAN=yum
 fi
@@ -120,7 +120,7 @@ esac
 
 # antivirus execution
 read -p "Do you want to run an antivirus scan now? This may take a while. [y/n] " antivirus
-if [ "$antivirus" == "y" ]; then
+if [[ $antivirus == "y" ]]; then
     ./script-dependencies/antivirus-scan.sh <<END
 /
 END
