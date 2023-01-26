@@ -19,7 +19,7 @@ echo "Begin antivirus-scan ..."
 # Get home or working directory from user
 if [ "$WK_DIR" == "" ]; then
     read -p "What is your home or primary working directory? (should contain quarantine and security-log.txt) " wk_dir
-    WK_DIR=$wkdir
+    WK_DIR=$wk_dir
 fi
 
 # Get directory to be recursively scanned from user
