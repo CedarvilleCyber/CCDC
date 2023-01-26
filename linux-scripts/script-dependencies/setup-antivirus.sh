@@ -33,7 +33,6 @@ else
 
     # Start freshclam service
     systemctl start clamav-freshclam
-    
 fi
 
 echo "... setup-antivirus complete!"
