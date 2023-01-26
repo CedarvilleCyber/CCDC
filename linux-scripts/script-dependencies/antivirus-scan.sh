@@ -14,7 +14,7 @@ if [[ $(id -u) != "0" ]]; then
     exit 1
 fi
 
-echo "Begin antivirus-scan ..."
+echo "Begin antivirus-scan script ..."
 
 # Get home or working directory from user
 if [ "$WK_DIR" == "" ]; then
@@ -40,4 +40,4 @@ printf "\n--------- End Antivirus ---------\n\n" >> $WK_DIR/security-log.txt
 
 echo "Scan complete"
 
-echo "... antivirus-scan complete!"
+echo "... antivirus-scan script complete!"
