@@ -3,17 +3,16 @@
 # Master script for linux
 #
 # Notes:
-# - System should be up-to-date (i.e., for debian: apt-get update && apt-get upgrade)
+# - System should be up-to-date (i.e., for debian: apt-get update)
 # - Exports 4 environment variables:
 #	- DISTRO_ID (ubuntu, centos, fedora, etc.)
-#	- DISTRO (debian|redhat)
-#	- PKG_MAN (apt-get|yum)
+#	- DISTRO (debian | redhat)
+#	- PKG_MAN (apt-get | yum)
 #	- WK_DIR (home or working directory)
 #
 # - Additions to this script:
 #	- Please use the exported environment variables when possible
 #	- All scripts run by this one and their dependencies should be located in ./script-dependencies
-#	- login-banners.sh and osupdater.sh need to be updated
 #	- machine scripts possibly need to be updated
 #	- clean-os.sh needs to be added to
 
@@ -59,21 +58,17 @@ done
 export DISTRO_ID=$ID
 
 # Get OS from user and export DISTRO
-read -p "Please enter your machine's distribution branch: [debian|redhat] " distro
+read -p "Please enter your machine's distribution branch: [debian | redhat] " distro
 export DISTRO=$distro
 
 # Set and export PKG_MAN
 if [[ $DISTRO == "debian" ]]; then
-    echo "You are running a debian-based distribution of linux"
-    PKG_MAN=apt-get
+    export PKG_MAN=apt-get
 fi
 
 if [[ $DISTRO == "redhat" ]]; then
-    echo "You are running a redhat-based distribution of linux"
-    PKG_MAN=yum
+    export PKG_MAN=yum
 fi
-
-export PKG_MAN
 
 # TODO: SET UP LOG FORWARDING HERE
 # TODO: MOVE LOGGING STUFF INTO script-dependencies
@@ -82,7 +77,6 @@ export PKG_MAN
 # TODO: MOVE PASSWORD POLICY STUFF INTO script-dependencies
 
 # Set up login banners
-# TODO: UPDATE SCRIPT
 ./script-dependencies/login-banners.sh
 
 # Clean Operating System
@@ -102,13 +96,13 @@ printf "Please enter the number corresponding to this machine's purpose:
 read machine
 
 case $machine in
-    1)  ./script-dependencies/centos6-splunk-server.sh  ;;
-    2)  ./script-dependencies/centos7-ecomm.sh  ;;
-    3) 	./script-dependencies/ubuntu12-workstation.sh  ;;
-    4) 	./script-dependencies/ubuntu14-web-server.sh  ;;
-    5)  ./script-dependencies/debian-dns-ntp.sh  ;;
-    6) 	./script-dependencies/fedora21-webmail.sh  ;;
-    7) 	./script-dependencies/panos-firewall.sh  ;;
+    1)  ./script-dependencies/splunk-server.sh  ;;
+    2)  ./script-dependencies/ecomm.sh  ;;
+    3) 	./script-dependencies/workstation.sh  ;;
+    4) 	./script-dependencies/web-server.sh  ;;
+    5)  ./script-dependencies/dns-ntp.sh  ;;
+    6) 	./script-dependencies/webmail.sh  ;;
+    7) 	./script-dependencies/firewall.sh  ;;
     *)  
     	echo "Unknown machine, should have been a number between 1-7"
     	read -p "What is the name of your machine script? " script_name
@@ -129,7 +123,6 @@ else
 fi
 
 # Update OS
-# TODO: UPDATE SCRIPT
 ./script-dependencies/osupdater.sh
 
 # Misc installs
