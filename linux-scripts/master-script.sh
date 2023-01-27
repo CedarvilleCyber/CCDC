@@ -53,7 +53,6 @@ export WK_DIR=$wk_dir
 . /etc/os-release
 export DISTRO_ID=$ID
 
-# Should we just ask for the package manager instead of getting this DISTRO variable?
 # Get OS from user and export DISTRO
 read -p "Please enter your machine's distribution branch: [debian | redhat] " distro
 export DISTRO=$distro
@@ -83,18 +82,20 @@ chmod 750 $WK_DIR/quarantine
 
 # ALL PURPOSE SCRIPTS
 
-# TODO: SET UP LOG FORWARDING HERE
-# TODO: MOVE LOGGING STUFF INTO script-dependencies
+# Setup log forwarder
+./script-dependencies/logging/install_and_setup_forwarder.sh
 
-# TODO: SET UP PASSWORD POLICY HERE
-# TODO: MOVE PASSWORD POLICY STUFF INTO script-dependencies
+# Implement password policy
+./script-dependencies/password-policy/pw-policy-guide.sh
 
 # Set up login banners
 ./script-dependencies/login-banners.sh
 
 # Clean Operating System
-# TODO: ADD TO SCRIPT
 ./script-dependencies/clean-os.sh
+
+# Run firewall script
+./script-dependencies/firewall/firewall.sh
 
 
 

@@ -15,7 +15,10 @@ then
 fi
 
 # Determine machine os type ($ID)
-source /etc/os-release
+if [[ $DISTRO_ID == "" ]]; then
+    source /etc/os-release
+    DISTRO_ID=$ID
+fi
 
 # Disable iptables
 systemctl disable iptables.service
@@ -26,11 +29,11 @@ ufw disable
 
 # Install firewalld
 echo "$ID detected, beginning firewalld install"
-if [[ ( $ID = fedora ) || ( $ID = centos ) ]]
+if [[ ( $DISTRO_ID = fedora ) || ( $DISTRO_ID = centos ) ]]
 then
   #yum update -y && yum install epel-release -y
   yum install -y firewalld 
-elif [[ ( $ID = ubuntu ) || ( $ID = debian ) ]]
+elif [[ ( $DISTRO_ID = ubuntu ) || ( $DISTRO_ID = debian ) ]]
 then
   #apt-get update && apt-get upgrade -y
   apt -y install firewalld
@@ -77,22 +80,22 @@ firewall-cmd --permanent --policy ccdc-egress --add-service=snmp   #cacti
 firewall-cmd --permanent --policy ccdc-egress --add-port=9997/tcp  #splunk
 
 # Add necessary outgoing services based on machine
-if [[ $ID = fedora ]]
+if [[ $DISTRO_ID = fedora ]]
 then
   firewall-cmd --permanent --policy ccdc-ingress --add-service=pop3
   firewall-cmd --permanent --policy ccdc-ingress --add-service=smtp
-elif [[ $ID = centos ]]
+elif [[ $DISTRO_ID = centos ]]
 then
   firewall-cmd --permanent --policy ccdc-ingress --add-service=http
   firewall-cmd --permanent --policy ccdc-ingress --add-port=8000/tcp
-elif [[ $ID = ubuntu ]]
+elif [[ $DISTRO_ID = ubuntu ]]
 then
   firewall-cmd --permanent --policy ccdc-ingress --add-service=dns
-elif [[ $ID = debian ]]
+elif [[ $DISTRO_ID = debian ]]
 then
   firewall-cmd --permanent --policy ccdc-ingress --add-service=dns
 else
-  echo "$ID not supported"
+  echo "$DISTRO_ID not supported"
   return 1
 fi 
 

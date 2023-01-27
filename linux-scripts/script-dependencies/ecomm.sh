@@ -43,7 +43,7 @@ echo -n "log into <host>/phpMyAdmin and navigate to "
 cat "$config_file" | grep "_DB_NAME_"
 
 echo "_COOKIE_KEY_"
-cat "$config_file" | grep "_COOKIE_KEY_" | awk -F\' '{ print $3 }'
+cat "$config_file" | grep "_COOKIE_KEY_" | awk -F\' '{ print $4 }'
 
 echo "now find the admin user, press edit,"
 echo "in the passwd line select MD5 from the drop down"

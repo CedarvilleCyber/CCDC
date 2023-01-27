@@ -1,0 +1,32 @@
+UNIT                               LOAD   ACTIVE SUB     DESCRIPTION
+apache2.service                    loaded active running LSB: Apache2 web server
+atd.service                        loaded active running Deferred execution scheduler
+bind9.service                      loaded active running BIND Domain Name Server
+bluetooth.service                  loaded active running Bluetooth service
+clamav-daemon.service              loaded active running Clam AntiVirus userspace daemon
+clamav-freshclam.service           loaded active running ClamAV virus database updater
+cups-browsed.service               loaded active running Make remote CUPS printers available locally
+cups.service                       loaded active running CUPS Printing Service
+fail2ban.service                   loaded active running LSB: Start/stop fail2ban
+gdomap.service                     loaded active exited  LSB: Start the GNUstep distributed object mapper
+getty@tty1.service                 loaded active running Getty on tty1
+irqbalance.service                 loaded active running LSB: daemon to balance interrupts for SMP systems
+kbd.service                        loaded active exited  LSB: Prepare console
+live-tools.service                 loaded active exited  LSB: live-tools - System Support Scripts
+minissdpd.service                  loaded active running LSB: keep memory of all UPnP devices that announced themselves
+nfs-common.service                 loaded active running LSB: NFS support files common to client and server
+ntp.service                        loaded active running LSB: Start NTP daemon
+open-vm-tools.service              loaded active running Service for virtual machines hosted on VMware
+polkitd.service                    loaded active running Authenticate and Authorize Users to Run Privileged Tasks
+rc-local.service                   loaded active exited  /etc/rc.local Compatibility
+speech-dispatcher.service          loaded active exited  LSB: Speech Dispatcher
+systemd-setup-dgram-qlen.service   loaded active exited  Increase datagram queue length
+udev-finish.service                loaded active exited  Copy rules generated while the root was ro
+user@1000.service                  loaded active running User Manager for UID 1000
+
+LOAD   = Reflects whether the unit definition was properly loaded.
+ACTIVE = The high-level unit activation state, i.e. generalization of SUB.
+SUB    = The low-level unit activation state, values depend on unit type.
+
+54 loaded units listed. Pass --all to see loaded but inactive units, too.
+To show all installed unit files use 'systemctl list-unit-files'.

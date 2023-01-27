@@ -2,6 +2,25 @@
 # IMPORTANT - THIS SCRIPT MUST BE IN THE SAME DIRECTORY AS THE check_integrity.sh SCRIPT
 # cronjob setup for file integrity
 
+# DIRECTIONS:
+# Usage: ./setup_integrity_check_cron.sh file1 file2 file3 etc ...
+# ./setup_integrity_check_cron.sh /var/www/* will create the dir
+# /var/sha1db where it will store sha1 hashes of all the files in
+# /var/www.  A cron job will run every 3 min and check if the files
+# have changed.  If they have, a file with information will be created,
+# /var/file_integrity_alerts.  Duplicate filenames will cause issues,
+# if there are files with the same names in different directories on a 
+# system that you want integrity checked.
+
+
+echo "IMPORTANT - THIS SCRIPT MUST BE IN THE SAME DIRECTORY AS THE check_integrity.sh SCRIPT"
+read -r -s -p $'Press enter to continue...\n'
+
+if [ $# -eq 0 ]; then
+    >&2 echo "Usage: ./setup_integrity_check_cron.sh file1 file2 file3 etc ..."
+    exit 1
+fi
+
 # helper function - gets absolute filename (path to file)
 get_abs_filename() {
     while [ ! -z "$1" ]
