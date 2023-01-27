@@ -43,41 +43,60 @@ firewall-cmd --state
 systemctl start firewalld.service
 systemctl enable firewalld.service
 
-# Create new zone
-firewall-cmd --permanent --new-zone=ccdc
+# Create ingress policy
+firewall-cmd --permanent --new-policy ccdc-ingress
+firewall-cmd --permanent --policy ccdc-ingress --add-ingress-zone ANY
+firewall-cmd --permanent --policy ccdc-ingress --add-egress-zone HOST
+
+# Create egress policy
+firewall-cmd --permanent --new-policy ccdc-egress
+firewall-cmd --permanent --policy ccdc-egress --add-ingress-zone HOST
+firewall-cmd --permanent --policy ccdc-egress --add-egress-zone ANY
+
+# Reload so additions take effect
 firewall-cmd --reload
 
-# Add services required for all machines
-firewall-cmd --zone=ccdc --permanent --add-service=dns
-firewall-cmd --zone=ccdc --permanent --remove-icmp-block-inversion
-firewall-cmd --zone=ccdc --permanent --add-service=ntp
+# Add incoming services required for all machines
+firewall-cmd --permanent --policy ccdc-ingress --add-service=dhcp
+firewall-cmd --permanent --policy ccdc-ingress --remove-icmp-block-inversion
+firewall-cmd --permanent --policy ccdc-ingress --add-service=ntp
+firewall-cmd --permanent --policy ccdc-ingress --add-service=ssh
+firewall-cmd --permanent --policy ccdc-ingress --add-service=snmp  #cacti
+firewall-cmd --permanent --policy ccdc-ingress --add-port=9997/tcp #splunk
 
+# Add outgoing services required for all machines
+firewall-cmd --permanent --policy ccdc-egress --add-service=dhcp
+firewall-cmd --permanent --policy ccdc-egress --remove-icmp-block-inversion
+firewall-cmd --permanent --policy ccdc-egress --add-service=ntp
+firewall-cmd --permanent --policy ccdc-egress --add-service=https
+firewall-cmd --permanent --policy ccdc-egress --add-service=http
+firewall-cmd --permanent --policy ccdc-egress --add-service=dns
+firewall-cmd --permanent --policy ccdc-egress --add-service=ssh
+firewall-cmd --permanent --policy ccdc-egress --add-service=snmp   #cacti
+firewall-cmd --permanent --policy ccdc-egress --add-port=9997/tcp  #splunk
 
-# Add necessary services based on machine
+# Add necessary outgoing services based on machine
 if [[ $ID = fedora ]]
 then
-  firewall-cmd --zone=ccdc --permanent --add-service=
+  firewall-cmd --permanent --policy ccdc-ingress --add-service=pop3
+  firewall-cmd --permanent --policy ccdc-ingress --add-service=smtp
 elif [[ $ID = centos ]]
 then
-
+  firewall-cmd --permanent --policy ccdc-ingress --add-service=http
+  firewall-cmd --permanent --policy ccdc-ingress --add-port=8000/tcp
 elif [[ $ID = ubuntu ]]
 then
-  
+  firewall-cmd --permanent --policy ccdc-ingress --add-service=dns
 elif [[ $ID = debian ]]
 then
-
+  firewall-cmd --permanent --policy ccdc-ingress --add-service=dns
 else
   echo "$ID not supported"
   return 1
 fi 
 
 # Drop everything else
-firewall-cmd --zone=ccdc --permanent --set-target=DROP
+firewall-cmd --permanent --policy ccdc-ingress --set-target DROP
 firewall-cmd --reload
 
-# Assign to a specific interface
-#firewall-cmd --zone=todds-laptop --change-interface=eth0
-
-# Make default zone
-firewall-cmd --set-default-zone=ccdc
-systemctl restart firewalld
+#systemctl restart firewalld
