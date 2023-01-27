@@ -2,6 +2,7 @@
 #updates the OS and its packages
 
 
+
 #check if user is root
 if [ "$(id -u)" != "0" ]; then
 	printf "You must be root!\n"
@@ -9,9 +10,11 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 
+
 #script start
-printf "OSupdater script starting...\n"
-printf "Systems may stop temporarily\n"
+printf "osupdater script starting...\n"
+printf "systems may stop temporarily\n"
+
 
 
 #determine packet manager in use
@@ -21,6 +24,7 @@ fi
 if [ $(which yum) ]; then
 	pm="yum"
 fi
+
 
 
 #apt-get
@@ -44,6 +48,7 @@ if [ $pm == "apt-get" ]; then
 fi
 
 
+
 #yum
 if [ $pm == "yum" ]; then
 
@@ -64,4 +69,6 @@ if [ $pm == "yum" ]; then
 
 fi
 
-printf "SCRIPT COMPLETE - OS & packages current.\n"
+
+
+printf "SCRIPT COMPLETE - OS & PACKAGES CURRENT.\n"
