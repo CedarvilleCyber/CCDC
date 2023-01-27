@@ -3,10 +3,10 @@
 $PKG_MAN install tmux -y
 
 # ask for current and new password
-printf "Please enter the current SQL root password: "
+printf "Please enter the current SQL root password (Enter for NONE): "
 read -s curr1
 echo
-printf "Retype current password: "
+printf "Retype current password (Enter for NONE): "
 read -s curr2
 echo
 
@@ -14,10 +14,10 @@ echo
 while [[ "$curr1" != "$curr2" ]]
 do
 	printf "Passwords do not match!\n"
-	printf "Enter current password: "
+	printf "Enter current password (Enter for NONE): "
 	read -s curr1
 	echo
-	printf "Retype current password: "
+	printf "Retype current password (Enter for NONE): "
 	read -s curr2
 	echo
 done
