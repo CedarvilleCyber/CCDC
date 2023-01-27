@@ -25,15 +25,15 @@ then
   systemctl mask firewalld
 
   #yum update -y && yum install epel-release -y
-  yum -y install iptables-persistent
+  yum -y install iptables-services
   systemctl enable iptables
   systemctl start iptables
 elif [[ ( $ID = ubuntu ) || ( $ID = debian ) ]]
 then
   #apt-get update && apt-get upgrade -y
-  apt -y install iptables-persistent
-  systemctl enable iptables
-  systemctl start iptables
+  apt -y install iptables-services
+  #systemctl enable iptables
+  #systemctl start iptables
 else
   echo "$ID not supported"
   return 1
@@ -74,6 +74,10 @@ iptables -A INPUT -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp -m multiport --dports 80,443,8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp -m multiport --sports 80,443,8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
+# Allow incoming NTP
+iptables -A INPUT -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
 # Allow outgoing DNS
 iptables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
@@ -86,13 +90,13 @@ iptables -A INPUT -p tcp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEP
 iptables -A INPUT -p tcp --dport 123 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-# Allow outgoing SNMP (Cacti)
-iptables -A OUTPUT -p udp --dport 161 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p udp --sport 161 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+# Allow outgoing Splunk
+iptables -A OUTPUT -p udp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p udp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-# Allow incoming SNMP (Cacti)
-iptables -A INPUT -p udp --dport 161 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p udp --sport 161 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+# Allow incoming Splunk
+iptables -A INPUT -p udp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow outgoing DHCP
 iptables -A OUTPUT -p udp --dport 67 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -123,14 +127,11 @@ then
     # Allow all incoming http (8000)
     iptables -A INPUT -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A OUTPUT -p tcp --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
-elif [[ $ID = ubuntu ]]
-then
-    # Nothing special
 elif [[ $ID = debian ]]
 then
     # Allow all incoming dns (53)
-    iptables -A INPUT -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-    iptables -A OUTPUT -p tcp --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    iptables -A INPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 else
   echo "$ID not supported"
   return 1
@@ -142,8 +143,3 @@ iptables -A OUTPUT -j DROP
 
 # Backup Rules (iptables-restore < backup)
 iptables-save >/etc/ip_rules
-
-# Anti-Lockout Rule
-sleep 3
-iptables -F
-echo "> Anti-Lockout executed : Rules have been flushed"
