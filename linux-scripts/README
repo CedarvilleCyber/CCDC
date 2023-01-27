@@ -1,3 +1,3 @@
 linux-scripts contains many contents, two of which serve as primary components:
-  1. master-script.sh is the master hardening script for every linux machine
+  1. call-master.sh is the master hardening script for every linux machine
   2. script-dependancies/ holds all the scripts used by the above master script
