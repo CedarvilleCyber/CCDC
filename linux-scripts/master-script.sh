@@ -16,13 +16,32 @@
 #	- machine scripts possibly need to be updated
 #	- clean-os.sh needs to be added to
 
-# Make sure script is run as root
+# INITIAL CHECKS
+
+# Ensure script is run as root
 if [[ $(id -u) != "0" ]]; then
     echo "You must be root to run this script!" >&2
     exit 1
 fi
 
-echo "Begin master-script ..."
+# Ensure script-dependencies exist
+if [[ ! -d "script-dependencies" ]]; then
+    echo "Subdirectory script-dependencies not found!" >&2
+    exit 1
+fi
+
+# Set permissions on script-dependencies' contents
+for f in $( ls ./script-dependencies/ ); do
+    if [[ $f == *.sh ]]; then
+        chmod 744 script-dependencies/$f
+    fi
+done
+
+echo "Initial checks complete. Starting script..."
+
+
+
+# GET ENVIRONMENT VARIABLES
 
 # Get home or working directory from user
 printf "Your current directory is: "
@@ -30,33 +49,11 @@ pwd
 read -p "What is your home or primary working directory? " wk_dir
 export WK_DIR=$wk_dir
 
-# Make sure script-dependencies exists
-if [[ ! -d "script-dependencies" ]]; then
-    echo "Subdirectory script-dependencies not found!" >&2
-    exit 1
-fi
-
-# Create security-log.txt file and backup and quarantine directories
-touch $WK_DIR/security-log.txt
-chmod 640 $WK_DIR/security-log.txt
-
-mkdir $WK_DIR/backup
-chmod 750 $WK_DIR/backup
-
-mkdir $WK_DIR/quarantine
-chmod 750 $WK_DIR/quarantine
-
-# Set permissions on all scripts in script-dependencies directory
-for f in $( ls ./script-dependencies/ ); do
-    if [[ $f == *.sh ]]; then
-        chmod 744 script-dependencies/$f
-    fi
-done
-
 # Set and export DISTRO_ID
 . /etc/os-release
 export DISTRO_ID=$ID
 
+# Should we just ask for the package manager instead of getting this DISTRO variable?
 # Get OS from user and export DISTRO
 read -p "Please enter your machine's distribution branch: [debian | redhat] " distro
 export DISTRO=$distro
@@ -69,6 +66,10 @@ fi
 if [[ $DISTRO == "redhat" ]]; then
     export PKG_MAN=yum
 fi
+
+
+
+# ALL PURPOSE SCRIPTS
 
 # TODO: SET UP LOG FORWARDING HERE
 # TODO: MOVE LOGGING STUFF INTO script-dependencies
@@ -83,6 +84,9 @@ fi
 # TODO: ADD TO SCRIPT
 ./script-dependencies/clean-os.sh
 
+
+
+# MACHINE SPECIFIC SCRIPTS
 # Get machine from user
 printf "Please enter the number corresponding to this machine's purpose:
     [1] Splunk Server
@@ -109,6 +113,10 @@ case $machine in
     	./script-dependencies/$script_name  ;;
 esac
 
+
+
+# FINAL TASKS BEFORE TERMINATING
+
 # install antivirus
 ./script-dependencies/setup-antivirus.sh
 
@@ -128,7 +136,18 @@ fi
 # Misc installs
 $PKG_MAN install vim -y
 
-# Create backup
+# Create security-log.txt file
+touch $WK_DIR/security-log.txt
+chmod 640 $WK_DIR/security-log.txt
+
+# Create quarantine directory
+mkdir $WK_DIR/quarantine
+chmod 750 $WK_DIR/quarantine
+
+# Create and get backups folder
+mkdir $WK_DIR/backup
+chmod 750 $WK_DIR/backup
+
 cp -r /etc $WK_DIR/backup/
 cp -r /var $WK_DIR/backup/
 
