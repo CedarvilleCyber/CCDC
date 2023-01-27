@@ -83,11 +83,11 @@ chmod 750 $WK_DIR/quarantine
 
 # ALL PURPOSE SCRIPTS
 
-# TODO: SET UP LOG FORWARDING HERE
-# TODO: MOVE LOGGING STUFF INTO script-dependencies
+# setup log forwarder
+./script-dependencies/logging/install_and_setup_forwarder.sh
 
-# TODO: SET UP PASSWORD POLICY HERE
-# TODO: MOVE PASSWORD POLICY STUFF INTO script-dependencies
+# implement password policy
+./script-dependencies/password-policy/pw-policy-guide.sh
 
 # Set up login banners
 ./script-dependencies/login-banners.sh
