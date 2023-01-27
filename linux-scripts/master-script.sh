@@ -69,6 +69,18 @@ fi
 
 
 
+# CREATE FILES AND DIRECTORIES ACCESSED BY MULTIPLE SCRIPTS
+
+# Create security-log.txt file
+touch $WK_DIR/security-log.txt
+chmod 640 $WK_DIR/security-log.txt
+
+# Create quarantine directory
+mkdir $WK_DIR/quarantine
+chmod 750 $WK_DIR/quarantine
+
+
+
 # ALL PURPOSE SCRIPTS
 
 # TODO: SET UP LOG FORWARDING HERE
@@ -87,6 +99,7 @@ fi
 
 
 # MACHINE SPECIFIC SCRIPTS
+
 # Get machine from user
 printf "Please enter the number corresponding to this machine's purpose:
     [1] Splunk Server
@@ -135,14 +148,6 @@ fi
 
 # Misc installs
 $PKG_MAN install vim -y
-
-# Create security-log.txt file
-touch $WK_DIR/security-log.txt
-chmod 640 $WK_DIR/security-log.txt
-
-# Create quarantine directory
-mkdir $WK_DIR/quarantine
-chmod 750 $WK_DIR/quarantine
 
 # Create and get backups folder
 mkdir $WK_DIR/backup
