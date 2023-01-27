@@ -14,10 +14,14 @@
 
 
 echo "IMPORTANT - THIS SCRIPT MUST BE IN THE SAME DIRECTORY AS THE check_integrity.sh SCRIPT"
+echo "Also, please make sure crontab is installed (try running \"crontab\" command to check)."
+echo "Centos 7, yum install cronie, Centos 8, yum install vixie-cron.  Debian is apt-get and may"
+echo "have different named package like apt-get install cron.  Use google and get it installed"
+echo -e "and make sure to start the crond or cron service (google it)\n"
 read -r -s -p $'Press enter to continue...\n'
 
 if [ $# -eq 0 ]; then
-    >&2 echo "Usage: ./setup_integrity_check_cron.sh file1 file2 file3 etc ..."
+    >&2 echo -e "Usage: ./setup_integrity_check_cron.sh file1 file2 file3 etc ...\n"
     exit 1
 fi
 
