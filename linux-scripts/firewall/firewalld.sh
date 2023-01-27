@@ -5,7 +5,8 @@
 #
 # Distributed under terms of the MIT license.
 # 
-# Script to set firewalld up on each linux machine (NOT READY)
+# Script to set firewalld up on each linux machine (NOT TESTED)
+# Requires latest version of firewalld
 
 if [[ $EUID -ne 0 ]]
 then
