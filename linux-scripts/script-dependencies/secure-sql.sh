@@ -51,19 +51,19 @@ tmux rename-window -t 0 "work"
 tmux send-keys -t "work" "mysql_secure_installation" C-m
 sleep 3
 tmux send-keys -t "work" "$curr2" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "Y" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "$new2" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "$new2" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "Y" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "Y" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "Y" C-m
-sleep 1
+sleep 2
 tmux send-keys -t "work" "Y" C-m
 sleep 2
 
