@@ -1,0 +1,118 @@
+
+-------- Begin Clean OS --------
+
+Files found in /tmp (all removed):
+total 12
+drwx------ 2 user user 4096 Dec 31  1969 orbit-user
+drwx------ 3 root root 4096 Jan 27 07:35 systemd-private-23e21003550647739f94345136219952-cups.service-PA42oU
+drwx--x--x 4 root root 4096 Jan 26 13:10 user
+
+Attention: Please look over /etc/group carefully for suspicious users.
+(Pay special attention to the adm, admin, sudo, root, and wheel groups.
+Any user that is in a large number of groups should be investigated.)
+
+Command: sudo less /etc/group
+
+Attention: Please look over /etc/passwd carefully for suspicious users.
+(The users in the file are in order of creation. Look for accounts that have 
+names of services such as avahi, but that have home directories and login shells 
+they should not have. Any user with a home directory or login shell not set to 
+false is immediately suspect.)
+
+Command: sudo less /etc/passwd
+
+Attention: Please look over /etc/sudoers carefully for suspicious users.
+(The only user specified here should be root and the only groups should be admin
+and sudo. In addition, make sure that no one can use sudo without entering a
+password.)
+
+Command: sudo less /etc/sudoers
+
+If any suspicious users are found, check with management, and, if 
+approved, disable accounts.
+
+Command: sudo usermod -L <account>
+
+Working/home directory: Please check for suspicious files or directories.
+total 72
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 antivirus
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 backups
+-rwxr-xr-x 1 root root  428 Jan 27 16:12 centos-monitor-website.sh
+-rwxr-xr-x 1 root root 2071 Jan 27 16:12 check-cronjobs.sh
+drwxr-xr-x 4 root root 4096 Jan 27 16:31 debian
+drwxr-xr-x 4 root root 4096 Jan 27 16:12 fedora21
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 file-integrity
+drwxr-xr-x 3 root root 4096 Jan 27 16:12 firewall
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 logging
+-rwxr-xr-x 1 root root  854 Jan 27 16:12 login-banners.sh
+-rwxr-xr-x 1 root root 4006 Jan 27 16:12 master-script.sh
+-rwxr-xr-x 1 root root 1112 Jan 27 16:12 osupdater.sh
+drwxr-xr-x 3 root root 4096 Jan 27 16:12 password-policy
+drwxr-x--- 2 root root 4096 Jan 27 16:31 quarantine
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 script-dependencies
+-rw-r----- 1 root root 1391 Jan 27 16:31 security-log.txt
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 splunk
+-rw-r--r-- 1 root root  108 Jan 27 16:12 tmux.conf
+
+--------- End Clean OS ---------
+
+
+-------- Begin Antivirus --------
+
+-------- Begin Clean OS --------
+
+Files found in /tmp (all removed):
+total 4
+drwxr-xr-x 3 root root 4096 Jan 27 16:35 user
+
+Attention: Please look over /etc/group carefully for suspicious users.
+(Pay special attention to the adm, admin, sudo, root, and wheel groups.
+Any user that is in a large number of groups should be investigated.)
+
+Command: sudo less /etc/group
+
+Attention: Please look over /etc/passwd carefully for suspicious users.
+(The users in the file are in order of creation. Look for accounts that have 
+names of services such as avahi, but that have home directories and login shells 
+they should not have. Any user with a home directory or login shell not set to 
+false is immediately suspect.)
+
+Command: sudo less /etc/passwd
+
+Attention: Please look over /etc/sudoers carefully for suspicious users.
+(The only user specified here should be root and the only groups should be admin
+and sudo. In addition, make sure that no one can use sudo without entering a
+password.)
+
+Command: sudo less /etc/sudoers
+
+If any suspicious users are found, check with management, and, if 
+approved, disable accounts.
+
+Command: sudo usermod -L <account>
+
+Working/home directory: Please check for suspicious files or directories.
+total 72
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 antivirus
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 backups
+-rwxr-xr-x 1 root root  428 Jan 27 16:12 centos-monitor-website.sh
+-rwxr-xr-x 1 root root 2071 Jan 27 16:12 check-cronjobs.sh
+drwxr-xr-x 4 root root 4096 Jan 27 16:31 debian
+drwxr-xr-x 4 root root 4096 Jan 27 16:12 fedora21
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 file-integrity
+drwxr-xr-x 3 root root 4096 Jan 27 16:12 firewall
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 logging
+-rwxr-xr-x 1 root root  854 Jan 27 16:12 login-banners.sh
+-rwxr-xr-x 1 root root 4006 Jan 27 16:12 master-script.sh
+-rwxr-xr-x 1 root root 1112 Jan 27 16:12 osupdater.sh
+drwxr-xr-x 3 root root 4096 Jan 27 16:12 password-policy
+drwxr-x--- 2 root root 4096 Jan 27 16:31 quarantine
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 script-dependencies
+-rw-r----- 1 root root 3674 Jan 27 16:36 security-log.txt
+drwxr-xr-x 2 root root 4096 Jan 27 16:12 splunk
+-rw-r--r-- 1 root root  108 Jan 27 16:12 tmux.conf
+
+--------- End Clean OS ---------
+
+
+-------- Begin Antivirus --------
