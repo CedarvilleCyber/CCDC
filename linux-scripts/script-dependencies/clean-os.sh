@@ -12,10 +12,10 @@ printf "\n-------- Begin Clean OS --------\n\n" >> $WK_DIR/security-log.txt
 sudo chmod 644 /etc/passwd
 sudo chmod 600 /etc/shadow
 
-printf "Files found in /tmp (all removed):\n" >> $WK_DIR/security-log.txt
+printf "Files found in /tmp (Remove any suspicious files):\n" >> $WK_DIR/security-log.txt
 ls -l /tmp/ >> $WK_DIR/security-log.txt
 
-rm -r /tmp/*
+#rm -r /tmp/*
 
 printf "
 Attention: Please look over /etc/group carefully for suspicious users.
