@@ -1,7 +1,5 @@
 #!/bin/bash
-
-# Master clean os script for linux (CCDC 2023)
-#
+# clean os script for linux
 # Notes:
 # - Assumes WK_DIR environment variable exists
 
@@ -58,4 +56,3 @@ ls -l $WK_DIR/ >> $WK_DIR/security-log.txt
 printf "\n--------- End Clean OS ---------\n\n" >> $WK_DIR/security-log.txt
 
 echo "... clean-os script complete!"
-
