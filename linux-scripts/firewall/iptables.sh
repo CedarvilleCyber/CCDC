@@ -26,14 +26,20 @@ then
 
   #yum update -y && yum install epel-release -y
   yum -y install iptables-services
+  
   systemctl enable iptables
   systemctl start iptables
 elif [[ ( $ID = ubuntu ) || ( $ID = debian ) ]]
 then
+  systemctl stop ufw
+  systemctl disable ufw
+  systemctl mask firewalld
+
   #apt-get update && apt-get upgrade -y
-  apt -y install iptables-services
-  #systemctl enable iptables
-  #systemctl start iptables
+  apt -y install iptables
+  
+  systemctl enable iptables
+  systemctl start iptables
 else
   echo "$ID not supported"
   return 1
