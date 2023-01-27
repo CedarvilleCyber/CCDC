@@ -95,7 +95,7 @@ chmod 750 $WK_DIR/quarantine
 ./script-dependencies/clean-os.sh
 
 # Run firewall script
-./script-dependencies/firewall/firewall.sh
+./script-dependencies/firewall/iptables.sh
 
 
 
