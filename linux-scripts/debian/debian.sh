@@ -91,13 +91,14 @@ printf "Removed!\n"
 # turn bind9 on though
 systemctl start bind9
 
+# install sudo
+apt-get install sudo -y --force-yes
 
 printf "Scanners and Configuring Firewall...\n"
-apt-get install clamav clamav-daemon -y
-freshclam
-apt-get install lynis -y
-apt-get install fail2ban -y
-apt-get install ufw -y
+apt-get install clamav clamav-daemon -y --force-yes
+apt-get install lynis -y --force-yes
+apt-get install fail2ban -y --force-yes
+apt-get install ufw -y --force-yes
 ufw allow dns
 ufw allow ntp
 ufw allow http
@@ -108,9 +109,9 @@ printf "Make sure there are no werid rules in iptables and ufw!\n"
 printf "Do that manually!\n"
 
 # Install other stuff
-apt-get install libpam-pwquality -y
-apt-get install libpam-tmpdir -y
-apt-get install debian-goodies -y
+apt-get install libpam-pwquality -y --force-yes
+apt-get install libpam-tmpdir -y --force-yes
+apt-get install debian-goodies -y --force-yes
 
 # make .vimrc
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
@@ -119,7 +120,7 @@ printf "set nocompatible\nset backspace=indent,eol,start" > ~/.vimrc
 
 # Set up tmux
 printf "Setting up tmux...\n"
-apt-get install tmux -y
+apt-get install tmux -y --force-yes
 
 # name session Background
 # Have programs running in the background
@@ -134,72 +135,22 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	# First window (already created)
 	tmux rename-window -t 0 "Bash"
 	
+	# Now inside master script
 	# Second window for Clamav
-	tmux new-window -t $SESSIONB:1 -n "ClamAv"
+	#tmux new-window -t $SESSIONB:1 -n "ClamAv"
 	# Send text to "ClamAv" window
 	# C-m means <enter>
-	tmux send-keys -t "ClamAv" "clamscan -i -r / -l clamav.log" C-m
+	#tmux send-keys -t "ClamAv" "clamscan -i -r / -l clamav.log" C-m
 
-	# Third window for lynis
+	# Second window for lynis
 	# lynis will search for vulnerabilities what you should to to fix them
-	tmux new-window -t $SESSIONB:2 -n "Lynis"
+	tmux new-window -t $SESSIONB:1 -n "Lynis"
 	tmux send-keys -t "Lynis" "lynis audit system --quick > lynis.log" C-m
 	
 	# Attach session
 	#tmux attach-session -t $SESSIONB
 else
 	printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
-fi
-
-# name session Work
-SESSIONW="Work"
-SESSIONEXISTS=$(tmux ls | grep $SESSIONW)
-
-# Check if session already exists
-if [ "$SESSIONEXISTS" == "" ]; then
-	# doesn't already exist
-	tmux new-session -d -s $SESSIONW
-	
-	# First window (already created)
-	tmux rename-window -t 0 "Bash"
-	# write command to check ntp
-	tmux send-keys -t "Bash" "./ntpRestart.sh"
-	
-	# Second window for ntp
-	apt-get install ntp -y
-	tmux new-window -t $SESSIONW:1 -n "NTPConfig"
-	tmux send-keys -t "NTPConfig" "vi /etc/ntp.conf" C-m
-
-	# Third window for Clamav
-	tmux new-window -t $SESSIONW:2 -n "ClamAvParse"
-	# Sleep to wait for the shell to load
-	sleep 0.1
-	tmux send-keys -t "ClamAvParse" "### Make sure to wait for clamav to finish! ###" C-m
-	tmux send-keys -t "ClamAvParse" "vi clamav.log"
-
-	# Forth window for lynis
-	tmux new-window -t $SESSIONW:3 -n "LynisParse"
-	#sleep 0.1
-	tmux send-keys -t "LynisParse" "### Make sure to wait for lynis to finish! ###" C-m
-	tmux send-keys -t "LynisParse" "grep suggestion /var/log/lynis-report.dat | less -Xr"
-	
-	# Fifth window for checking users
-	tmux new-window -t $SESSIONW:4 -n "CheckUsers"
-	tmux send-keys -t "CheckUsers" "./userSort.sh | less -Xr" C-m
-
-	# Sixth window for checking services
-	tmux new-window -t $SESSIONW:5 -n "CheckServices"
-	tmux send-keys -t "CheckServices" "./serviceSort.sh | less -Xr" C-m
-
-	# Seventh window for checking crontab, ufw, and iptables
-	tmux new-window -t $SESSIONW:6 -n "CheckCron+Wall"
-	tmux send-keys -t "CheckCron+Wall" "cd /var/spool/cron/crontabs" C-m
-	tmux send-keys -t "CheckCron+Wall" "ls -al" C-m
-
-	# Attach session
-	#tmux attach-session -t $SESSIONW
-else
-	printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
 fi
 
 # New Session Monitor
@@ -227,23 +178,80 @@ else
 	printf "${warn}Session \"$SESSIONM\" already exists!${reset}\n"
 fi
 
+# name session Work
+SESSIONW="Work"
+SESSIONEXISTS=$(tmux ls | grep $SESSIONW)
 
+# Check if session already exists
+if [ "$SESSIONEXISTS" == "" ]; then
+	# doesn't already exist
+	tmux new-session -d -s $SESSIONW
+	
+	# First window (already created)
+	tmux rename-window -t 0 "Bash"
+	# write command to check ntp
+	tmux send-keys -t "Bash" "./ntpRestart.sh"
+	
+	# Second window for ntp
+	apt-get install ntp -y --force-yes
+	tmux new-window -t $SESSIONW:1 -n "NTPConfig"
+	tmux send-keys -t "NTPConfig" "vi /etc/ntp.conf" C-m
+
+	# Third window for lynis
+	tmux new-window -t $SESSIONW:2 -n "LynisParse"
+	#sleep 0.1
+	tmux send-keys -t "LynisParse" "### Make sure to wait for lynis to finish! ###" C-m
+	tmux send-keys -t "LynisParse" "grep suggestion /var/log/lynis-report.dat | less -Xr"
+	
+	# Fourth window for checking users
+	tmux new-window -t $SESSIONW:3 -n "CheckUsers"
+	tmux send-keys -t "CheckUsers" "./userSort.sh | less -Xr" C-m
+
+	# Fifth window for checking services
+	tmux new-window -t $SESSIONW:4 -n "CheckServices"
+	tmux send-keys -t "CheckServices" "./serviceSort.sh | less -Xr" C-m
+
+	# Sixth window for checking crontab, ufw, and tmp
+	tmux new-window -t $SESSIONW:5 -n "CheckCron+Wall"
+	tmux send-keys -t "CheckCron+Wall" "cd /var/spool/cron/crontabs" C-m
+	tmux send-keys -t "CheckCron+Wall" "ls -al" C-m
+
+	# Seventh window for MasterScript
+	tmux new-window -t $SESSIONW:6 -n "Master"
+	# Sleep to wait for the shell to load
+	sleep 0.1
+	# cd into the directory where master script is
+	tmux send-keys -t "Master" "cd ../" C-m
+	tmux send-keys -t "Master" "./master-script.sh" C-m
+
+	# Attach session
+	tmux attach-session -t $SESSIONW
+else
+	printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
+fi
+
+
+# Below implemented in the master script
+# it will be run in the "Work" tmux session
 # Write login banner
 
-chmod 700 ../SCRIPTS/login_banners/login_banners.sh
-../SCRIPTS/login_banners/login_banners.sh
+#chmod 700 ../login-banners.sh
+#../login-banners.sh
 
 # update OS
 
-chmod 700 ../SCRIPTS/osupdater/osupdater.sh
-../SCRIPTS/osupdater/osupdater.sh
+#chmod 700 ../osupdater.sh
+#../osupdater.sh
+
+#chmod 700 ../logging/install_and_setup_forwarder.sh
+#cd ../logging/
+#./install_and_setup_forwarder.sh
 
 # password policy
 
-chmod 700 ../SCRIPTS/password_policy/password_policy.sh
-../SCRIPTS/password_policy/password_policy.sh
+#printf "\n\n${info}Password policy in the checklist!${reset}\n\n"
 
-printf "${info}Done!${reset}\n\n"
+#printf "${info}Done!${reset}\n\n"
 
 exit 0
 

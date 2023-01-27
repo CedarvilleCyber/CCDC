@@ -3,7 +3,6 @@
 #===============================#
 #-------------Setup-------------#
 #===============================#
-
 export SPLUNK_HOME=/opt/splunkforwarder
 
 machines=("Debian-DNS-NTP"
@@ -256,7 +255,7 @@ do
 	getpasswd
 done
 
-cat << EOF > $SPLUNK_HOME/etc/system/local/outputs.conf
+cat << EOF >> $SPLUNK_HOME/etc/system/local/outputs.conf
 [tcpout:splunkssl]
 server = $serverip:9997
 compressed = true
@@ -268,7 +267,7 @@ sslCommonNameToCheck = indexer.cedarville
 sslVerifyServerCert = true 
 EOF
 
-cat << EOF > $SPLUNK_HOME/etc/system/local/server.conf
+cat << EOF >> $SPLUNK_HOME/etc/system/local/server.conf
 [sslConfig]
 sslRootCAPath = $SPLUNK_HOME/etc/auth/mycerts/cacert.pem
 EOF
