@@ -1,6 +1,6 @@
 #!/bin/bash
 
-apt-get install tmux -y
+$PKG_MAN install tmux -y
 
 # ask for current and new password
 printf "Please enter the current SQL root password: "
