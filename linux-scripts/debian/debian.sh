@@ -123,7 +123,7 @@ printf "set nocompatible\nset backspace=indent,eol,start" > /home/sysadmin/.vimr
 printf "set nocompatible\nset backspace=indent,eol,start" > ~/.vimrc
 
 # Make a backup of dns config files
-./debian-dns-backup.sh
+./dns-backup.sh
 
 # set up logging for bind9
 printf 'logging {
