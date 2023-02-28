@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Ensure script is run as root
+if [[ $(id -u) != "0" ]]; then
+    echo "You must be root to run this script!" >&2
+    exit 1
+fi
+
 apt-get install tmux -y
 yum install tmux -y
 
