@@ -117,8 +117,24 @@ apt-get install debian-goodies -y --force-yes
 
 # make .vimrc
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
+printf "set nocompatible\nset backspace=indent,eol,start" > /home/sysadmin/.vimrc
 printf "set nocompatible\nset backspace=indent,eol,start" > ~/.vimrc
 
+# set up logging for bind9
+printf 'logging {
+        channel default_log {
+                file "/var/log/named/default.log";
+                print-time yes;
+                print-category yes;
+                print-severity yes;
+                severity info;
+        };
+
+        category default { default_log; };
+        category queries { default_log; };
+};' >> /etc/bind/named.conf.options
+mkdir /var/log/named
+chown bind /var/log/named/
 
 # Set up tmux
 printf "Setting up tmux...\n"
@@ -224,29 +240,6 @@ if [ "$SESSIONEXISTS" == "" ]; then
 else
 	printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
 fi
-
-
-# Below implemented in the master script
-# it will be run in the "Work" tmux session
-# Write login banner
-
-#chmod 700 ../login-banners.sh
-#../login-banners.sh
-
-# update OS
-
-#chmod 700 ../osupdater.sh
-#../osupdater.sh
-
-#chmod 700 ../logging/install_and_setup_forwarder.sh
-#cd ../logging/
-#./install_and_setup_forwarder.sh
-
-# password policy
-
-#printf "\n\n${info}Password policy in the checklist!${reset}\n\n"
-
-#printf "${info}Done!${reset}\n\n"
 
 exit 0
 
