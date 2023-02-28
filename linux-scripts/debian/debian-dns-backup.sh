@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir ./backups/
+
 cp -r /etc/bind/ ./backups/etc-bind
 cp -r /var/cache/bind/ ./backups/var-cache-bind
 
