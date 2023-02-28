@@ -42,6 +42,9 @@ printf "\nPlease review the scan summaries given above and check for any files i
 printf "\nTo rescan your machine, just run antivirus-scan.sh\n" >> $WK_DIR/security-log.txt
 printf "\n--------- End Antivirus ---------\n\n" >> $WK_DIR/security-log.txt
 
+echo "ClamAV and rkhunter scan summaries are logged to $WK_DIR/security-log.txt"
+echo "PLEASE REVIEW THIS FILE AND CHECK FOR ANY FILES MOVED TO QUARANTINE!!"
+
 echo "Scan complete"
 
 echo "... antivirus-scan script complete!"
