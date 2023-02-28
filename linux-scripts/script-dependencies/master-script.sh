@@ -83,10 +83,10 @@ chmod 750 $WK_DIR/quarantine
 # ALL PURPOSE SCRIPTS
 
 # Setup log forwarder
-./script-dependencies/logging/install_and_setup_forwarder.sh
+#./script-dependencies/logging/install_and_setup_forwarder.sh
 
 # Implement password policy
-./script-dependencies/password-policy/pw-policy-guide.sh
+#./script-dependencies/password-policy/pw-policy-guide.sh
 
 # Set up login banners
 ./script-dependencies/login-banners.sh
@@ -131,6 +131,9 @@ esac
 
 # FINAL TASKS BEFORE TERMINATING
 
+# Update OS
+./script-dependencies/osupdater.sh
+
 # install antivirus
 ./script-dependencies/setup-antivirus.sh
 
@@ -143,9 +146,6 @@ END
 else
     echo "You can run /script-dependencies/antivirus-scan.sh to handle antivirus when you have the time."
 fi
-
-# Update OS
-./script-dependencies/osupdater.sh
 
 # Misc installs
 $PKG_MAN install vim -y
