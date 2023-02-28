@@ -1,8 +1,5 @@
 #!/bin/bash
 
-clear
-
-
 # formatting text
 # Use colors, but only if connected to a terminal
 # and that terminal supports colors
@@ -98,12 +95,17 @@ printf "Scanners and Configuring Firewall...\n"
 apt-get install clamav clamav-daemon -y --force-yes
 apt-get install lynis -y --force-yes
 apt-get install fail2ban -y --force-yes
-apt-get install ufw -y --force-yes
-ufw allow dns
-ufw allow ntp
-ufw allow http
-ufw allow https
-ufw enable
+apt-get install rkhunter -y --force-yes
+apt-get purge ntp -y --force-yes
+apt-get install ntp -y --force-yes
+
+# now using iptables script in script-dependencies
+#apt-get install ufw -y --force-yes
+#ufw allow dns
+#ufw allow ntp
+#ufw allow http
+#ufw allow https
+#ufw enable
 
 printf "Make sure there are no werid rules in iptables and ufw!\n"
 printf "Do that manually!\n"
@@ -135,17 +137,11 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	# First window (already created)
 	tmux rename-window -t 0 "Bash"
 	
-	# Now inside master script
-	# Second window for Clamav
-	#tmux new-window -t $SESSIONB:1 -n "ClamAv"
-	# Send text to "ClamAv" window
+	# Second window for rkhunter
+	tmux new-window -t $SESSIONB:1 -n "rkhunter"
+	# Send text to "rkhunter" window
 	# C-m means <enter>
-	#tmux send-keys -t "ClamAv" "clamscan -i -r / -l clamav.log" C-m
-
-	# Second window for lynis
-	# lynis will search for vulnerabilities what you should to to fix them
-	tmux new-window -t $SESSIONB:1 -n "Lynis"
-	tmux send-keys -t "Lynis" "lynis audit system --quick > lynis.log" C-m
+	tmux send-keys -t "rkhunter" "rkhunter --check --sk" C-m
 	
 	# Attach session
 	#tmux attach-session -t $SESSIONB
@@ -198,10 +194,9 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	tmux send-keys -t "NTPConfig" "vi /etc/ntp.conf" C-m
 
 	# Third window for lynis
-	tmux new-window -t $SESSIONW:2 -n "LynisParse"
+	tmux new-window -t $SESSIONW:2 -n "rkhunter"
 	#sleep 0.1
-	tmux send-keys -t "LynisParse" "### Make sure to wait for lynis to finish! ###" C-m
-	tmux send-keys -t "LynisParse" "grep suggestion /var/log/lynis-report.dat | less -Xr"
+	tmux send-keys -t "rkhunter" "less -Xr /var/log/rkhunter.log"
 	
 	# Fourth window for checking users
 	tmux new-window -t $SESSIONW:3 -n "CheckUsers"
@@ -211,7 +206,7 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	tmux new-window -t $SESSIONW:4 -n "CheckServices"
 	tmux send-keys -t "CheckServices" "./serviceSort.sh | less -Xr" C-m
 
-	# Sixth window for checking crontab, ufw, and tmp
+	# Sixth window for checking crontab, iptables, and tmp
 	tmux new-window -t $SESSIONW:5 -n "CheckCron+Wall"
 	tmux send-keys -t "CheckCron+Wall" "cd /var/spool/cron/crontabs" C-m
 	tmux send-keys -t "CheckCron+Wall" "ls -al" C-m
@@ -222,7 +217,7 @@ if [ "$SESSIONEXISTS" == "" ]; then
 	sleep 0.1
 	# cd into the directory where master script is
 	tmux send-keys -t "Master" "cd ../" C-m
-	tmux send-keys -t "Master" "./master-script.sh" C-m
+	tmux send-keys -t "Master" "./script-dependencies/master-script.sh" C-m
 
 	# Attach session
 	tmux attach-session -t $SESSIONW
