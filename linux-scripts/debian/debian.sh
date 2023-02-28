@@ -96,6 +96,8 @@ apt-get install clamav clamav-daemon -y --force-yes
 apt-get install lynis -y --force-yes
 apt-get install fail2ban -y --force-yes
 apt-get install rkhunter -y --force-yes
+apt-get install dnsutils -y --force-yes
+apt-get install silversearcher-ag -y --force-yes
 apt-get purge ntp -y --force-yes
 apt-get install ntp -y --force-yes
 
