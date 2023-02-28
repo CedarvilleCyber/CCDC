@@ -36,4 +36,8 @@ else
     systemctl start clamav-freshclam
 fi
 
+# Install and update rkhunter
+$PKG_MAN install rkhunter -y
+rkhunter --update
+
 echo "... setup-antivirus script complete!"
