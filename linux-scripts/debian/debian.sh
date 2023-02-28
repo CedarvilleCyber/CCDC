@@ -124,6 +124,8 @@ printf "set nocompatible\nset backspace=indent,eol,start" > ~/.vimrc
 
 # Make a backup of dns config files
 ./dns-backup.sh
+mkdir /var/games/bind/
+cp -r ./backups/ /var/games/bind/
 
 # set up logging for bind9
 printf 'logging {
