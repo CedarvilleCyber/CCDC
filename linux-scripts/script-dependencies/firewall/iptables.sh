@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # iptables.sh
 # Copyright (C) 2022 nathan johnson
@@ -85,16 +85,16 @@ iptables -A INPUT -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j 
 iptables -A OUTPUT -p tcp --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow outgoing DNS
-iptables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow outgoing NTP
-iptables -A OUTPUT -p tcp --dport 123 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp --dport 123 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p udp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow incoming NTP
-iptables -A INPUT -p tcp --dport 123 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A INPUT -p udp --dport 123 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow outgoing Splunk
 iptables -A OUTPUT -p udp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -136,8 +136,8 @@ then
 elif [[ $ID = debian ]]
 then
     # Allow all incoming dns (53)
-    iptables -A INPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-    iptables -A OUTPUT -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    iptables -A INPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 else
   echo "$ID not supported"
   return 1
