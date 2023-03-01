@@ -31,7 +31,7 @@ fi
 # backup directory environment variable housekeeping
 if [-z "${BAK_SCRIPT_WEB_DIR}"]
 then
-    read -p "Web page directory: " webdir
+    read -p "Web page directory (/var/www/html): " webdir
     export BAK_SCRIPT_WEB_DIR=$webdir
 else
     webdir="${BAK_SCRIPT_WEB_DIR}"
@@ -43,6 +43,10 @@ then
     export BAK_SCRIPT_BAK_DIR=$bakdir
 else
     bakdir="${BAK_SCRIPT_BAK_DIR}"
+if [webdir -e ""]
+then
+    webdir = "/var/www/html"
+fi
 if [backdir -e ""]
 then
     bakdir = "/opt/bak/web"
