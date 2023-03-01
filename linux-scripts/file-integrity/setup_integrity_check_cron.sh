@@ -43,7 +43,7 @@ if (crontab -l 2>&1 | grep -vq 'no crontab for'); then
     crontab -l > mycron-tmp
 fi
 # cronjob runs every 3 minutes
-echo "*/3 * * * * $check_integrity_path $files_to_check" >> mycron-tmp
+echo "*/1 * * * * $check_integrity_path $files_to_check" >> mycron-tmp
 # load cronjob file into crontab
 crontab mycron-tmp
 rm mycron-tmp
