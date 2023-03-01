@@ -2,6 +2,6 @@
 
 echo "Begin splunk-server script ..."
 
-# Put script here
+export ID=splunk
 
 echo "... splunk-server script complete!"

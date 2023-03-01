@@ -97,12 +97,12 @@ iptables -A INPUT -p udp --dport 123 -m conntrack --ctstate NEW,ESTABLISHED -j A
 iptables -A OUTPUT -p udp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow outgoing Splunk
-iptables -A OUTPUT -p udp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p udp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-# Allow incoming Splunk
-iptables -A INPUT -p udp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p udp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+# Allow incoming Splunk (not necessary)
+# iptables -A INPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+# iptables -A OUTPUT -p tcp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 # Allow outgoing DHCP
 iptables -A OUTPUT -p udp --dport 67 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
@@ -138,6 +138,17 @@ then
     # Allow all incoming dns (53)
     iptables -A INPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A OUTPUT -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+elif [[$ID = splunk ]]
+then
+    # Splunk Forwarder Receiver
+    iptables -A INPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    # Splunk syslog Receiver
+    iptables -A INPUT -p udp --dport 614 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p udp --sport 614 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    # TFTP Server
+    iptables -A INPUT -p tcp --dport 69 -m conntrack --ctstate NEW, ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --dport 69 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 else
   echo "$ID not supported"
   return 1

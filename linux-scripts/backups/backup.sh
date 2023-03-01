@@ -15,10 +15,18 @@
 # 3. Be restricted to root (chmod 700)
 # 
 # Backup dir must
-# 1. Be owned by root (chown root:root)
+# 1. Be owned by root (chown -R root:root)
 # 2. Be write-restricted to root but world-readable (chmod 744)
 
-su root # TODO: work out kinks with leftover shell if present
+if [$(id -u) -ne 0]
+then
+    echo "Script must be run as root"
+    exit 1
+fi
+
+if [-z /opt/bak]
+    mkdir /opt/bak
+fi
 
 # backup directory environment variable housekeeping
 if [-z "${BAK_SCRIPT_WEB_DIR}"]
