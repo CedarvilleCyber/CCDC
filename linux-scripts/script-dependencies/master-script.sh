@@ -159,8 +159,8 @@ $PKG_MAN install vim -y
 mkdir $WK_DIR/backup
 chmod 750 $WK_DIR/backup
 
-cp -r /etc $WK_DIR/backup/
-cp -r /var $WK_DIR/backup/
+cp -a /etc $WK_DIR/backup/
+cp -a /var $WK_DIR/backup/
 
 mkdir $WK_DIR/backup/home
 for f in $( ls $WK_DIR/ ); do
