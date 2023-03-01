@@ -33,7 +33,7 @@ do
 	fi
 
 
-	SHA1FILE=$SHA1DB/`basename $FILE`.sha1
+	SHA1FILE=$SHA1DB/$(echo "$FILE" | sed 's///-/g').sha1
 	if [ ! -r "$SHA1FILE" ]; then
 		sha1sum $FILE | awk '{ print $1; }' > $SHA1FILE
 		if [ "$?" != "0" ]; then
@@ -54,7 +54,7 @@ do
 		fi
 		diff $SHA1FILE.new $SHA1FILE >/dev/null 2>&1
 		if [ "$?" != "0" ]; then
-			# TODO Where do we want to send alerts?
+			logger "SHA1 changed on file "$SHA1FILE"! Security breach?"
 			echo "SHA1 changed on file \"$SHA1FILE\"! Security breach?" >> /var/file_integrity_alerts
 			RCODE=1
 		fi
