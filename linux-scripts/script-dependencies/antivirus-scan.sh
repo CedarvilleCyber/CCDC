@@ -36,7 +36,7 @@ clamscan --infected --recursive --move $WK_DIR/quarantine --exclude-dir="^/sys/"
 printf "\nRootkit Hunter Scan\n" >> $WK_DIR/security-log.txt
 
 # Scan machine with rkhunter
-rkhunter --check 1>>$WK_DIR/security-log.txt
+rkhunter --check --sk 1>>$WK_DIR/security-log.txt
 
 printf "\nPlease review the scan summaries given above and check for any files in quarantine\n" >> $WK_DIR/security-log.txt
 printf "\nTo rescan your machine, just run antivirus-scan.sh\n" >> $WK_DIR/security-log.txt
