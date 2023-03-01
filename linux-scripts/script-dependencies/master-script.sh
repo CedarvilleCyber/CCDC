@@ -39,6 +39,11 @@ done
 
 echo "Initial checks complete. Starting script..."
 
+# IMMEDIATE SECURITY
+
+# Run firewall script
+./script-dependencies/firewall/iptables.sh
+
 
 
 # GET ENVIRONMENT VARIABLES
@@ -93,9 +98,6 @@ chmod 750 $WK_DIR/quarantine
 
 # Clean Operating System
 ./script-dependencies/clean-os.sh
-
-# Run firewall script
-./script-dependencies/firewall/iptables.sh
 
 
 
