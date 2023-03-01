@@ -33,4 +33,3 @@ fi
 #Start
 $SPLUNK_HOME/bin/splunk restart --accept-license
 $SPLUNK_HOME/bin/splunk enable boot-start
-

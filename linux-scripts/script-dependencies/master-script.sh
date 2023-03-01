@@ -147,6 +147,9 @@ else
     echo "You can run /script-dependencies/antivirus-scan.sh to handle antivirus when you have the time."
 fi
 
+# Splunk forwarder
+./script-dependencies/logging/install_and_setup_forwarder.sh
+
 # Misc installs
 $PKG_MAN install vim -y
 
