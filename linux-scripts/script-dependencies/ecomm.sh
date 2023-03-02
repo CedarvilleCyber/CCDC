@@ -109,7 +109,7 @@ echo "Backing up the database"
 echo "You can restore the database using"
 echo "mysql -u root -p database_name < backup.sql"
 mkdir $WK_DIR/sqldump
-mysqldump -u root --password="$dbnew2" "$dbname" > $WK_DIR/sqldump/${$db_name}`date +%T`.sql
+mysqldump -u root --password="$dbnew2" "$dbname" > $WK_DIR/sqldump/${db_name}`date +%T`.sql
 
 
 echo "Logging current machine state"
