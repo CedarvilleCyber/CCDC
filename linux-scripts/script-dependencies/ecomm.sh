@@ -2,6 +2,8 @@
 
 echo "Begin ecomm script ..."
 
+echo $WK_DIR
+
 echo "Changing root passwd"
 passwd root
 
@@ -44,7 +46,7 @@ echo "Securing database"
 echo "Change the root password and answer yes to all prompts"
 mysql_secure_installation
 
-cat /etc/my.cnf | sed "/\[mysqld\]/ a bind-address=127.0.0.1" > $WK_DIR/temp && mv $WK_DIR/temp /etc/my.cnf
+cat /etc/my.cnf | sed "/\[mysqld\]/ a bind-address=127.0.0.1" > $WK_DIR/temp && cat $WK_DIR/temp > /etc/my.cnf
 
 printf "Enter the new database root passwd: "
 read -s dbnew1
@@ -65,10 +67,7 @@ do
 	echo
 done
 echo "Changing prestashop database password"
-cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(,);\)/\1$dbnew2\2/" > $WK_DIR/temp && mv $WK_DIR/temp $config_file
-chown apache:apache $config_file
-chmod 644 $config_file
-chcon -t httpd_sys_rw_content_t $config_file -R
+cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > $WK_DIR/temp && cat $WK_DIR/temp > $config_file
 
 
 read -p "Update the prestashop admin password [y/n]?" update_presta_pw
