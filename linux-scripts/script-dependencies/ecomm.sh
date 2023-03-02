@@ -66,6 +66,9 @@ do
 done
 echo "Changing prestashop database password"
 cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(,);\)/\1$dbnew2\2/" > $WK_DIR/temp && mv $WK_DIR/temp $config_file
+chown apache:apache $config_file
+chmod 644 $config_file
+chcon -t httpd_sys_rw_content_t $config_file
 
 
 read -p "Update the prestashop admin password [y/n]?" update_presta_pw
