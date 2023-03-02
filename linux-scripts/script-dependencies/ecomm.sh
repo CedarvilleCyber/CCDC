@@ -70,12 +70,13 @@ echo "Changing prestashop database password"
 cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > $WK_DIR/temp && cat $WK_DIR/temp > $config_file
 
 
+db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
+db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
+
 read -p "Update the prestashop admin password [y/n]?" update_presta_pw
 if [[ "$update_presta_pw" = "y" ]] #update_presta_pw
 then
 
-db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
-db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
 echo "Listing TABLE ps_employees from DATABASE $db_name"
 mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT firstname,lastname,email from ${db_prefix}employee;"
 
