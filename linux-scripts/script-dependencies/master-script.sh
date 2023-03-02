@@ -90,11 +90,6 @@ chmod 750 $WK_DIR/quarantine
 # Implement password policy
 #./script-dependencies/password-policy/pw-policy-guide.sh
 
-# Splunk forwarder
-cd ./script-dependencies/logging/
-./install_and_setup_forwarder.sh
-cd ../..
-
 # Set up login banners
 ./script-dependencies/login-banners.sh
 
@@ -135,6 +130,11 @@ esac
 
 
 # FINAL TASKS BEFORE TERMINATING
+
+# Splunk forwarder
+cd ./script-dependencies/logging/
+./install_and_setup_forwarder.sh
+cd ../..
 
 # Update OS
 ./script-dependencies/osupdater.sh
