@@ -75,7 +75,7 @@ then
 db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
 db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
 echo "Listing TABLE ps_employees from DATABASE $db_name"
-mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT firstname,lastname,email from ${db_prefix}_employee;"
+mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT firstname,lastname,email from ${db_prefix}employee;"
 
 read -p "Enter the admin's email: " admin_email
 
