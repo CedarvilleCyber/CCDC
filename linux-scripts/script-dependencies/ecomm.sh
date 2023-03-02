@@ -99,7 +99,7 @@ do
 done
 
 echo "Updating $admin_email's passwd"
-db_cookie=`cat $config_file | grep "_COOKIE_KEY_" | sed "s/define('_COOKIE_KEY_', '\(.*/)');/\1/"`
+db_cookie=`cat $config_file | grep "_COOKIE_KEY_" | sed "s/define('_COOKIE_KEY_', '\(.*\)');/\1/"`
 mysql -u root --password="$dbnew2" "$db_name" --execute="UPDATE ${db_prefix}_employee SET passwd=MD5(${db_cookie}${admnew2}) WHERE email=$admin_email;"
 
 fi #update_presta_pw
