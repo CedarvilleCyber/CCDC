@@ -22,8 +22,6 @@ fi #install_packages
 
 
 echo "Setting up iptables rules"
-iptables -f
-# after ID is fixed, more rules will apply
 ./script-dependencies/firewall/iptables.sh
 
 
