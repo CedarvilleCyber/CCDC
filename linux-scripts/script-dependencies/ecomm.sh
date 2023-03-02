@@ -40,7 +40,7 @@ fi
 echo "Randomizing admin panel"
 find $presta_install_path -maxdepth 1 -name 'admin*' -exec mv {} /var/www/html/prestashop/admin$RANDOM \;
 echo "Access the admin panel at " `find $presta_install_path -maxdepth 1 -name 'admin*' -exec echo {} \;`
-
+read -p "Note the admin url and then press any key to continue..."
 
 echo "Securing database"
 echo "Change the root password and answer yes to all prompts"
@@ -78,9 +78,9 @@ if [[ "$update_presta_pw" = "y" ]] #update_presta_pw
 then
 
 echo "Listing TABLE ps_employees from DATABASE $db_name"
-mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT firstname,lastname,email from ${db_prefix}employee;"
+mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT id_employee as id,firstname,lastname,email from ${db_prefix}employee;"
 
-read -p "Enter the admin's email: " admin_email
+read -p "Enter the admin's id: " admin_id
 
 printf "Enter the admin's new passwd: "
 read -s admnew1
@@ -103,7 +103,7 @@ done
 
 echo "Updating $admin_email's passwd"
 db_cookie=`cat $config_file | grep "_COOKIE_KEY_" | sed "s/define('_COOKIE_KEY_', '\(.*\)');/\1/"`
-mysql -u root --password="$dbnew2" "$db_name" --execute="UPDATE ${db_prefix}employee SET passwd=MD5('${db_cookie}${admnew2}') WHERE email='$admin_email';"
+mysql -u root --password="$dbnew2" "$db_name" --execute="UPDATE ${db_prefix}employee SET passwd=MD5('${db_cookie}${admnew2}') WHERE id_employee='$admin_id';"
 
 fi #update_presta_pw
 
@@ -115,8 +115,11 @@ mkdir $WK_DIR/sqldump
 mysqldump -u root --password="$dbnew2" "$db_name" > $WK_DIR/sqldump/${db_name}`date +%T`.sql
 
 
-echo "Logging current machine state"
+echo "Logging current running processes"
 mkdir $WK_DIR/ps
+ps ax > $WK_DIR/ps/init
 
+
+rm $WK_DIR/temp
 
 echo "... ecomm script complete!"
