@@ -5,7 +5,7 @@ echo "Begin ecomm script ..."
 echo "Changing root passwd"
 passwd root
 
-read -p "Admin user name:" admin_username
+read -p "Admin user name: " admin_username
 echo "Changing $admin_username's passwd"
 passwd $admin_username
 
@@ -46,7 +46,7 @@ mysql_secure_installation
 
 cat /etc/my.cnf | sed "/\[mysqld\]/ a bind-address=127.0.0.1" > $WK_DIR/temp && mv $WK_DIR/temp /etc/my.cnf
 
-echo "Enter the new database root passwd"
+printf "Enter the new database root passwd: "
 read -s dbnew1
 echo
 printf "Retype new password: "
@@ -72,14 +72,14 @@ read -p "Update the prestashop admin password [y/n]?" update_presta_pw
 if [[ "$update_presta_pw" = "y" ]] #update_presta_pw
 then
 
-db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*/)');/\1/"`
-db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*/)');/\1/"`
+db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
+db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
 echo "Listing TABLE ps_employees from DATABASE $db_name"
 mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT firstname,lastname,email from ${db_prefix}_employee;"
 
-read -p "Enter the admin's email" admin_email
+read -p "Enter the admin's email: " admin_email
 
-echo "Enter the admin's new passwd"
+printf "Enter the admin's new passwd: "
 read -s admnew1
 echo
 printf "Retype new password: "
