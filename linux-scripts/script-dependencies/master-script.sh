@@ -87,9 +87,6 @@ chmod 750 $WK_DIR/quarantine
 
 # ALL PURPOSE SCRIPTS
 
-# Setup log forwarder
-#./script-dependencies/logging/install_and_setup_forwarder.sh
-
 # Implement password policy
 #./script-dependencies/password-policy/pw-policy-guide.sh
 
@@ -151,7 +148,7 @@ fi
 
 # Splunk forwarder
 cd ./script-dependencies/logging/
-./script-dependencies/logging/install_and_setup_forwarder.sh
+./install_and_setup_forwarder.sh
 cd ../..
 
 # Misc installs
