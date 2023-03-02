@@ -11,6 +11,7 @@ case $machine in
 	4) cp ./script-dependencies/logging/ubuntu-web-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
 	5) cp ./script-dependencies/logging/debian-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
 	6) cp ./script-dependencies/logging/fedora-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
-	*) exit 1
+	*) exit 1 ;;
+esac
 
 $SPLUNK_HOME/bin/splunk add forward-server 172.20.241.20:9997
