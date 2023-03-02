@@ -90,6 +90,11 @@ chmod 750 $WK_DIR/quarantine
 # Implement password policy
 #./script-dependencies/password-policy/pw-policy-guide.sh
 
+# Splunk forwarder
+cd ./script-dependencies/logging/
+./install_and_setup_forwarder.sh
+cd ../..
+
 # Set up login banners
 ./script-dependencies/login-banners.sh
 
@@ -145,11 +150,6 @@ END
 else
     echo "You can run /script-dependencies/antivirus-scan.sh to handle antivirus when you have the time."
 fi
-
-# Splunk forwarder
-cd ./script-dependencies/logging/
-./install_and_setup_forwarder.sh
-cd ../..
 
 # Misc installs
 $PKG_MAN install vim -y
