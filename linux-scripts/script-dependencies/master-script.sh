@@ -150,7 +150,9 @@ else
 fi
 
 # Splunk forwarder
+cd ./script-dependencies/logging/
 ./script-dependencies/logging/install_and_setup_forwarder.sh
+cd ../..
 
 # Misc installs
 $PKG_MAN install vim -y
