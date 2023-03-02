@@ -116,6 +116,7 @@ printf "Please enter the number corresponding to this machine's purpose:
     [7] Firewall
     "
 read machine
+export MACHINE=$machine
 
 case $machine in
     1)  ./script-dependencies/splunk-server.sh  ;;
