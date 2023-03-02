@@ -100,7 +100,7 @@ done
 
 echo "Updating $admin_email's passwd"
 db_cookie=`cat $config_file | grep "_COOKIE_KEY_" | sed "s/define('_COOKIE_KEY_', '\(.*\)');/\1/"`
-mysql -u root --password="$dbnew2" "$db_name" --execute="UPDATE ${db_prefix}_employee SET passwd=MD5(${db_cookie}${admnew2}) WHERE email=$admin_email;"
+mysql -u root --password="$dbnew2" "$db_name" --execute="UPDATE ${db_prefix}employee SET passwd=MD5('${db_cookie}${admnew2}') WHERE email='$admin_email';"
 
 fi #update_presta_pw
 
@@ -109,7 +109,7 @@ echo "Backing up the database"
 echo "You can restore the database using"
 echo "mysql -u root -p database_name < backup.sql"
 mkdir $WK_DIR/sqldump
-mysqldump -u root --password="$dbnew2" "$dbname" > $WK_DIR/sqldump/${$db_name}${date+%T}.sql
+mysqldump -u root --password="$dbnew2" "$dbname" > $WK_DIR/sqldump/${$db_name}`date +%T`.sql
 
 
 echo "Logging current machine state"
