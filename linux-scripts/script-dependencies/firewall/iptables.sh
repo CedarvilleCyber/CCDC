@@ -100,7 +100,7 @@ iptables -A OUTPUT -p udp --sport 123 -m conntrack --ctstate ESTABLISHED -j ACCE
 iptables -A OUTPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-# Allow incoming Splunk (not necessary)
+# Allow incoming Splunk (not necessary for all machines)
 # iptables -A INPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 # iptables -A OUTPUT -p tcp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
@@ -148,7 +148,7 @@ then
     iptables -A OUTPUT -p udp --sport 614 -m conntrack --ctstate ESTABLISHED -j ACCEPT
     # TFTP Server
     iptables -A INPUT -p tcp --dport 69 -m conntrack --ctstate NEW, ESTABLISHED -j ACCEPT
-    iptables -A OUTPUT -p tcp --dport 69 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 69 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 else
   echo "$ID not supported"
   return 1

@@ -13,4 +13,5 @@ case $machine in
 	6) cp ./script-dependencies/logging/fedora-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
 	*) exit 1
 
+echo "Retrieve password from Teams spreadsheet. Username should be splunk."
 $SPLUNK_HOME/bin/splunk add forward-server 172.20.241.20:9997

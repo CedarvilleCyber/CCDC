@@ -18,6 +18,8 @@
 # 1. Be owned by root (chown -R root:root)
 # 2. Be write-restricted to root but world-readable (chmod 744)
 
+echo "Backup script requires persistent env vars to be easily scripted. Please use source command instead of ./"
+
 if [$(id -u) -ne 0]
 then
     echo "Script must be run as root"
