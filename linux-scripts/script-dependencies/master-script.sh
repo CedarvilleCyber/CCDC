@@ -87,9 +87,6 @@ chmod 750 $WK_DIR/quarantine
 
 # ALL PURPOSE SCRIPTS
 
-# Setup log forwarder
-#./script-dependencies/logging/install_and_setup_forwarder.sh
-
 # Implement password policy
 #./script-dependencies/password-policy/pw-policy-guide.sh
 
@@ -114,6 +111,7 @@ printf "Please enter the number corresponding to this machine's purpose:
     [7] Firewall
     "
 read machine
+export MACHINE=$machine
 
 case $machine in
     1)  ./script-dependencies/splunk-server.sh  ;;
@@ -133,6 +131,11 @@ esac
 
 # FINAL TASKS BEFORE TERMINATING
 
+# Splunk forwarder
+cd ./script-dependencies/logging/
+./install_and_setup_forwarder.sh
+cd ../..
+
 # Update OS
 ./script-dependencies/osupdater.sh
 
@@ -149,9 +152,6 @@ else
     echo "You can run /script-dependencies/antivirus-scan.sh to handle antivirus when you have the time."
 fi
 
-# Splunk forwarder
-./script-dependencies/logging/install_and_setup_forwarder.sh
-
 # Misc installs
 $PKG_MAN install vim -y
 
@@ -159,8 +159,8 @@ $PKG_MAN install vim -y
 mkdir $WK_DIR/backup
 chmod 750 $WK_DIR/backup
 
-cp -r /etc $WK_DIR/backup/
-cp -r /var $WK_DIR/backup/
+cp -a /etc $WK_DIR/backup/
+cp -a /var $WK_DIR/backup/
 
 mkdir $WK_DIR/backup/home
 for f in $( ls $WK_DIR/ ); do
