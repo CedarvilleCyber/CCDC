@@ -4,7 +4,7 @@
 #-------------Setup-------------#
 #===============================#
 
-case $MACHINE in
+case $machine in
 	1) cp ./splunk-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
 	2) cp ./centos-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
 	3) cp ./ubuntu-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
