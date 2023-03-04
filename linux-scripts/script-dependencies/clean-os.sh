@@ -3,7 +3,7 @@
 # Notes:
 # - Assumes WK_DIR environment variable exists
 
-echo "Begin clean-os script ..."
+printf "\e[1;33m STARTING CLEAN OS SCRIPT... \e[0m \n"
 
 printf "\n-------- Begin Clean OS --------\n\n" >> $WK_DIR/security-log.txt
 
@@ -55,4 +55,4 @@ ls -l $WK_DIR/ >> $WK_DIR/security-log.txt
 
 printf "\n--------- End Clean OS ---------\n\n" >> $WK_DIR/security-log.txt
 
-echo "... clean-os script complete!"
+printf "\e[1;32m CLEAN OS SCRIPT COMPLETE \e[0m \n"
