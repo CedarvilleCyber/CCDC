@@ -9,8 +9,7 @@ if [[ $(id -u) != "0" ]]; then
 fi
 
 # script start
-printf "Begin osupdater script ...\n"
-printf "Systems may stop temporarily\n"
+printf "\e[1;33m STARTING OSUPDATER... system may temporarily halt \e[0m"
 
 #apt-get
 if [[ $PKG_MAN == "apt-get" ]]; then
@@ -53,5 +52,4 @@ if [[ $PKG_MAN == "yum" ]]; then
 
 fi
 
-printf "OS & packages current.\n"
-printf "... osupdater script complete!\n"
+printf "\e[1;32m SCRIPT COMPLETE - OS & PACKAGES CURRENT \e[0m"
