@@ -30,7 +30,9 @@ get_abs_filename() {
     while [ ! -z "$1" ]
     do
         # $parm : relative filename
-        echo -n " $(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+		if [ -f "$1" ]; then
+			echo -n " $(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+		fi
         shift
     done
 }
