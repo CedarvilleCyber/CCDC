@@ -10,7 +10,7 @@ fi
 source /etc/os-release
 
 # Install iptables
-echo "$ID detected, beginning iptables install"
+echo "$ID detected, beginning master script"
 if [[ ( $ID = fedora ) || ( $ID = centos ) ]]
 then
   yum install tmux -y
