@@ -19,7 +19,7 @@ $PKG_MAN install clamav clamav-daemon -y
 # Manually install database if not present
 clam_ver=$(clamscan --version | cut -d " " -f 2 | cut -d "." -f 2)
 if (("$clam_ver" < 103)); then
-    #mkdir /var/lib/clamav
+    mkdir /var/lib/clamav
     #curr_dir=$( pwd )
     #cd /var/lib/clamav
     #wget http://clamavdb.c3sl.ufpr.br/main.cvd http://clamavdb.c3sl.ufpr.br/daily.cvd http://clamavdb.c3sl.ufpr.br/bytecode.cvd
