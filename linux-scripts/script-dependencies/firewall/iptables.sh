@@ -145,7 +145,7 @@ then
     # Allow all incoming dns (53)
     iptables -A INPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A OUTPUT -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
-elif [[$ID = splunk ]]
+elif [[ $ID = splunk ]]
 then
     # Splunk Forwarder Receiver
     iptables -A INPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
