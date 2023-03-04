@@ -4,7 +4,7 @@ title = "Cedarville Windows Script - 'Providence' "
 :: Credits:
 ::      Mackwage - https://gist.github.com/mackwage/08604751462126599d7e52f233490efe
 ::      Mike Bailey - https://github.com/mike-bailey/CCDC-Scripts
-::      Cedarville's version of Balwdin Wallace's old script - https://github.com/CedarvilleCyber/CCDC/blob/main/CCDC-Collection/Windows/windowsBW.cmd
+::      Cedarville's version of Baldwin Wallace's old script - https://github.com/CedarvilleCyber/CCDC/blob/main/CCDC-Collection/Windows/windowsBW.cmd
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
@@ -112,7 +112,7 @@ echo Logon Banner Set
 echo Logon Banner Set >> output.txt
 
 echo Running AD Specific firewall rules
-echo Running AD Specific firewall rules output.txt
+echo Running AD Specific firewall rules >> output.txt
 :: \/\/ IMPORTANT!! If your service go down after running this script look here first. Could be one of these rules, I couldn't really test the changes
 netsh advfirewall firewall add rule name="DNS Out to Any" dir=out action=allow enable=no profile=any remoteport=53 protocol=udp
 netsh advfirewall firewall add rule name="Splunk OUT" dir=out action=allow enable=yes profile=any remoteip=%Splunk% remoteport=8000,8089,9997 protocol=tcp
