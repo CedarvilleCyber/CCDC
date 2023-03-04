@@ -155,6 +155,7 @@ fi
 
 # Misc installs
 $PKG_MAN install vim -y
+$PKG_MAN install nmap -y
 
 # Backup /etc and /var
 mkdir $WK_DIR/backup
