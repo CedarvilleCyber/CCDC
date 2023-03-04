@@ -134,11 +134,7 @@ elif [[ $ID = centos ]]
 then
     # Allow all incoming http (80)
     iptables -A INPUT -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-    iptables -A OUTPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
-
-    # Allow all incoming http (8000)
-    iptables -A INPUT -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-    iptables -A OUTPUT -p tcp --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT    
 elif [[ $ID = debian ]]
 then
     # Allow all incoming dns (53)
@@ -149,6 +145,9 @@ then
     # Splunk Forwarder Receiver
     iptables -A INPUT -p tcp --dport 9997 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A OUTPUT -p tcp --sport 9997 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    # Splunk http
+    iptables -A INPUT -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --sport 8000 -m conntrack --ctstate ESTABLISHED -j ACCEPT
     # Splunk syslog Receiver
     iptables -A INPUT -p udp --dport 614 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A OUTPUT -p udp --sport 614 -m conntrack --ctstate ESTABLISHED -j ACCEPT
