@@ -112,7 +112,7 @@ iptables -A INPUT -p udp --sport 67 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 iptables -A INPUT -p udp --dport 67 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp --sport 67 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-if [[-d /opt/splunk]]
+if [[ -d /opt/splunk ]]
 then
   ID="splunk"
 fi
