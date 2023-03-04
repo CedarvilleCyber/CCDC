@@ -6,8 +6,19 @@ if [[ $(id -u) != "0" ]]; then
     exit 1
 fi
 
-apt-get install tmux -y
-yum install tmux -y
+# Determine machine os type ($ID)
+source /etc/os-release
+
+# Install iptables
+echo "$ID detected, beginning iptables install"
+if [[ ( $ID = fedora ) || ( $ID = centos ) ]]
+then
+  yum install tmux -y
+
+elif [[ ( $ID = ubuntu ) || ( $ID = debian ) ]]
+then
+  apt-get install tmux -y
+fi
 
 tmux new-session -d -s "master"
 tmux rename-window -t 0 "bash"
