@@ -49,8 +49,9 @@ apt-get install systemd -y
 # GET ENVIRONMENT VARIABLES
 
 # Get and export WK_DIR
-printf "Your current directory is: "
+printf "\e[1;36 Your current directory is: "
 pwd
+\e[1;0m
 read -p "What is your home or primary working directory? " wk_dir
 export WK_DIR=$wk_dir
 
