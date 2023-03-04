@@ -2,7 +2,7 @@
 # script to setup login banners for any linux machine
 # assumes DISTRO environment variable is present
 
-echo "Begin login-banners script ..."
+printf "\e[1;33m STARTING LOGIN-BANNERS SCRIPT... \e[0m \n"
 
 #check if user is root
 if [[ $(id -u) != "0" ]]; then
@@ -26,4 +26,4 @@ else
     /etc/init.d/ssh restart
 fi
 
-echo "... login-banners script complete!"
+printf "\e[1;32m LOGIN-BANNERS COMPLETE \e[0m \n"
