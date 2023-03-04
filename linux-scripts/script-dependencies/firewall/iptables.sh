@@ -16,7 +16,10 @@ fi
 printf "\e[1;33m STARTING IPTABLES SCRIPT... \e[0m \n"
 
 # Determine machine os type ($ID)
-source /etc/os-release
+if [[$ID != splunk]]
+then
+  source /etc/os-release
+fi
 
 # Install iptables
 echo "$ID detected, beginning iptables install"
