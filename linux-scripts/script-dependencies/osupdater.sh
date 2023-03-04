@@ -9,7 +9,7 @@ if [[ $(id -u) != "0" ]]; then
 fi
 
 # script start
-printf "\e[1;33m STARTING OSUPDATER... system may temporarily halt \e[0m \n"
+printf "\e[1;33m STARTING OSUPDATER... SYSTEM MAY TEMPORARILY HALT \e[0m \n"
 
 #apt-get
 if [[ $PKG_MAN == "apt-get" ]]; then
