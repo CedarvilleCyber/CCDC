@@ -22,23 +22,6 @@ netsh advfirewall set allprofiles state on
 ::netsh advfirewall firewall set rule name=all new enable=no
 echo Firewall turned on
 
-set /p prestep="Would you like to run the presteps of sfc scannow and dism health checks? May take up to 20 min (recommended yes) [y/n]: "
-if "%prestep%" == "y" (
-    echo Cleaning up corrupted system files...
-    echo Cleaning up corrupted system files... >> output.txt
-	sfc /scannow
-    echo system files are clean
-    echo system files are clean  >> output.txt
-
-    echo Running registry scan, check, and health restoration...
-    echo Running registry scan, check, and health restoration... >> output.txt
-    DISM /Online /Cleanup-Image /ScanHealth
-    DISM /Online /Cleanup-Image /CheckHealth
-    DISM /Online /Cleanup-Image /RestoreHealth
-    echo Registry is healthy
-    echo Registry is healthy >> output.txt
-)
-
 echo Making some working directories. see c:\ccdc for more
 echo Making some working directories. see c:\ccdc for more >> output.txt
 :: Makes some directories for us to work with
@@ -559,6 +542,22 @@ echo Danger completed
 echo Danger completed >> output.txt
 
 
+set /p prestep="Would you like to run the presteps of sfc scannow and dism health checks? May take up to 20 min (recommended yes) [y/n]: "
+if "%prestep%" == "y" (
+    echo Cleaning up corrupted system files...
+    echo Cleaning up corrupted system files... >> output.txt
+	sfc /scannow
+    echo system files are clean
+    echo system files are clean  >> output.txt
+
+    echo Running registry scan, check, and health restoration...
+    echo Running registry scan, check, and health restoration... >> output.txt
+    DISM /Online /Cleanup-Image /ScanHealth
+    DISM /Online /Cleanup-Image /CheckHealth
+    DISM /Online /Cleanup-Image /RestoreHealth
+    echo Registry is healthy
+    echo Registry is healthy >> output.txt
+)
 
 
 set /p box="If you are running this on 2012AD enter any key. Otherwise for general windows use enter 'W': "
