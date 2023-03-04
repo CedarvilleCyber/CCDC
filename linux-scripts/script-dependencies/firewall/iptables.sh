@@ -13,6 +13,8 @@ then
   #exit 1
 fi
 
+printf "\e[1;33m STARTING IPTABLES SCRIPT... \e[0m \n"
+
 # Determine machine os type ($ID)
 source /etc/os-release
 
@@ -165,3 +167,5 @@ iptables -A OUTPUT -j DROP
 
 # Backup Rules (iptables-restore < backup)
 iptables-save >/etc/ip_rules
+
+printf "\e[1;32m IPTABLES SCRIPT COMPLETE \e[0m \n"
