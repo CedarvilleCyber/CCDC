@@ -14,7 +14,7 @@ if [[ $(id -u) != "0" ]]; then
     exit 1
 fi
 
-echo "Begin antivirus-scan script ..."
+printf "\e[1;33m STARTING ANTIVIRUS... \e[0m \n"
 
 # Get home or working directory from user
 if [ "$WK_DIR" == "" ]; then
@@ -47,4 +47,4 @@ echo "PLEASE REVIEW THIS FILE AND CHECK FOR ANY FILES MOVED TO QUARANTINE!!"
 
 echo "Scan complete"
 
-echo "... antivirus-scan script complete!"
+printf "\e[1;32m ANTIVIRUS COMPLETE \e[0m \n"
