@@ -127,21 +127,22 @@ printf "set nocompatible\nset backspace=indent,eol,start" > ~/.vimrc
 mkdir /var/games/bind/
 cp -r ./storage/ /var/games/bind/
 
-# set up logging for bind9
-printf 'logging {
-        channel default_log {
-                file "/var/log/named/default.log";
-                print-time yes;
-                print-category yes;
-                print-severity yes;
-                severity info;
-        };
-
-        category default { default_log; };
-        category queries { default_log; };
-};' >> /etc/bind/named.conf.options
-mkdir /var/log/named
-chown bind /var/log/named/
+## bind9 already has logging, so if we add more to it, it will break!
+## set up logging for bind9
+#printf 'logging {
+#        channel default_log {
+#                file "/var/log/named/default.log";
+#                print-time yes;
+#                print-category yes;
+#                print-severity yes;
+#                severity info;
+#        };
+#
+#        category default { default_log; };
+#        category queries { default_log; };
+#};' >> /etc/bind/named.conf.options
+#mkdir /var/log/named
+#chown bind /var/log/named/
 
 # Set up tmux
 printf "Setting up tmux...\n"
