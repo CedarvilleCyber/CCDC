@@ -1,0 +1,25 @@
+#!/bin/bash
+
+SESSIONNAME='ccdc-lm'
+WINDOWNAME='harden'
+tmux has-session -t $SESSIONNAME &> /dev/null
+
+tmux source ./.tmux-lm.conf
+
+if [ $? != 0 ]
+then
+	tmux new-session -d -s $SESSIONNAME -n $WINDOWNAME
+	sleep 1
+	
+	tmux split-window -h -t $SESSIONNAME:0
+	tmux split-window -v -t 0
+	tmux split-window -v -t 2 
+
+	tmux send-keys -t 0 "cd ~; clear" Enter
+	tmux send-keys -t 1 "cd ~; clear" Enter
+	tmux send-keys -t 2 "cd ~; clear" Enter
+	tmux send-keys -t 3 "cd ~; clear" Enter
+
+fi
+
+tmux a -t $SESSIONNAME
