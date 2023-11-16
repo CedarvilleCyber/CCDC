@@ -4,8 +4,6 @@ SESSIONNAME='ccdc-lm'
 WINDOWNAME='harden'
 tmux has-session -t $SESSIONNAME &> /dev/null
 
-tmux source ./.tmux-lm.conf
-
 if [ $? != 0 ]
 then
 	tmux new-session -d -s $SESSIONNAME -n $WINDOWNAME
@@ -21,5 +19,7 @@ then
 	tmux send-keys -t 3 "cd ~; clear" Enter
 
 fi
+
+tmux source ./.tmux-lm.conf
 
 tmux a -t $SESSIONNAME
