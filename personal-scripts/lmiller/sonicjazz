@@ -1,9 +1,72 @@
 #!/bin/bash
+#
+# 
+
+# Sonicjazz must be run as root
+if [ $(id -u) != 0 ]; then
+    echo "You must use sudo to run this script!"
+    exit 1
+fi
 
 # Move to home directory
-cd ~
+cd $WK_DIR 
 
 # Remove the contents of /tmp
+echo "Remove contents of /tmp"
 rm -rf /tmp/*
 
+# Make sure permissions are correct on sensitive files
+echo "Ensure perms are correct on sensitive files"
+chmod 644 /etc/passwd
+chmod 600 /etc/shadow
 
+# Install useful utilities and clean up unneeded packages/dependencies
+echo "Install useful utilities and clean up unneeded packages/dependencies"
+$PKG_MAN install -y nmap
+$PKG_MAN autoremove -y
+
+# Create backups
+echo "Create backups under /opt/starlight"
+mkdir /opt/starlight
+chmod 744 /opt/starlight
+
+mkdir /opt/starlight/web
+chmod 744 /opt/starlight/web
+
+mkdir /opt/starlight/home
+chmod 744 /opt/starlight/home
+
+cp -r /var/www /opt/starlight/web/
+cp -r /var /opt/starlight/
+cp -r /etc /opt/starlight/
+cp -r $WK_DIR /opt/starlight/home
+
+# Setup login banners
+echo "Setup login banners"
+chattr -i -a /etc/issue
+chattr -i -a /etc/issue.net
+chattr -i -a /etc/ssh/sshd-banner
+chattr -i -a /etc/ssh/sshd_config
+
+BANNER="Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
+echo $BANNER | tee -a /etc/issue /etc/issue.net > /dev/null
+echo $BANNER | tee /etc/ssh/sshd-banner > /dev/null
+echo "Banner /etc/ssh/sshd-banner" | tee -a /etc/ssh/sshd_config > /dev/null
+
+/etc/init.d/sshd restart
+
+# Setup splunk forwarder
+echo "Setup splunk forwarding"
+cd CCDC/linux-scripts/script-dependencies/logging/
+./install_and_setup_forwarder.sh
+cd $WK_DIR
+
+# Setup firewall
+echo "Setup firewall rules"
+cd CCDC/linux-scripts/script-dependencies/firewall/
+./iptables.sh
+cd $WK_DIR
+
+echo "SONICJAZZ EXECUTED SUCCESSFULLY!"
+echo "Consider running ecomm.sh"
+exit 0
