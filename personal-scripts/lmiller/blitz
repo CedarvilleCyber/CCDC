@@ -22,6 +22,9 @@ export DISTRO="redhat"
 # Set and export PKG_MAN for compatibility with other scripts
 export PKG_MAN="yum"
 
+# Remove /tmp contents
+rm -rf /tmp/*
+
 # move to working directory and copy personal scripts there
 cd $WK_DIR
 

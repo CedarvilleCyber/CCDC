@@ -11,11 +11,6 @@ fi
 # Move to home directory
 cd $WK_DIR 
 
-# Remove the contents of /tmp
-# Problematic for tmux
-#echo "Remove contents of /tmp"
-#rm -rf /tmp/*
-
 # Make sure permissions are correct on sensitive files
 echo "Ensure perms are correct on sensitive files"
 chmod 644 /etc/passwd
@@ -63,6 +58,7 @@ cd CCDC/linux-scripts/script-dependencies/logging/
 cd $WK_DIR
 
 # Setup firewall
+# Configure iptable rules manually here
 echo "Setup firewall rules"
 cd CCDC/linux-scripts/script-dependencies/firewall/
 ./iptables.sh
@@ -70,4 +66,8 @@ cd $WK_DIR
 
 echo "SONICJAZZ EXECUTED SUCCESSFULLY!"
 echo "Consider running ecomm.sh"
+# Put ecomm stuff in here
+# Move back ups to after ecomm is secured
+# Back up network config files
+# Check passwd for bash logins programmatically
 exit 0
