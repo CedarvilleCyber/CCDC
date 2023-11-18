@@ -35,12 +35,12 @@ cp CCDC/personal-scripts/lmiller/* .
 yum install -y vim
 yum install -y tmux
 
-mv tmux-lm.conf .tmux.conf
+cp tmux-lm.conf .tmux.conf
 chown $SUDO_USER .tmux.conf
-chmod .tmux.conf 644
-mv vim-lm.conf .vimrc
+chmod 644 .tmux.conf
+cp vim-lm.conf .vimrc
 chown $SUDO_USER .vimrc
-chmod .vimrc 644
+chmod 644 .vimrc
 
 # Setup tmux session
 SESSIONNAME='ccdc-lm'
@@ -53,7 +53,7 @@ if [ $? != 0 ]; then
 
     tmux split-window -h -t $SESSIONNAME:0
     tmux split-window -v -t 0
-    tmux split-window -v -t 2
+    tmux split-window -v -t 1
 
     tmux send-keys -t 0 "cd $WK_DIR; clear" Enter
     tmux send-keys -t 1 "cd $WK_DIR; clear" Enter
