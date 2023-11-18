@@ -23,8 +23,8 @@ chmod 600 /etc/shadow
 
 # Install useful utilities and clean up unneeded packages/dependencies
 echo "Install useful utilities and clean up unneeded packages/dependencies"
-$PKG_MAN install -y nmap 1>/dev/null
-$PKG_MAN autoremove -y 1>/dev/null
+$PKG_MAN install -y nmap
+$PKG_MAN autoremove -y
 
 # Create backups
 echo "Create backups under /opt/starlight"

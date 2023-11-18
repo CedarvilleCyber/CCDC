@@ -33,8 +33,8 @@ cp CCDC/personal-scripts/lmiller/* .
 chown $SUDO_USER:$SUDO_USER ./*
 
 # install useful utilities
-yum install -y vim 1>/dev/null
-yum install -y tmux 1>/dev/null
+yum install -y vim
+yum install -y tmux
 
 cp tmux-lm.conf .tmux.conf
 chown $SUDO_USER:$SUDO_USER .tmux.conf
