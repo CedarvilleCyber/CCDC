@@ -25,11 +25,12 @@ export PKG_MAN="yum"
 # move to working directory and copy personal scripts there
 cd $WK_DIR
 
-if [! -d CCDC ]; then
+if [ ! -d CCDC ]; then
     git clone https://github.com/CedarvilleCyber/CCDC
 fi
 
 cp CCDC/personal-scripts/lmiller/* .
+chown $SUDO_USER ./*
 
 # install useful utilities
 yum install -y vim
