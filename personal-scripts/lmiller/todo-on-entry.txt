@@ -1,0 +1,14 @@
+sudo passwd sysadmin
+sudo passwd root
+
+sudo yum update
+
+sudo yum install -y git
+git clone https://github.com/CedarvilleCyber/CCDC
+
+cd CCDC/personal-scripts/lmiller/
+
+sudo ./blitz
+
+# if you need to reattach to tmux session
+./tmux-lm

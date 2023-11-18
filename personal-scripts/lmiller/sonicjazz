@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Move to home directory
+cd ~
+
+# Remove the contents of /tmp
+rm -rf /tmp/*
+
+

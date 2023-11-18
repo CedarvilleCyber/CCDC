@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# pre-reqs:
+# change password
+# update 
+# install git
+# install vim
+# install tmux
+
+# giving error: sparse checkout leaves no entry on working directory
+
+cd ~
+
+git_version=$(git --version | awk '{print $3}' | awk -F '.' '{print $1$2}')
+
+if [ $git_version -lt 17 ]; then
+    echo "git version is less than 1.7, so cloning the whole repo"
+    git clone https://github.com/CedarvilleCyber/CCDC
+    exit 0
+fi
+
+git init CCDC
+cd CCDC
+git remote add -f origin https://github.com/CedarvilleCyber/CCDC
+
+git config core.sparseCheckout true
+
+echo "CCDC/personal-scripts/lmiller/*" >> .git/info/sparse-checkout
+
+git pull origin main
+
+exit 0
