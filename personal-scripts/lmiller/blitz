@@ -30,17 +30,17 @@ if [ ! -d CCDC ]; then
 fi
 
 cp CCDC/personal-scripts/lmiller/* .
-chown $SUDO_USER ./*
+chown $SUDO_USER:$SUDO_USER ./*
 
 # install useful utilities
-yum install -y vim
-yum install -y tmux
+yum install -y vim 1>/dev/null
+yum install -y tmux 1>/dev/null
 
 cp tmux-lm.conf .tmux.conf
-chown $SUDO_USER .tmux.conf
+chown $SUDO_USER:$SUDO_USER .tmux.conf
 chmod 644 .tmux.conf
 cp vim-lm.conf .vimrc
-chown $SUDO_USER .vimrc
+chown $SUDO_USER:$SUDO_USER .vimrc
 chmod 644 .vimrc
 
 # Setup tmux session

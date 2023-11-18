@@ -12,8 +12,9 @@ fi
 cd $WK_DIR 
 
 # Remove the contents of /tmp
-echo "Remove contents of /tmp"
-rm -rf /tmp/*
+# Problematic for tmux
+#echo "Remove contents of /tmp"
+#rm -rf /tmp/*
 
 # Make sure permissions are correct on sensitive files
 echo "Ensure perms are correct on sensitive files"
@@ -22,8 +23,8 @@ chmod 600 /etc/shadow
 
 # Install useful utilities and clean up unneeded packages/dependencies
 echo "Install useful utilities and clean up unneeded packages/dependencies"
-$PKG_MAN install -y nmap
-$PKG_MAN autoremove -y
+$PKG_MAN install -y nmap 1>/dev/null
+$PKG_MAN autoremove -y 1>/dev/null
 
 # Create backups
 echo "Create backups under /opt/starlight"
