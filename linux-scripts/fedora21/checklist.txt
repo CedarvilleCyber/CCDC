@@ -11,7 +11,9 @@ Short version:
 9.  Eliminate unnecessary services
 10. Backups (Script)
 11. Setup dovecot/postfix
-12. Password policy (script?) https://docs.fedoraproject.org/en-US/Fedora/18/html/FreeIPA_Guide/user-pwdpolicy.html
+12. Password policy (script?)
+        https://docs.fedoraproject.org/en-US/Fedora/18/html/FreeIPA_Guide/user-pwdpolicy.html (broken link)
+        https://docs.fedoraproject.org/en-US/fesco/Passphrase_policy/ (new link to check)
 13. Setup logging (Script?)
  
 Long version:
