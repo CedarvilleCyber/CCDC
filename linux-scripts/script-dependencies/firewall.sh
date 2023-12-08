@@ -19,9 +19,9 @@ fi
 printf "${info}Starting firewall script${reset}\n"
 
 # Checking for either iptables or firewalld
-if [[ "$ID" == "centos" && $VERSION_ID -gt 6 ]] || \
-   [[ "$ID" == "fedora" && $VERSION_ID -gt 17 ]] || \
-   [[ "$ID" == "rhel" && $VERSION_ID -gt 6 ]]
+if [[ "$ID" == "centos" && $VERSION -gt 6 ]] || \
+   [[ "$ID" == "fedora" && $VERSION -gt 17 ]] || \
+   [[ "$ID" == "rhel" && $VERSION -gt 6 ]]
 then
     # try to use iptables
     yum install iptables -y
@@ -42,17 +42,32 @@ printf "Using ${info}$FIREWALL${reset}\n\n"
 if [[ "$FIREWALL" == "firewalld" ]]
 then
     # allow firewalld to run
-    systemctl unmask --now firewalld
+    systemctl unmask firewalld
     systemctl enable firewalld
     systemctl start firewalld
 
     # Clearing the rules
     rm -rf /etc/firewalld/zones/ccdc*
+    firewall-cmd --reload
     firewall-cmd --permanent --new-zone ccdc
     firewall-cmd --reload
     firewall-cmd --set-default-zone ccdc
     zone=`firewall-cmd --get-default-zone`
 else
+    # allow iptables to run
+    systemctl unmask iptables
+    systemctl enable iptables
+    systemctl start iptables
+
+    # must disable firewalld if it's a thing
+    which firewall-cmd
+    if [[ $? -eq 0 ]]
+    then
+        systemctl disable firewalld
+        systemctl stop firewalld
+        systemctl mask firewalld
+    fi
+
     # Clearing the rules
     iptables -F
 fi
@@ -101,11 +116,20 @@ do
 
 
     # Get protocol
-    printf "tcp/udp (blank to stop): "
+    printf "(t)cp/(u)dp (blank to stop): "
     read input
 
     # lowercase
     input=${input,,}
+
+    # fix up shortcuts
+    if [[ "$input" == "t" ]]
+    then
+        input=tcp
+    elif [[ "$input" == "u" ]]
+    then
+        input=udp
+    fi
     
     if [[ "$input" == "" ]]
     then
@@ -119,6 +143,15 @@ do
 
         # lowercase
         input=${input,,}
+
+        # fix up shortcuts
+        if [[ "$input" == "t" ]]
+        then
+            input=tcp
+        elif [[ "$input" == "u" ]]
+        then
+            input=udp
+        fi
         
         if [[ "$input" == "" ]]
         then
@@ -155,7 +188,10 @@ if [[ "$FIREWALL" == "firewalld" ]]
 then
     # reload and backup
     firewall-cmd --reload
-    cp /etc/firewalld/zones/$zone /opt/bak/firewalld_rules
+    cp /etc/firewalld/zones/$zone.* /opt/bak/firewalld_rules
+
+    # list rules for review
+    firewall-cmd --list-all
 else
     # iptables
     # Accept by default in case of flush
@@ -200,6 +236,9 @@ else
 
     # Backup Rules (iptables-restore < /opt/bak/ip_rules)
     iptables-save > /opt/bak/ip_rules
+
+    # list rules for review
+    iptables -L --line-numbers
 fi
 
 exit 0
