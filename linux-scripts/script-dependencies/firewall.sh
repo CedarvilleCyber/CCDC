@@ -25,7 +25,7 @@ if [[ "$ID" == "centos" && $VERSION -gt 6 ]] || \
 then
     # try to use iptables
     yum install iptables -y
-    which iptables
+    which iptables >/dev/null
     if [[ $? -eq 0 ]]
     then
         FIREWALL=iptables 
@@ -42,10 +42,18 @@ printf "Using ${info}$FIREWALL${reset}\n\n"
 if [[ "$FIREWALL" == "firewalld" ]]
 then
     # allow firewalld to run
-    systemctl unmask firewalld
-    systemctl enable firewalld
-    systemctl start firewalld
-
+    # check for systemctl
+    which systemctl >/dev/null
+    if [[ $? -eq 0 ]]
+    then
+        systemctl unmask firewalld
+        systemctl enable firewalld
+        systemctl start firewalld
+    else
+        service firewalld enable
+        service firewalld start
+    fi
+    
     # Clearing the rules
     rm -rf /etc/firewalld/zones/ccdc*
     firewall-cmd --reload
@@ -55,17 +63,32 @@ then
     zone=`firewall-cmd --get-default-zone`
 else
     # allow iptables to run
-    systemctl unmask iptables
-    systemctl enable iptables
-    systemctl start iptables
-
-    # must disable firewalld if it's a thing
-    which firewall-cmd
+    # check for systemctl
+    which systemctl >/dev/null
     if [[ $? -eq 0 ]]
     then
-        systemctl disable firewalld
-        systemctl stop firewalld
-        systemctl mask firewalld
+        systemctl unmask iptables
+        systemctl enable iptables
+        systemctl start iptables
+    else
+        service iptables enable
+        service iptables start
+    fi
+
+    # must disable firewalld if it's a thing
+    which firewall-cmd >/dev/null
+    if [[ $? -eq 0 ]]
+    then
+        which systemctl >/dev/null
+        if [[ $? -eq 0 ]]
+        then
+            systemctl disable firewalld
+            systemctl stop firewalld
+            systemctl mask firewalld
+        else
+            service firewalld stop
+            service firewalld disable
+        fi
     fi
 
     # Clearing the rules
@@ -188,7 +211,7 @@ if [[ "$FIREWALL" == "firewalld" ]]
 then
     # reload and backup
     firewall-cmd --reload
-    cp /etc/firewalld/zones/$zone.* /opt/bak/firewalld_rules
+    cp /etc/firewalld/zones/$zone.* /opt/bak/
 
     # list rules for review
     firewall-cmd --list-all
