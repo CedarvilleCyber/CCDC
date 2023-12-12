@@ -97,6 +97,7 @@ mkdir /opt/bak
 # crontabs
 
 # login banners
+# ssh to self
 
 # secure os (like stopping web shells)
 
@@ -106,6 +107,7 @@ mkdir /opt/bak
 
 # check open ports
 # nmap scan self
+# wait for update to finish
 
 # av
 
