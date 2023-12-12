@@ -25,6 +25,7 @@ if [[ "$ID" == "centos" && $VERSION -gt 6 ]] || \
 then
     # try to use iptables
     yum install iptables -y
+    yum install iptables-services -y
     which iptables >/dev/null
     if [[ $? -eq 0 ]]
     then
@@ -252,6 +253,10 @@ else
     # Allow outgoing DHCP
     iptables -A OUTPUT -p udp --dport 67 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A INPUT -p udp --sport 67 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+    # Allow ssh local communication
+    iptables -A INPUT -i lo -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -o lo -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
     # DROP everything else
     iptables -A INPUT -j DROP
