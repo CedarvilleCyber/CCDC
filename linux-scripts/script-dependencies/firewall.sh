@@ -266,7 +266,7 @@ else
     iptables-save > /opt/bak/ip_rules
 
     # list rules for review
-    iptables -L --line-numbers
+    iptables -L -v -n
 fi
 
 exit 0
