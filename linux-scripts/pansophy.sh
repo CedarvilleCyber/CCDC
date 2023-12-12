@@ -81,14 +81,14 @@ mkdir /opt/bak
 # firewall
 ./script-dependencies/firewall.sh
 
+# secure os (like stopping web shells)
 # file permissions
+./script-dependencies/secure-os.sh
 
 # start tmux
 # show basic information
 # username, hostname, IP, MAC, OS & Version, kernel as well
 
-# Users
-# groups
 
 # services
 
@@ -96,24 +96,30 @@ mkdir /opt/bak
 
 # crontabs
 
+# Users
+# groups
+# sudoers
+
 # login banners
 # ssh to self
 
-# secure os (like stopping web shells)
 
+# Background tasks
 # make backups
 
 # update
 
-# check open ports
-# nmap scan self
+# av
 # wait for update to finish
 
-# av
+# check open ports (not background)
+# nmap scan self
+# wait for update to finish
 
 
 # upgrade
 # osupdater
+# backup again after update
 
 
 # splunk
