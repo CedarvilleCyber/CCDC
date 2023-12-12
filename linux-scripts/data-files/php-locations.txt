@@ -1,2 +1,0 @@
-/etc/php/7.4/apache2/php.ini
-/etc/php/7.4/cli/php.ini
