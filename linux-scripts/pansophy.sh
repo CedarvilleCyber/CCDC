@@ -96,7 +96,7 @@ mkdir /opt/bak
 
 # crontabs
 
-# Users
+# Users (/etc/shells)
 # groups
 # sudoers
 

@@ -254,9 +254,9 @@ else
     iptables -A OUTPUT -p udp --dport 67 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A INPUT -p udp --sport 67 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-    # Allow ssh local communication
-    iptables -A INPUT -i lo -p tcp --dport 22 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-    iptables -A OUTPUT -o lo -p tcp --sport 22 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    # Allow local communication
+    iptables -A INPUT -i lo -j ACCEPT
+    iptables -A OUTPUT -o lo -j ACCEPT
 
     # DROP everything else
     iptables -A INPUT -j DROP
