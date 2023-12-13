@@ -75,8 +75,9 @@ else
 fi
 
 
-# Create backup folder
+# Create folders
 mkdir /opt/bak
+mkdir ./data-files
 
 # firewall
 ./script-dependencies/firewall.sh
