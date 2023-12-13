@@ -47,8 +47,21 @@ do
     sed -i -e '/^disable_functions.*, $/ s/$/exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork/' $f
 done < ./data-files/php-locations.txt
 
-# Restart apache2/httpd or nginx if it exists
-#if
-
+# Restart apache2/httpd or nginx if we changed php
+# Just try everything. No need to test one at a time
+if [[ $counter -ne 0 ]]
+then
+    which systemctl >/dev/null
+    if [[ $? -eq 0 ]]
+    then
+        systemctl restart apache2
+        systemctl restart httpd
+        systemctl restart nginx
+    else
+        service apache2 restart
+        service httpd restart
+        service nginx restart
+    fi
+fi
 
 exit 0
