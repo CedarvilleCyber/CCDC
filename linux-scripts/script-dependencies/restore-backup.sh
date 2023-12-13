@@ -2,7 +2,7 @@
 # 
 # restore-backup.sh
 # 
-# Restores the backups made of /etc /bin and /var
+# Restores the backups made of /etc /usr/(s)bin and /var
 # 
 # Kaicheng Ye
 # Dec. 2023

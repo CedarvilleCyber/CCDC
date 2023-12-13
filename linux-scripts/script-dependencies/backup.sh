@@ -2,7 +2,7 @@
 # 
 # backup.sh
 # 
-# makes backups of the /etc /(s)bin and /var folders
+# makes backups of the /etc /usr/(s)bin and /var folders
 # 
 # Kaicheng Ye
 # Dec. 2023
