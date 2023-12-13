@@ -16,7 +16,8 @@ printf "${info}Starting secure-os script${reset}\n"
 
 # change file permissions
 find /home ! -iname "*.sh" -type f -exec chmod 600 {} +
-find /home \( -iname "*.sh" -type f -o -type d \) -exec chmod 700 {} +
+find /home -iname "*.sh" -type f -exec chmod 700 {} +
+find /home -type d -exec chmod 755 {} +
 chmod 644 /etc/passwd
 chmod 600 /etc/shadow
 chmod 600 /etc/sudoers
