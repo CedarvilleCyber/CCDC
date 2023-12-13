@@ -48,8 +48,8 @@ read input
 
 # Check user input
 if [ $input == "N" ] || [ $input == "n" ]; then
-	printf "Script Ended.\n"
-	exit 0
+    printf "Script Ended.\n"
+    exit 0
 fi
 
 
@@ -106,7 +106,6 @@ fi
 
 # show basic information
 # username, hostname, IP, MAC, OS & Version, kernel as well
-
 
 # services
 
