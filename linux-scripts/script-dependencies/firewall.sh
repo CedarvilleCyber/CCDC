@@ -12,8 +12,8 @@
 # Dec. 2023
 
 if [ "$(id -u)" != "0" ]; then
-        printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
-        exit 1
+    printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
+    exit 1
 fi
 
 printf "${info}Starting firewall script${reset}\n"

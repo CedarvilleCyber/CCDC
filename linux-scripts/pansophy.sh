@@ -29,8 +29,8 @@ fi
 
 # Check if script has been run with superuser privileges
 if [ "$(id -u)" != "0" ]; then
-	printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
-	exit 1
+    printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
+    exit 1
 fi
 
 
@@ -70,7 +70,7 @@ elif [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]
 then
     export PKG_MAN=apt-get
 else
-    export PKG_MAN="apt-get"
+    export PKG_MAN=apt-get
     printf "${error}ERROR: Unsupported OS, assuming apt-get${reset}\n"
 fi
 
@@ -82,11 +82,28 @@ mkdir ./data-files
 # firewall
 ./script-dependencies/firewall.sh
 
-# secure os (like stopping web shells)
-# file permissions
+# secure os
 ./script-dependencies/secure-os.sh
 
+# make backups
+./script-dependencies/backup.sh
+
 # start tmux
+which tmux >/dev/null
+if [[ $? -ne 0 ]]
+then
+    printf "${info}Attempting to install tmux${reset}\n"
+    $PKG_MAN install tmux -y
+fi
+
+which tmux >/dev/null
+if [[ $? -ne 0 ]]
+then
+    printf "${error}QUITTING! Failed to install tmux${reset}\n"
+    printf "${info}"
+    exit 1
+fi
+
 # show basic information
 # username, hostname, IP, MAC, OS & Version, kernel as well
 
@@ -106,7 +123,6 @@ mkdir ./data-files
 
 
 # Background tasks
-# make backups
 
 # update
 
