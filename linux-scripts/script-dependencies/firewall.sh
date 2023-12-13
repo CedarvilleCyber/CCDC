@@ -24,8 +24,13 @@ if [[ "$ID" == "centos" && $VERSION -gt 6 ]] || \
    [[ "$ID" == "rhel" && $VERSION -gt 6 ]]
 then
     # try to use iptables
-    yum install iptables -y
-    yum install iptables-services -y
+    which iptables >/dev/null
+    if [[ $? -ne 0 ]]
+    then
+        yum install iptables -y
+        yum install iptables-services -y
+    fi
+
     which iptables >/dev/null
     if [[ $? -eq 0 ]]
     then
