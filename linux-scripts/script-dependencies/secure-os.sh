@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # 
 # secure-os.sh
 # 
@@ -15,6 +15,8 @@ fi
 printf "${info}Starting secure-os script${reset}\n"
 
 # change file permissions
+# executable only for .sh extensions.
+# user only permissions except for on directories.
 find /home ! -iname "*.sh" -type f -exec chmod 600 {} +
 find /home -iname "*.sh" -type f -exec chmod 700 {} +
 find /home -type d -exec chmod 755 {} +
@@ -27,17 +29,26 @@ chmod 444 /etc/shells
 # First find all php.ini file locations
 find / -iname "php.ini" > ./data-files/php-locations.txt 2>/dev/null
 
+counter=0
 # reads through each line of a file, ignoring whitespace
 while IFS="" read -r f || [ -n "$f" ]
 do
     printf "${info}$f${reset}\n"
+
+    # create backups before writing over the file
+    cp $f /opt/bak/${counter}php.ini
+    ((counter++))
+
+    # now use sed to edit the disable_functions line
+    # Checks for different "states" of the "disable_functions" line
     sed -i -e '/^disable_functions.*[a-zA-Z0-9]$/ s/$/,exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork/' $f
     sed -i -e '/^disable_functions.*=$/ s/$/ exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork/' $f
     sed -i -e '/^disable_functions.*[a-zA-Z0-9],$/ s/$/exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,/' $f
     sed -i -e '/^disable_functions.*, $/ s/$/exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork/' $f
 done < ./data-files/php-locations.txt
 
-# now use sed to edit the disable_functions line
+# Restart apache2/httpd or nginx if it exists
+#if
 
 
 exit 0
