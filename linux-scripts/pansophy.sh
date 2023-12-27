@@ -108,6 +108,8 @@ fi
 # username, hostname, IP, MAC, OS & Version, kernel as well
 
 # services
+cd ./script-dependencies
+cd ../
 
 # processes
 

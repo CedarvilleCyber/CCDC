@@ -25,6 +25,24 @@ chmod 600 /etc/shadow
 chmod 600 /etc/sudoers
 chmod 444 /etc/shells
 
+
+# remove uneccesary applications
+$PKG_MAN remove nc
+$PKG_MAN remove netcat
+$PKG_MAN remove ncat
+
+# remove uneccesary services
+which systemctl >/dev/null
+if [[ $? -eq 0 ]]
+then
+    # cups is a printing service
+    systemctl stop cups
+    systemctl disable cups
+else
+    service cups stop
+fi
+
+
 # stop php web shells
 # First find all php.ini file locations
 find / -iname "php.ini" > ./data-files/php-locations.txt 2>/dev/null
