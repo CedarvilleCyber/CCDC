@@ -14,9 +14,9 @@ fi
 
 # Uses the cp in out backup /bin folder in case the real
 # /bin got messed with
-/opt/bak/bin/cp -r /opt/bak/bin /usr
-/opt/bak/bin/cp -r /opt/bak/sbin /usr
-/opt/bak/bin/cp -r /opt/bak/etc /
-/opt/bak/bin/cp -r /opt/bak/var /
+/opt/bak/bin/cp -r /opt/bak/bin /usr 2>/dev/null
+/opt/bak/bin/cp -r /opt/bak/sbin /usr 2>/dev/null
+/opt/bak/bin/cp -r /opt/bak/etc / 2>/dev/null
+/opt/bak/bin/cp -r /opt/bak/var / 2>/dev/null
 
 exit 0
