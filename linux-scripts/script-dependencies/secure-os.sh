@@ -27,19 +27,23 @@ chmod 444 /etc/shells
 
 
 # remove uneccesary applications
-$PKG_MAN remove nc
-$PKG_MAN remove netcat
-$PKG_MAN remove ncat
+$PKG_MAN remove nc -y
+$PKG_MAN remove netcat -y
+$PKG_MAN remove ncat -y
 
 # remove uneccesary services
 which systemctl >/dev/null
 if [[ $? -eq 0 ]]
 then
     # cups is a printing service
+    # speech-dispatcher is some tts thing
     systemctl stop cups
     systemctl disable cups
+    systemctl stop speech-dispatcher
+    systemctl disable speech-dispatcher
 else
     service cups stop
+    service speech-dispatcher stop
 fi
 
 

@@ -93,14 +93,19 @@ which tmux >/dev/null
 if [[ $? -ne 0 ]]
 then
     printf "${info}Attempting to install tmux${reset}\n"
-    $PKG_MAN install tmux -y
+    if [[ "$PKG_MAN" == "apt-get" ]]
+    then
+        apt-get install tmux -y --force-yes
+    else
+        yum install tmux -y
+    fi
 fi
 
 which tmux >/dev/null
 if [[ $? -ne 0 ]]
 then
     printf "${error}QUITTING! Failed to install tmux${reset}\n"
-    printf "${info}"
+    printf "${error}Please run scripts seperately${reset}\n"
     exit 1
 fi
 
