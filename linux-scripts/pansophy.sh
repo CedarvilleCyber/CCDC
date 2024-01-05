@@ -106,9 +106,11 @@ fi
 
 # show basic information
 # username, hostname, IP, MAC, OS & Version, kernel as well
+./script-dependencies/basic-info.sh
 
 # services
 cd ./script-dependencies
+./service-sort.sh
 cd ../
 
 # processes

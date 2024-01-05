@@ -9,7 +9,10 @@ cron.service
 dbus.service
 fwupd.service
 gdm.service
+gdomap.service
 ifupdown-pre.service
+irqbalance.service
+kbd.service
 keyboard-setup.service
 kmod-static-nodes.service
 ModemManager.service
@@ -18,6 +21,7 @@ NetworkManager.service
 NetworkManager-wait-online.service
 packagekit.service
 polkit.service
+procps
 rsyslog.service
 rtkit-daemon.service
 switcheroo-control.service
@@ -36,7 +40,9 @@ systemd-udev-trigger.service
 systemd-udevd.service
 systemd-update-utmp.service
 systemd-user-sessions.service
+udev.service
 udisks2.service
 unattended-upgrades.service
 upower.service
+urandom.service
 wpa_supplicant.service
