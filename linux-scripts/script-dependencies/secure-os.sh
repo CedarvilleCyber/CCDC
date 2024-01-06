@@ -21,9 +21,8 @@ find /home ! -iname "*.sh" -type f -exec chmod 600 {} +
 find /home -iname "*.sh" -type f -exec chmod 700 {} +
 find /home -type d -exec chmod 755 {} +
 chmod 644 /etc/passwd
-chmod 600 /etc/shadow
+chmod 640 /etc/shadow
 chmod 440 /etc/sudoers
-chmod 444 /etc/shells
 
 
 # remove uneccesary applications
