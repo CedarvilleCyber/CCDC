@@ -12,18 +12,18 @@
 # Use colors, but only if connected to a terminal
 # and if the terminal supports colors
 if which tput >/dev/null 2>&1; then
-	ncolors=$(tput colors)
+    ncolors=$(tput colors)
 fi
 if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
-	export info=$(tput setaf 2)
-	export error=$(tput setaf 1)
-	export warn=$(tput setaf 3)
-	export reset=$(tput sgr0)
+    export info=$(tput setaf 2)
+    export error=$(tput setaf 1)
+    export warn=$(tput setaf 3)
+    export reset=$(tput sgr0)
 else
-	export info=""
-	export error=""
-	export warn=""
-	export reset=""
+    export info=""
+    export error=""
+    export warn=""
+    export reset=""
 fi
 
 
@@ -125,9 +125,12 @@ ps -fea --forest | less
 # crontabs
 ./script-dependencies/check-cron.sh
 
-# Users (/etc/shells)
+# Users
 # groups
 # sudoers
+cd ./script-dependencies
+./user-sort.sh
+cd ../
 
 # login banners
 # ssh to self
