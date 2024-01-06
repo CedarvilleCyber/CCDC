@@ -95,8 +95,11 @@ then
     printf "${info}Attempting to install tmux${reset}\n"
     if [[ "$PKG_MAN" == "apt-get" ]]
     then
+        apt-get update
         apt-get install tmux -y --force-yes
     else
+        yum clean expire-cache
+        yum check-update
         yum install tmux -y
     fi
 fi
