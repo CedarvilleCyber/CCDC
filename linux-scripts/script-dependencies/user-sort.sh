@@ -20,7 +20,7 @@ grep -vf ./grep-users.txt /etc/passwd | cut -d : -f 1 > ../data-files/users-tmp.
 while IFS="" read -r name || [ -n "$name" ]
 do
     # sort out the accounts that are enabled
-    awk -v name="$name" -F ':' '$1 ~ name && $2 !~ "\*" && $2 !~ "!" {print $1}' /etc/shadow >> ../data-files/users-output.txt
+    awk -v name="$name" -F ':' '$1 ~ name && $2 !~ "\*" {print $1}' /etc/shadow >> ../data-files/users-output.txt
 done < ../data-files/users-tmp.txt
 rm -rf ../data-files/users-tmp.txt
 
