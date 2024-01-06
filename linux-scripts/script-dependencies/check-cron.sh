@@ -24,6 +24,7 @@ do
     sed -ie '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
     crontab -u $cron ./data-files/$cron-cron
     found="yes"
+    rm -rf ./data-files/$cron-crone
 done
 
 if [[ "$found" == "yes" ]]

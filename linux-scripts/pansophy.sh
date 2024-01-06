@@ -136,8 +136,9 @@ cd ./script-dependencies
 cd ../
 
 # login banners
+./script-dependencies/login-banners.sh
 # ssh to self
-
+ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
 
 # Background tasks
 
