@@ -29,7 +29,7 @@ done
 if [[ "$found" == "yes" ]]
 then
     printf "${warning}Found crontabs!${reset}\n"
-    printf "${warning}Check $CRON_DIR to see if anything should be uncommented${reset}\n"
+    printf "${warning}Check ./data-files/<user>-cron to see if anything should be uncommented${reset}\n"
 fi
 
 exit 0
