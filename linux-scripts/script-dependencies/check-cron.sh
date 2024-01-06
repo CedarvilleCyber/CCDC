@@ -20,7 +20,9 @@ found="no"
 for cron in `ls $CRON_DIR`
 do
     # essentially comment out all cronjobs until further review
-    sed -ie '/^[^#].*/ s/^/#/' $CRON_DIR$cron
+    crontab -l -u $cron > ./data-files/$cron-cron
+    sed -ie '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
+    crontab -u $cron ./data-files/$cron-cron
     found="yes"
 done
 
