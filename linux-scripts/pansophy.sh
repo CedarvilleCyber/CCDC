@@ -123,6 +123,7 @@ printf "${info}Make sure there are no rogue proccesses like shells running${rese
 ps -fea --forest | less
 
 # crontabs
+./script-dependencies/check-cron.sh
 
 # Users (/etc/shells)
 # groups
