@@ -140,9 +140,17 @@ cd ../
 # ssh to self
 ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
 
+
 # Background tasks
 
-# update
+# apt update and yum's equivalent
+if [[ "$PKG_MAN" == "apt-get" ]]
+then
+    apt-get update -y
+else
+    yum clean expire-cache -y
+    yum check-update -y
+fi
 
 # av
 # wait for update to finish
@@ -153,9 +161,9 @@ ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
 
 
 # upgrade
-# osupdater
+./script-dependencies/osupdater.sh
 # backup again after update
-
+./script-dependencies/backup.sh
 
 # splunk
 

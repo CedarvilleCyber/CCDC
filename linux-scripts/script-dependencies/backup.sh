@@ -14,6 +14,21 @@ fi
 
 printf "${info}Starting backup script${reset}\n"
 
+if [[ -d /opt/bak/etc/ ]]
+then
+    printf "${info}Old backup exists, keeping a copy${reset}\n"
+    PWD=`pwd`
+    cd /opt/bak/
+    rm -rf old
+    mkdir old
+    mv etc/ old/
+    mv var/ old/
+    mv bin/ old/
+    mv sbin/ old/
+    cd $PWD
+fi
+
+printf "${info}Copying files${reset}\n"
 cp -r /etc /opt/bak/
 cp -r /var /opt/bak/
 cp -r /usr/bin /opt/bak/
