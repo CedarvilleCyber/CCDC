@@ -119,6 +119,8 @@ cd ./script-dependencies
 cd ../
 
 # processes
+printf "${info}Make sure there are no rogue proccesses like shells running${reset}\n"
+ps -fea --forest | less
 
 # crontabs
 

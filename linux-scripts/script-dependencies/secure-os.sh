@@ -73,6 +73,7 @@ done < ./data-files/php-locations.txt
 # Just try everything. No need to test one at a time
 if [[ $counter -ne 0 ]]
 then
+    printf "${info}Restarting Web Server${reset}\n"
     which systemctl >/dev/null
     if [[ $? -eq 0 ]]
     then
