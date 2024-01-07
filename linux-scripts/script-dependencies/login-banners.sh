@@ -22,9 +22,14 @@ echo $BANNER | tee /etc/ssh/sshd-banner > /dev/null
 echo "Banner /etc/ssh/sshd-banner" | tee -a /etc/ssh/sshd_config > /dev/null
 
 # Trying to restart all different names of ssh server
-/etc/init.d/sshd restart
-/etc/init.d/ssh restart
-/etc/init.d/openssh restart
-/etc/init.d/openssh-server restart
+which systemctl >/dev/null
+if [[ $? -eq 0 ]]
+then
+    systemctl restart ssh
+    systemctl restart sshd
+else
+    service ssh restart
+    service sshd restart
+fi
 
 printf "${info}LOGIN-BANNERS COMPLETE${reset}\n"
