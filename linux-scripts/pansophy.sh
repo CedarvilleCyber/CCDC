@@ -111,7 +111,9 @@ fi
 which tmux >/dev/null
 if [[ $? -ne 0 ]]
 then
+    ./no-tmux.sh
     printf "${error}QUITTING! Failed to install tmux${reset}\n"
+    printf "${error}Ran background tasks only.${reset}\n"
     printf "${error}Please run scripts seperately${reset}\n"
     exit 1
 fi
