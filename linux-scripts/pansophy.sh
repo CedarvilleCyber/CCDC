@@ -146,8 +146,6 @@ cd ../
 ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
 
 
-# Background tasks
-
 # apt update and yum's equivalent
 if [[ "$PKG_MAN" == "apt-get" ]]
 then
@@ -172,7 +170,7 @@ fi
 rkhunter --check --sk
 printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 
-# check open ports (not background)
+# check open ports 
 ./script-dependencies/connections.sh
 
 # nmap scan self
