@@ -141,7 +141,8 @@ cd ../
 
 # login banners
 ./script-dependencies/login-banners.sh
-# ssh to self
+# ssh to self to get banner
+# skip the host key checking thing
 ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
 
 
@@ -150,18 +151,48 @@ ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
 # apt update and yum's equivalent
 if [[ "$PKG_MAN" == "apt-get" ]]
 then
-    apt-get update -y
+    apt-get update -y &
+    UPDATE_PID=$!
 else
     yum clean expire-cache -y
-    yum check-update -y
+    yum check-update -y &
+    UPDATE_PID=$!
 fi
 
 # av
 # wait for update to finish
+wait $UPDATE_PID
+if [[ "$PKG_MAN" == "apt-get" ]]
+then
+    apt-get install rkhunter -y --force-yes
+else
+    yum install rkhunter -y
+fi
+
+rkhunter --check --sk
+printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 
 # check open ports (not background)
+./script-dependencies/connections.sh
+
 # nmap scan self
 # wait for update to finish
+wait $UPDATE_PID
+
+if [[ "$PKG_MAN" == "apt-get" ]]
+then
+    apt-get install nmap -y --force-yes
+else
+    yum install nmap -y
+fi
+
+printf "${info}Starting nmap scan.${reset}\n"
+printf "${info}NOTE: firewall rules allows for local communication${reset}\n"
+printf "${info}therefore, some unexpected ports may be open to a local scan${reset}\n"
+
+mkdir ./data-files/nmap
+nmap -p- -sS --max-retries 0 127.0.0.1 -Pn -oA ./data-files/nmap/tcp
+nmap -p- -sU --max-retries 0 127.0.0.1 -Pn -oA ./data-files/nmap/udp
 
 
 # upgrade
@@ -170,7 +201,11 @@ fi
 ./script-dependencies/backup.sh
 
 # splunk
+cd ./script-dependencies/logging
+./install_and_setup_forwarder.sh
+cd ../../
 
+printf "\n${info}Pansophy complete. Are your eyes open?${reset}\n\n"
 
 exit 0
 
