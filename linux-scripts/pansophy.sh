@@ -92,6 +92,9 @@ mkdir ./data-files
 # make backups
 ./script-dependencies/backup.sh
 
+# quick vimrc for root
+printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
+
 # start tmux
 which tmux >/dev/null
 if [[ $? -ne 0 ]]
@@ -118,35 +121,95 @@ then
     exit 1
 fi
 
-# show basic information
-# username, hostname, IP, MAC, OS & Version, kernel as well
-./script-dependencies/basic-info.sh
+# Name session Background
+# Everything you need right in front of you
+SESSIONB="Background"
+SESSIONEXISTS=$(tmux ls | grep $SESSIONB)
 
-# services
-cd ./script-dependencies
-./service-sort.sh
-cd ../
+# Make sure session doesn't already exist
+if [[ "$SESSIONEXISTS" == "" ]]
+then
+    # create a new session
+    tmux new-session -d -s $SESSIONB
 
-# processes
-printf "${info}Make sure there are no rogue proccesses like shells running${reset}\n"
-ps -fea --forest | less
+    # First window for a bash session (already created)
+    tmux rename-window -t 0 "Tasks"
+    # Read about part2.sh in it's header
+    tmux send-keys -t "Tasks" "./script-dependencies/part2.sh" C-m
+else
+    printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
+fi
 
-# crontabs
-./script-dependencies/check-cron.sh
+# Name session Work
+# Everything you need right in front of you
+SESSIONW="Work"
+SESSIONEXISTS=$(tmux ls | grep $SESSIONW)
 
-# Users
-# groups
-# sudoers
-cd ./script-dependencies
-./user-sort.sh
-cd ../
+# Make sure session doesn't already exist
+if [[ "$SESSIONEXISTS" == "" ]]
+then
+    # create a new session
+    tmux new-session -d -s $SESSIONW
 
-# login banners
-./script-dependencies/login-banners.sh
-# ssh to self to get banner
-# skip the host key checking thing
-ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1
+    # First window for a bash session (already created)
+    tmux rename-window -t 0 "Bash"
 
+    # Reserve second window for nmap later on
+    tmux new-window -t $SESSIONW:1 -n "nmap"
+
+    # Third window for Basic Info
+    tmux new-window -t $SESSIONW:2 -n "info"
+    # Send keys to tmux window
+    # C-m is <ENTER>
+    tmux send-keys -t "info" "./script-dependencies/basic-info.sh" C-m
+
+    # Forth window for login-banner/ssh
+    tmux new-window -t $SESSIONW:3 -n "banner"
+    tmux send-keys -t "banner" "./script-dependencies/login-banners.sh" C-m
+    # ssh to self to get banner
+    # skip the host key checking thing
+    tmux send-keys -t "banner" "timeout 5 ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1" C-m
+
+    # Fifth window for checking cron
+    tmux new-window -t $SESSIONW:4 -n "cron"
+    tmux send-keys -t "cron" "./script-dependencies/check-cron.sh" C-m
+
+    # Sixth window for splunk
+    tmux new-window -t $SESSIONW:5 -n "splunk"
+    tmux send-keys -t "splunk" "cd ./script-dependencies/logging" C-m
+    tmux send-keys -t "splunk" "./install_and_setup_forwarder.sh" C-m
+
+    # Seventh window for rkhunter results
+    tmux new-window -t $SESSIONW:6 -n "rkhunter"
+    tmux send-keys -t "rkhunter" "less /var/log/rkhunter.log"
+
+    # Eighth window for processes
+    tmux new-window -t $SESSIONW:7 -n "procs"
+    tmux send-keys -t "procs" "ps -fea --forest | less" C-m
+
+    # Ninth window for users
+    tmux new-window -t $SESSIONW:8 -n "users"
+    tmux send-keys -t "users" "cd ./script-dependencies" C-m
+    tmux send-keys -t "users" "./user-sort.sh" C-m
+    tmux send-keys -t "users" "cd ../" C-m
+
+    # Tenth window for services
+    tmux new-window -t $SESSIONW:9 -n "services"
+    tmux send-keys -t "services" "cd ./script-dependencies" C-m
+    tmux send-keys -t "services" "./service-sort.sh" C-m
+    tmux send-keys -t "services" "cd ../" C-m
+
+    # Eleventh window for ports
+    tmux new-window -t $SESSIONW:10 -n "ports"
+    tmux send-keys -t "ports" "./script-dependencies/connections.sh" C-m
+
+    # Attach to the work session
+    tmux attach-session -t $SESSIONW
+else
+    printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
+fi
+
+exit 0
 
 # apt update and yum's equivalent
 if [[ "$PKG_MAN" == "apt-get" ]]
@@ -172,8 +235,6 @@ fi
 rkhunter --check --sk
 printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 
-# check open ports 
-./script-dependencies/connections.sh
 
 # nmap scan self
 # wait for update to finish
@@ -186,27 +247,13 @@ else
     yum install nmap -y
 fi
 
-printf "${info}Starting nmap scan.${reset}\n"
-printf "${info}NOTE: firewall rules allows for local communication${reset}\n"
-printf "${info}therefore, some unexpected ports may be open to a local scan${reset}\n"
-
-mkdir ./data-files/nmap
-printf "\n${info}=============tcp=============${reset}\n"
-nmap -p- -sS --max-retries 0 127.0.0.1 -Pn -oA ./data-files/nmap/tcp
-printf "\n${info}=============udp=============${reset}\n"
-printf "\n${info}NOTE: to get accurate results, udp takes some time${reset}\n"
-nmap -p- -sU --max-retries 2 127.0.0.1 -Pn -oA ./data-files/nmap/udp
-
+tmux send-keys -t "nmap" "./script-dependencies/quick-scan.sh" C-m
 
 # upgrade
 ./script-dependencies/osupdater.sh
 # backup again after update
 ./script-dependencies/backup.sh
 
-# splunk
-cd ./script-dependencies/logging
-./install_and_setup_forwarder.sh
-cd ../../
 
 printf "\n${info}Pansophy complete. Are your eyes open?${reset}\n\n"
 

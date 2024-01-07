@@ -22,6 +22,6 @@ printf "\n${info}=============ss=============${reset}\n"
 ss -lntupa
 
 printf "\n${info}Find any open ports that are unwanted and kill them by follwoing the PID${reset}\n"
-printf "${info}Use ps -f --pid <pid> to investigate further${reset}"
+printf "${info}Use ps -f --pid <pid> to investigate further\n\n${reset}"
 
 exit 0
