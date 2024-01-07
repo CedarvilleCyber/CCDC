@@ -7,7 +7,8 @@
 # Kaicheng Ye
 # Dec. 2023
 
-if [ "$(id -u)" != "0" ]; then
+if [[ "$(id -u)" != "0" ]]
+then
     printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
     exit 1
 fi
@@ -52,7 +53,7 @@ find / -iname "php.ini" > ./data-files/php-locations.txt 2>/dev/null
 
 counter=0
 # reads through each line of a file, ignoring whitespace
-while IFS="" read -r f || [ -n "$f" ]
+while IFS="" read -r f || [[ -n "$f" ]]
 do
     printf "${info}$f${reset}\n"
 

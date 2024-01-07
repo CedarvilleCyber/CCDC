@@ -3,7 +3,8 @@
 # assumes PKG_MAN environment variable exists
 
 # check if user is root
-if [[ $(id -u) != "0" ]]; then
+if [[ $(id -u) != "0" ]]
+then
 	printf "You must be root!\n"
 	exit 1
 fi
@@ -12,7 +13,8 @@ fi
 printf "${info}STARTING OSUPDATER... SYSTEM MAY TEMPORARILY HALT${reset}\n"
 
 # apt-get
-if [[ $PKG_MAN == "apt-get" ]]; then
+if [[ $PKG_MAN == "apt-get" ]]
+then
 
 	#updates list of available packages/versions
 	apt-get update -y
@@ -33,7 +35,8 @@ fi
 
 
 #yum
-if [[ $PKG_MAN == "yum" ]]; then
+if [[ $PKG_MAN == "yum" ]]
+then
 
 	#updates packages accounting for obsoletes
 	yum upgrade -y

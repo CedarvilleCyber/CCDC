@@ -8,7 +8,8 @@
 # Kaicheng Ye
 # Jan. 2024
 
-if [ "$(id -u)" != "0" ]; then
+if [[ "$(id -u)" != "0" ]]
+then
     printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
     exit 1
 fi
@@ -17,7 +18,7 @@ printf "${info}Starting user-sort script${reset}\n"
 
 # Get enabled users that have a login shell
 grep -vf ./grep-users.txt /etc/passwd | cut -d : -f 1 > ../data-files/users-tmp.txt
-while IFS="" read -r name || [ -n "$name" ]
+while IFS="" read -r name || [[ -n "$name" ]]
 do
     # sort out the accounts that are enabled
     awk -v name="$name" -F ':' '$1 ~ name && $2 !~ "\*" {print $1}' /etc/shadow >> ../data-files/users-output.txt

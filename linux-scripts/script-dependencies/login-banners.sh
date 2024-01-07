@@ -5,7 +5,8 @@
 printf "${info}STARTING LOGIN-BANNERS SCRIPT... ${reset}\n"
 
 #check if user is root
-if [[ $(id -u) != "0" ]]; then
+if [[ $(id -u) != "0" ]]
+then
 	printf "You must be root!\n"
 	exit 1
 fi
@@ -20,7 +21,8 @@ echo $BANNER | tee -a /etc/issue /etc/issue.net > /dev/null
 echo $BANNER | tee /etc/ssh/sshd-banner > /dev/null
 echo "Banner /etc/ssh/sshd-banner" | tee -a /etc/ssh/sshd_config > /dev/null
 
-if [[ $PKG_MAN == "yum" ]]; then
+if [[ $PKG_MAN == "yum" ]]
+then
     /etc/init.d/sshd restart
 else
     /etc/init.d/ssh restart

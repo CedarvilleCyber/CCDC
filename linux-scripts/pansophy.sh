@@ -11,10 +11,12 @@
 
 # Use colors, but only if connected to a terminal
 # and if the terminal supports colors
-if which tput >/dev/null 2>&1; then
+if which tput >/dev/null 2>&1
+then
     ncolors=$(tput colors)
 fi
-if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+if [[ -t 1 ]] && [[ -n "$ncolors" ]] && [[ "$ncolors" -ge 8 ]]
+then
     export info=$(tput setaf 2)
     export error=$(tput setaf 1)
     export warn=$(tput setaf 3)
@@ -28,7 +30,8 @@ fi
 
 
 # Check if script has been run with superuser privileges
-if [ "$(id -u)" != "0" ]; then
+if [[ "$(id -u)" != "0" ]]
+then
     printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
     exit 1
 fi
@@ -47,7 +50,8 @@ printf "Continue running script? [y/n]: "
 read input
 
 # Check user input
-if [ $input == "N" ] || [ $input == "n" ]; then
+if [[ $input == "N" ]] || [[ $input == "n" ]]
+then
     printf "Script Ended.\n"
     exit 0
 fi
