@@ -189,8 +189,11 @@ printf "${info}NOTE: firewall rules allows for local communication${reset}\n"
 printf "${info}therefore, some unexpected ports may be open to a local scan${reset}\n"
 
 mkdir ./data-files/nmap
+printf "\n${info}=============tcp=============${reset}\n"
 nmap -p- -sS --max-retries 0 127.0.0.1 -Pn -oA ./data-files/nmap/tcp
-nmap -p- -sU --max-retries 0 127.0.0.1 -Pn -oA ./data-files/nmap/udp
+printf "\n${info}=============udp=============${reset}\n"
+printf "\n${info}NOTE: to get accurate results, udp takes some time${reset}\n"
+nmap -p- -sU --max-retries 2 127.0.0.1 -Pn -oA ./data-files/nmap/udp
 
 
 # upgrade
