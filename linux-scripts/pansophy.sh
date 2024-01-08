@@ -121,9 +121,6 @@ then
     exit 1
 fi
 
-# Stopping tmux rename so our window names can work
-tmux set-option -g allow-rename off
-
 # Name session Background
 # Everything you need right in front of you
 SESSIONB="Background"
@@ -134,6 +131,8 @@ if [[ "$SESSIONEXISTS" == "" ]]
 then
     # create a new session
     tmux new-session -d -s $SESSIONB
+    # Stopping tmux rename so our window names can work
+    tmux set-option -g allow-rename off
 
     # First window for a bash session (already created)
     tmux rename-window -t 0 "Tasks"
