@@ -121,6 +121,9 @@ then
     exit 1
 fi
 
+# Stopping tmux rename so our window names can work
+tmux set-option -g allow-rename off
+
 # Name session Background
 # Everything you need right in front of you
 SESSIONB="Background"
