@@ -183,7 +183,7 @@ then
 
     # Seventh window for rkhunter results
     tmux new-window -t $SESSIONW:6 -n "rkhunter"
-    tmux send-keys -t "rkhunter" "less /var/log/rkhunter.log"
+    tmux send-keys -t "rkhunter" "less \`find /var/log -iname \"rkhunter.log\"\`"
 
     # Eighth window for processes
     tmux new-window -t $SESSIONW:7 -n "procs"
