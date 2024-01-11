@@ -33,9 +33,6 @@ fi
 rkhunter --check --sk
 printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 
-# check open ports 
-./script-dependencies/connections.sh
-
 # nmap scan self
 # wait for update to finish
 wait $UPDATE_PID

@@ -60,12 +60,6 @@ fi
 # Set up some environment variables
 . /etc/os-release
 
-# Distro Name
-export ID=$ID
-
-# Distro Version
-export VERSION=$VERSION_ID
-
 # Package Manager
 if [[ "$ID" == "fedora" || "$ID" == "centos" || "$ID" == "rhel" ]]
 then

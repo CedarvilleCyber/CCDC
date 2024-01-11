@@ -19,10 +19,13 @@ fi
 
 printf "${info}Starting firewall script${reset}\n"
 
+# get some version information
+. /etc/os-release
+
 # Checking for either iptables or firewalld
-if [[ "$ID" == "centos" && $VERSION -gt 6 ]] || \
-   [[ "$ID" == "fedora" && $VERSION -gt 17 ]] || \
-   [[ "$ID" == "rhel" && $VERSION -gt 6 ]]
+if [[ "$ID" == "centos" && $VERSION_ID -gt 6 ]] || \
+   [[ "$ID" == "fedora" && $VERSION_ID -gt 17 ]] || \
+   [[ "$ID" == "rhel" && $VERSION_ID -gt 6 ]]
 then
     # try to use iptables
     which iptables >/dev/null
