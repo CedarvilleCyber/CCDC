@@ -147,16 +147,18 @@ then
     # create a new session
     tmux new-session -d -s $SESSIONW
 
-    # First window for a bash session (already created)
+    # First window for a whatever needs to be done (already created)
     tmux rename-window -t 0 "Bash"
+    # Send keys to tmux window
+    # cd into machine-scripts for conveniency
+    # C-m is <ENTER>
+    tmux send-keys -t "Bash" "cd ./machine-scripts" C-m
 
     # Reserve second window for nmap later on
     tmux new-window -t $SESSIONW:1 -n "nmap"
 
     # Third window for Basic Info
     tmux new-window -t $SESSIONW:2 -n "info"
-    # Send keys to tmux window
-    # C-m is <ENTER>
     tmux send-keys -t "info" "./script-dependencies/basic-info.sh" C-m
 
     # Forth window for login-banner/ssh
