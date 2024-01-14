@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# clear tmp
+
+# run pansophy
+
+# backup network configs
+
+# run ecomm.sh
+
+# backup www
+
+# setup file integrity script as a chronjob
+
+# also, check out chroot jail?
+
+# script complete!
+
