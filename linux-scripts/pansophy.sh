@@ -183,19 +183,17 @@ then
 
     # Eighth window for processes
     tmux new-window -t $SESSIONW:7 -n "procs"
-    tmux send-keys -t "procs" "ps -fea --forest | less" C-m
+    tmux send-keys -t "procs" "ps -fea --forest" C-m
 
     # Ninth window for users
     tmux new-window -t $SESSIONW:8 -n "users"
     tmux send-keys -t "users" "cd ./script-dependencies" C-m
     tmux send-keys -t "users" "./user-sort.sh" C-m
-    tmux send-keys -t "users" "cd ../" C-m
 
     # Tenth window for services
     tmux new-window -t $SESSIONW:9 -n "services"
     tmux send-keys -t "services" "cd ./script-dependencies" C-m
     tmux send-keys -t "services" "./service-sort.sh" C-m
-    tmux send-keys -t "services" "cd ../" C-m
 
     # Eleventh window for ports
     tmux new-window -t $SESSIONW:10 -n "ports"
