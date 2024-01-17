@@ -1,18 +1,50 @@
 #!/bin/bash
 
+# Ecomm Script for Centos 7
+#
+# Dependencies:
+# - pansophy.sh
+# - check-integrity.sh
+#
+
+# Starlight must be run as root
+if [ $(id -u) != 0 ]; then
+    echo "You must use sudo to run this script!"
+    exit 1
+fi
+
 # clear tmp
+rm -rf /tmp/*
+
+# change perms on executable files
+chmod 700 pansophy.sh
+chmod 700 check-integrity.sh
+chmod 700 harden-ecomm.sh
 
 # run pansophy
+./pansophy.sh
 
-# backup network configs
+# install utilities not installed by pansophy
+yum install -y nmap
+yum install -y mlocate
 
-# run ecomm.sh
+# Secure prestashop and MySQL database
+./harden-ecomm.sh
 
-# backup www
+# Install utilities not installed by pansophy or harden-ecomm
+
+# backup network configs to /opt/bak/
+
+
+# backup /var/www/html/prestashop to /opt/bak/prestashop
+
 
 # setup file integrity script as a chronjob
 
+
 # also, check out chroot jail?
 
-# script complete!
 
+# script complete!
+printf "\e[0;32mStarlight complete! Cast the ashes back in their eyes!\e[0m\n"
+exit 0
