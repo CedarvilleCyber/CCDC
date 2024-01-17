@@ -183,21 +183,22 @@ then
 
     # Eighth window for processes
     tmux new-window -t $SESSIONW:7 -n "procs"
-    tmux send-keys -t "procs" "ps -fea --forest" C-m
+    # the last few commands are refreshed every minute
+    tmux send-keys -t "procs" "cmd='ps -fea --forest'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
     # Ninth window for users
     tmux new-window -t $SESSIONW:8 -n "users"
     tmux send-keys -t "users" "cd ./script-dependencies" C-m
-    tmux send-keys -t "users" "./user-sort.sh" C-m
+    tmux send-keys -t "users" "cmd='./user-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
     # Tenth window for services
     tmux new-window -t $SESSIONW:9 -n "services"
     tmux send-keys -t "services" "cd ./script-dependencies" C-m
-    tmux send-keys -t "services" "./service-sort.sh" C-m
+    tmux send-keys -t "services" "cmd='./service-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
     # Eleventh window for ports
     tmux new-window -t $SESSIONW:10 -n "ports"
-    tmux send-keys -t "ports" "./script-dependencies/connections.sh" C-m
+    tmux send-keys -t "ports" "cmd='./script-dependencies/connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
     # Attach to the work session
     tmux attach-session -t $SESSIONW
