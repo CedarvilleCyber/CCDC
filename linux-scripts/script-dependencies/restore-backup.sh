@@ -45,6 +45,8 @@ done
 
 
 # based on what flags were flipped, we restore each one
+# Uses the cp in out backup /bin folder in case the real
+# /bin got messed with
 if [[ $binCheck -eq 1 ]]
 then
     printf "${info}Restoring /usr/bin${reset}\n"
@@ -67,14 +69,5 @@ then
 fi
 
 printf "${info}DONE!${reset}\n\n"
-
-exit 1
-
-# Uses the cp in out backup /bin folder in case the real
-# /bin got messed with
-/opt/bak/bin/cp -r /opt/bak/bin /usr 2>/dev/null
-/opt/bak/bin/cp -r /opt/bak/sbin /usr 2>/dev/null
-/opt/bak/bin/cp -r /opt/bak/etc / 2>/dev/null
-/opt/bak/bin/cp -r /opt/bak/var / 2>/dev/null
 
 exit 0
