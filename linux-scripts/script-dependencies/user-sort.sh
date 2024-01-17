@@ -16,6 +16,9 @@ fi
 
 printf "${info}Starting user-sort script${reset}\n"
 
+# first remove old file if exists
+rm -rf ../data-files/users-output.txt
+
 # Get enabled users that have a login shell
 grep -vf ./grep-users.txt /etc/passwd | cut -d : -f 1 > ../data-files/users-tmp.txt
 while IFS="" read -r name || [[ -n "$name" ]]

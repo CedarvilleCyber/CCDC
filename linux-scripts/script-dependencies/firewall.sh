@@ -112,7 +112,7 @@ brk=0
 while [[ "$input" != "" ]]
 do
     port=0
-    protocol=aaa
+    protocol=A
 
     # Get port number
     printf "Port to allow (blank to stop): "
