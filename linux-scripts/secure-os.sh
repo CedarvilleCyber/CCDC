@@ -46,6 +46,20 @@ else
     service speech-dispatcher stop
 fi
 
+# move pre authorized keys
+printf "${info}Looking for authorized_keys and moving them${reset}\n"
+printf "${info}one directory up from where they were found${reset}\n"
+find / -iname "authorized_keys" > ./data-files/a_keys-locations.txt 2>/dev/null
+
+# reads through each line of a file, ignoring whitespace
+while IFS="" read -r f || [[ -n "$f" ]]
+do
+    printf "${info}$f${reset}\n"
+
+    mv $f `dirname $f`/../
+
+done < ./data-files/a_keys-locations.txt
+
 
 # stop php web shells
 # First find all php.ini file locations
@@ -58,7 +72,8 @@ do
     printf "${info}$f${reset}\n"
 
     # create backups before writing over the file
-    cp $f /opt/bak/${counter}php.ini
+    name=`echo $f | sed 's/\//_/g'`
+    cp $f /opt/bak/$name
     ((counter++))
 
     # now use sed to edit the disable_functions line
