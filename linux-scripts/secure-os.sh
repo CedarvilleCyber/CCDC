@@ -18,12 +18,27 @@ printf "${info}Starting secure-os script${reset}\n"
 # change file permissions
 # executable only for .sh extensions.
 # user only permissions except for on directories.
-find /home ! -iname "*.sh" -type f -exec chmod 600 {} +
-find /home -iname "*.sh" -type f -exec chmod 700 {} +
+find ../ -type f > ./data-files/files.txt
 find /home -type d -exec chmod 755 {} +
 chmod 644 /etc/passwd
 chmod 640 /etc/shadow
 chmod 440 /etc/sudoers
+
+# reads through each line of a file, ignoring whitespace
+while IFS="" read -r f || [[ -n "$f" ]]
+do
+    read -r line < $f
+    if [[ "$line" == "#!/bin/bash" ]]
+    then
+        chmod 700 $f
+    elif [[ "$line" == "#!/bin/sh" ]]
+    then
+        chmod 700 $f
+    else
+        chmod 600 $f
+    fi
+
+done < ./data-files/files.txt
 
 
 # remove uneccesary applications
