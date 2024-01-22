@@ -45,6 +45,7 @@ else
 fi
 
 tmux send-keys -t "Work:nmap" "./quick-scan.sh" C-m
+tmux send-keys -t "Work:ntp" "./ntp-client.sh" C-m
 
 # upgrade
 ./osupdater.sh
