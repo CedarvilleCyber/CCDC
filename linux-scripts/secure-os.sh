@@ -15,6 +15,23 @@ fi
 
 printf "${info}Starting secure-os script${reset}\n"
 
+
+# environment variables
+. /etc/os-release
+
+# Package Manager
+if [[ "$ID" == "fedora" || "$ID" == "centos" || "$ID" == "rhel" ]]
+then
+    export PKG_MAN=yum
+elif [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]
+then
+    export PKG_MAN=apt-get
+else
+    export PKG_MAN=apt-get
+    printf "${error}ERROR: Unsupported OS, assuming apt-get${reset}\n"
+fi
+
+
 # change file permissions
 # executable only for .sh extensions.
 # user only permissions except for on directories.
