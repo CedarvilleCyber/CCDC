@@ -32,8 +32,10 @@ else
     service ntp restart
 fi
 
-printf "\n\n"
+printf "\n${info}Waiting for client to contact server. 10 seconds.${reset}\n\n"
+sleep 10
 
 ntpq -p
+printf "\n${info}If delay, offset, and jitter are all 0, then run 'ntpq -p' again.${reset}\n"
 
 exit 0
