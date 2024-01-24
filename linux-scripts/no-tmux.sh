@@ -14,10 +14,10 @@ then
 fi
 
 # crontabs
-./script-dependencies/check-cron.sh
+./check-cron.sh
 
 # login banners
-./script-dependencies/login-banners.sh
+./login-banners.sh
 
 # apt update and yum's equivalent
 if [[ "$PKG_MAN" == "apt-get" ]]
@@ -44,14 +44,14 @@ rkhunter --check --sk
 printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 
 # upgrade
-./script-dependencies/osupdater.sh
+./osupdater.sh
 # backup again after update
-./script-dependencies/backup.sh
+./backup.sh
 
 # splunk
-cd ./script-dependencies/logging
+cd ./logging
 ./install_and_setup_forwarder.sh
-cd ../../
+cd ../
 
 exit 0
 

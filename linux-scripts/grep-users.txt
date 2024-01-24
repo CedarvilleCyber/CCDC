@@ -1,0 +1,6 @@
+/usr/sbin/nologin
+/sbin/halt
+/sbin/nologin
+/sbin/shutdown
+/bin/false
+/bin/sync

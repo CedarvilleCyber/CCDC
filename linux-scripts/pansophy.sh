@@ -77,14 +77,17 @@ fi
 mkdir /opt/bak
 mkdir ./data-files
 
+# clear tmp folder
+rm -rf /tmp/*
+
 # firewall
-./script-dependencies/firewall.sh
+./firewall.sh
 
 # secure os
-./script-dependencies/secure-os.sh
+./secure-os.sh
 
 # make backups
-./script-dependencies/backup.sh
+./backup.sh
 
 # quick vimrc for root
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
@@ -131,7 +134,7 @@ then
     # First window for a bash session (already created)
     tmux rename-window -t 0 "Tasks"
     # Read about part2.sh in it's header
-    tmux send-keys -t "Tasks" "./script-dependencies/part2.sh" C-m
+    tmux send-keys -t "Tasks" "./part2.sh" C-m
 else
     printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
 fi
@@ -154,51 +157,52 @@ then
     # C-m is <ENTER>
     tmux send-keys -t "Bash" "cd ./machine-scripts" C-m
 
-    # Reserve second window for nmap later on
-    tmux new-window -t $SESSIONW:1 -n "nmap"
+    # Reserve second window for ntp later on
+    tmux new-window -t $SESSIONW:1 -n "ntp"
 
-    # Third window for Basic Info
-    tmux new-window -t $SESSIONW:2 -n "info"
-    tmux send-keys -t "info" "./script-dependencies/basic-info.sh" C-m
+    # Reserve third window for nmap later on
+    tmux new-window -t $SESSIONW:2 -n "nmap"
 
-    # Forth window for login-banner/ssh
-    tmux new-window -t $SESSIONW:3 -n "banner"
-    tmux send-keys -t "banner" "./script-dependencies/login-banners.sh" C-m
+    # window for Basic Info
+    tmux new-window -t $SESSIONW:3 -n "info"
+    tmux send-keys -t "info" "./basic-info.sh" C-m
+
+    # window for login-banner/ssh
+    tmux new-window -t $SESSIONW:4 -n "banner"
+    tmux send-keys -t "banner" "./login-banners.sh" C-m
     # ssh to self to get banner
     # skip the host key checking thing
     tmux send-keys -t "banner" "timeout 5 ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1" C-m
 
-    # Fifth window for checking cron
-    tmux new-window -t $SESSIONW:4 -n "cron"
-    tmux send-keys -t "cron" "./script-dependencies/check-cron.sh" C-m
+    # window for checking cron
+    tmux new-window -t $SESSIONW:5 -n "cron"
+    tmux send-keys -t "cron" "./check-cron.sh" C-m
 
-    # Sixth window for splunk
-    tmux new-window -t $SESSIONW:5 -n "splunk"
-    tmux send-keys -t "splunk" "cd ./script-dependencies/logging" C-m
+    # window for splunk
+    tmux new-window -t $SESSIONW:6 -n "splunk"
+    tmux send-keys -t "splunk" "cd ./logging" C-m
     tmux send-keys -t "splunk" "./install_and_setup_forwarder.sh" C-m
 
-    # Seventh window for rkhunter results
-    tmux new-window -t $SESSIONW:6 -n "rkhunter"
+    # window for rkhunter results
+    tmux new-window -t $SESSIONW:7 -n "rkhunter"
     tmux send-keys -t "rkhunter" "less \`find /var/log -iname \"rkhunter.log\"\`"
 
-    # Eighth window for processes
-    tmux new-window -t $SESSIONW:7 -n "procs"
+    # window for processes
+    tmux new-window -t $SESSIONW:8 -n "procs"
     # the last few commands are refreshed every minute
     tmux send-keys -t "procs" "cmd='ps -fea --forest'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
-    # Ninth window for users
-    tmux new-window -t $SESSIONW:8 -n "users"
-    tmux send-keys -t "users" "cd ./script-dependencies" C-m
+    # window for users
+    tmux new-window -t $SESSIONW:9 -n "users"
     tmux send-keys -t "users" "cmd='./user-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
-    # Tenth window for services
-    tmux new-window -t $SESSIONW:9 -n "services"
-    tmux send-keys -t "services" "cd ./script-dependencies" C-m
+    # window for services
+    tmux new-window -t $SESSIONW:10 -n "services"
     tmux send-keys -t "services" "cmd='./service-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
-    # Eleventh window for ports
-    tmux new-window -t $SESSIONW:10 -n "ports"
-    tmux send-keys -t "ports" "cmd='./script-dependencies/connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
+    # window for ports
+    tmux new-window -t $SESSIONW:11 -n "ports"
+    tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
     # Attach to the work session
     tmux attach-session -t $SESSIONW
