@@ -77,6 +77,9 @@ fi
 mkdir /opt/bak
 mkdir ./data-files
 
+# clear tmp folder
+rm -rf /tmp/*
+
 # firewall
 ./firewall.sh
 
