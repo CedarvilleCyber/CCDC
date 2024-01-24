@@ -17,7 +17,7 @@ usage="Usage: ./check-integrity.sh <dir> <backup-dir>"
 
 # Ensure proper number of arguments
 if [ $# -ne 2 ]; then
-    echo usage
+    echo $usage
     exit 2 
 fi 
 

@@ -6,9 +6,14 @@ sudo yum update
 sudo yum install -y git
 git clone https://github.com/CedarvilleCyber/CCDC
 
-cd CCDC/personal-scripts/lmiller/
+cd CCDC/linux-scripts
+sudo ./pansophy.sh
 
-sudo ./blitz
+cd ../personal-scripts/lmiller/
+sudo ./starlight
 
-# if you need to reattach to tmux session
-./tmux-lm
+sudo ./check-integrity (for prestashop)
+
+# Helpful hints
+tmux ls to list tmux sessions
+tmux a -t <session_name> to attach to a session
