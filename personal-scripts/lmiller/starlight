@@ -47,8 +47,8 @@ fi
 # Randomize admin panel
 echo "Randomizing admin panel ..."
 echo "View presta-admin-panel.txt to access the admin panel"
-find $presta_install_path -maxdepth 1 -name 'admin*' -exec mv {} /var/www/html/prestashop/admin$RANDOM \;
-echo "Access the admin panel at " `find $presta_install_path -maxdepth 1 -name 'admin*' -exec echo {} \;` > presta-admin-panel.txt
+find $presta_install_path -maxdepth 1 -name 'admin*' -exec mv {} $presta_install_path/admin$RANDOM \;
+echo "Access the admin panel at " `find $presta_install_path -maxdepth 1 -name 'admin*' -exec echo {} \;` > $WK_DIR/presta-admin-panel.txt
 
 # Secure MySQL database
 echo "Securing MySQL database ..."
@@ -60,26 +60,6 @@ mysql_secure_installation
 # ??
 cat /etc/my.cnf | sed "/\[mysqld\]/ a bind-address=127.0.0.1" > temp && cat temp > /etc/my.cnf
 
-# Change MySQL database password
-printf "Enter the new database root passwd: "
-read -s dbnew1
-echo
-printf "Retype new password: "
-read -s dbnew2
-echo
-
-# Validate that passwords match
-while [[ "$dbnew1" != "$dbnew2" ]]
-do
-        printf "Passwords do not match!\n"
-        printf "Enter new password: "
-        read -s dbnew1
-        echo
-        printf "Retype new password: "
-        read -s dbnew2
-        echo
-done
-
 # Change prestashop database password
 echo "Changing prestashop database password ..."
 cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > temp && cat temp > $config_file
@@ -87,7 +67,7 @@ cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > temp && c
 db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
 db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
 
-read -p "Update the prestashop admin password [y/n]?" update_presta_pw
+read -p "Update the prestashop admin password [y/n]? " update_presta_pw
 if [[ "$update_presta_pw" = "y" ]]; then
     echo "Listing TABLE ps_employees from DATABASE $db_name"
     mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT id_employee as id,firstname,lastname,email from ${db_prefix}employee;"
@@ -122,18 +102,19 @@ echo "Backing up the database ..."
 echo "View how to restore the database in sql-backup-instructions.txt"
 mkdir $BK_DIR/sqldump
 BK_FILE=$BK_DIR/sqldump/${db_name}`date +%T`.sql
-echo "You can restore the database using mysql -u root -p database_name < $BK_FILE" > sql-backup-instructions.txt
+echo "You can restore the database using mysql -u root -p database_name < $BK_FILE" > $WK_DIR/sql-backup-instructions.txt
 mysqldump -u root --password="$dbnew2" "$db_name" > $BK_FILE
 
-rm $WK_DIR/temp
+rm temp
 
 # Backup /var/www/html/prestashop to /opt/bak/prestashop
 echo "Backing up prestashop directory"
-cp /var/www/html/prestashop $BK_DIR/
+cp -r $presta_install_path $BK_DIR/
 
 # Copy configuration files from repo
-tmux source ./lm.tmux.conf
-cp ./lm.vimrc .vimrc
+cp ./lm.tmux.conf ~/.tmux.conf
+cp ./lm.vimrc ~/.vimrc
+tmux source ~/.tmux.conf
 
 # Script complete!
 printf "\e[0;32mStarlight complete! Cast the ashes back in their eyes!\e[0m\n"

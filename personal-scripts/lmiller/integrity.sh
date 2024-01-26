@@ -12,6 +12,7 @@ fi
 
 read -p "Enter the directory to monitor: " DIR
 read -p "Enter the backup directory: " BK_DIR
+read -p "Enter your working directory: " WK_DIR
 read -p "Force restore if modified? [y/n] " FORCE
 
 ./dependencies/check-integrity $DIR $BK_DIR
@@ -29,8 +30,8 @@ while true; do
     ./dependencies/check-integrity $DIR $BK_DIR
     
     if [[ $? != 0 && "$FORCE" = "y"]]; then
-        cp DIR /opt/bak/temp
-        cp BK_DIR DIR
+        cp $DIR $WK_DIR/tainted-directory
+        cp $BK_DIR $DIR
         printf "\e[1;31mModified content overwritten! Check /opt/bak/temp for forensics.\e[0m\n"
     fi
 
