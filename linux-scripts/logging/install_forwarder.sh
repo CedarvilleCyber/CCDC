@@ -9,7 +9,7 @@ fi
 #Install
 useradd -m splunk
 groupadd splunk
-
+chown -R splunk:splunk $SPLUNK_HOME
 export SPLUNK_HOME=/opt/splunkforwarder
 mkdir $SPLUNK_HOME
 
@@ -34,7 +34,7 @@ do
 	esac
 done
 
-chown -R splunk:splunk $SPLUNK_HOME
+
 			
 if [[ $? -ne 0 ]]
 then
