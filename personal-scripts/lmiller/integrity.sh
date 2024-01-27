@@ -1,11 +1,11 @@
 #!/bin/bash
 #
 # Dependencies:
-# - check-integrity.sh
+# - verify-integrity.sh
 # - assumes backup directory is /opt/bak
 #
 
-if [ $(id -u) != 0 ]; then
+if [ $(id -u) -ne 0 ]; then
     echo "You must be root to run this script!"
     exit 1
 fi
@@ -13,29 +13,41 @@ fi
 read -p "Enter the directory to monitor: " DIR
 read -p "Enter the backup directory: " BK_DIR
 read -p "Enter your working directory: " WK_DIR
+if [[ "$WK_DIR" = "." ]]; then
+    WK_DIR=$(pwd)
+fi
 read -p "Force restore if modified? [y/n] " FORCE
 
-./dependencies/check-integrity $DIR $BK_DIR
+./dependencies/verify-integrity.sh $DIR $BK_DIR
+exit_code=$?
 
-if [ $? -ne 0 ]; then
+if [[ $exit_code -gt 0 && $exit_code -lt 6 ]]; then
+    exit 2
+elif [[ $exit_code -gt 5 ]]; then
     echo "Error: $DIR and $BK_DIR are not the same!"
     read -p "Would you like to continue anyway? [y/n] " CONTINUE
     
-    if [ $CONTINUE -ne "y" ]; then
-        exit 2
+    if [[ $CONTINUE != y ]]; then
+        exit 3
     fi
 fi
 
+forensics=$WK_DIR/$(basename $DIR)-tainted
+
 while true; do
-    ./dependencies/check-integrity $DIR $BK_DIR
+    ./dependencies/verify-integrity.sh $DIR $BK_DIR
     
-    if [[ $? != 0 && "$FORCE" = "y"]]; then
-        cp $DIR $WK_DIR/tainted-directory
-        cp $BK_DIR $DIR
-        printf "\e[1;31mModified content overwritten! Check /opt/bak/temp for forensics.\e[0m\n"
+    if [[ $? -ne 0 && $FORCE = y ]]; then
+        rm -rf $forensics &>/dev/null
+        cp -a $DIR $forensics
+
+        rm -rf $DIR
+        cp -a $BK_DIR $DIR
+
+        printf "Modified content overwritten! Check $forensics for forensics.\n"
     fi
 
-    sleep 1m
+    sleep 30s 
 
 done
         

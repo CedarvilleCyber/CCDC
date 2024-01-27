@@ -1,7 +1,2 @@
-Ask Kaicheng to add clearing tmp to pansophy (at the beginning)
-Finish cleaning up harden-ecomm.sh
-Create a backup script
-Create a integrity checking script (rather than chrontab)
-Split code into pansophy, harden-ecomm (backup at the end), check-integrity
 Add all needed passwords to shared document
  - including admin, root, mysql, prestashop (db and admin)

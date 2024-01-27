@@ -30,7 +30,7 @@ export WK_DIR
 
 # Get backup directory
 read -p "Enter the full path of the backup directory (e.g., /opt/bak): " BK_DIR
-if [[ "$WK_DIR" = "." ]]; then
+if [[ "$BK_DIR" = "." ]]; then
     BK_DIR=$(pwd)
 fi
 export BK_DIR
@@ -112,8 +112,8 @@ echo "Backing up prestashop directory"
 cp -r $presta_install_path $BK_DIR/
 
 # Copy configuration files from repo
-cp ./lm.tmux.conf ~/.tmux.conf
-cp ./lm.vimrc ~/.vimrc
+cp ./configs/lm.tmux.conf ~/.tmux.conf
+cp ./configs/lm.vimrc ~/.vimrc
 tmux source ~/.tmux.conf
 
 # Script complete!
