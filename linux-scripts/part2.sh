@@ -52,6 +52,7 @@ tmux send-keys -t "Work:ntp" "./ntp-client.sh" C-m
 # backup again after update
 ./backup.sh
 
+printf "\n\n${info}Part 2 Complete!${reset}\n"
 
 exit 0
 
