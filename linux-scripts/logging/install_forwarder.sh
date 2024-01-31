@@ -8,6 +8,8 @@ fi
 
 #Install
 useradd -m splunk
+printf "${info}Please choose a password for splunk user${reset}\n"
+passwd splunk
 groupadd splunk
 chown -R splunk:splunk $SPLUNK_HOME
 export SPLUNK_HOME=/opt/splunkforwarder
