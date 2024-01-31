@@ -205,9 +205,9 @@ then
     tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
     # window for part2
-    tmux rename-window -t 0 "Part2"
+    tmux new-window -t $SESSIONW:12 -n "part2"
     # Read about part2.sh in it's header
-    tmux send-keys -t "Part2" "./part2.sh" C-m
+    tmux send-keys -t "part2" "./part2.sh" C-m
 
     # Attach to the work session
     tmux attach-session -t $SESSIONW
