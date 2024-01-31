@@ -50,4 +50,6 @@ then
     printf "${warn}Check ./data-files/<user>-cron to see if anything should be uncommented${reset}\n"
 fi
 
+printf "${info}Also, remeber to check the /etc/crontab file as well!!${reset}\n"
+
 exit 0
