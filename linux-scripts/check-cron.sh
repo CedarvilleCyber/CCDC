@@ -28,6 +28,22 @@ do
     rm -rf ./data-files/$cron-crone
 done
 
+# there are also crontabs stored here sometimes
+CRON_DIR="/var/spool/cron/"
+for cron in `ls $CRON_DIR`
+do
+    if [[ -f "$CRON_DIR/$cron" ]] 
+    then
+        # essentially comment out all cronjobs until further review
+        crontab -l -u $cron > ./data-files/$cron-cron
+        sed -ie '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
+        crontab -u $cron ./data-files/$cron-cron
+        found="yes"
+        rm -rf ./data-files/$cron-crone
+    fi
+done
+
+
 if [[ "$found" == "yes" ]]
 then
     printf "${warn}Found crontabs!${reset}\n"
