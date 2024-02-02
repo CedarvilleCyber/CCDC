@@ -29,7 +29,7 @@ fi
 export WK_DIR
 
 # Get backup directory
-read -p "Enter the full path of the backup directory (e.g., /opt/bak): " BK_DIR
+read -p "Enter the full path of the backup directory (e.g., /usr/bak): " BK_DIR
 if [[ "$BK_DIR" = "." ]]; then
     BK_DIR=$(pwd)
 fi
@@ -107,7 +107,7 @@ mysqldump -u root --password="$dbnew2" "$db_name" > $BK_FILE
 
 rm temp
 
-# Backup /var/www/html/prestashop to /opt/bak/prestashop
+# Backup /var/www/html/prestashop to /usr/bak/prestashop
 echo "Backing up prestashop directory"
 cp -r $presta_install_path $BK_DIR/
 

@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # Dependencies:
-# - verify-integrity.sh
-# - assumes backup directory is /opt/bak
+# * verify-integrity.sh
 #
 
 if [ $(id -u) -ne 0 ]; then
