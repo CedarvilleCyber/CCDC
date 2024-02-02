@@ -61,6 +61,25 @@ mysql_secure_installation
 cat /etc/my.cnf | sed "/\[mysqld\]/ a bind-address=127.0.0.1" > temp && cat temp > /etc/my.cnf
 
 # Change prestashop database password
+printf "Enter the new database root passwd: "
+read -s dbnew1
+echo
+printf "Retype new password: "
+read -s dbnew2
+echo
+
+# check for matching new password
+while [[ "$dbnew1" != "$dbnew2" ]]
+do
+        printf "Passwords do not match!\n"
+        printf "Enter new password: "
+        read -s dbnew1
+        echo
+        printf "Retype new password: "
+        read -s dbnew2
+        echo
+done
+
 echo "Changing prestashop database password ..."
 cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > temp && cat temp > $config_file
 
