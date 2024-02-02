@@ -17,6 +17,7 @@ binCheck=0
 sbinCheck=0
 etcCheck=0
 varcheck=0
+optcheck=0
 
 input=0
 
@@ -28,6 +29,7 @@ do
     [2] sbin
     [3] etc
     [4] var
+    [5] opt
     (blank to continue)
 :"
     read input
@@ -38,6 +40,7 @@ do
         2) sbinCheck=1 ;;
         3) etcCheck=1 ;;
         4) varCheck=1 ;;
+        5) optCheck=1 ;;
 	"") ;;
         *) printf "${error}Error: Unknown Directory${reset}\n" ;;
     esac
@@ -66,6 +69,11 @@ if [[ $varCheck -eq 1 ]]
 then
     printf "${info}Restoring /var${reset}\n"
     /usr/bak/bin/cp -r /usr/bak/var / 2>/dev/null
+fi
+if [[ $optCheck -eq 1 ]]
+then
+    printf "${info}Restoring /opt${reset}\n"
+    /usr/bak/bin/cp -r /usr/bak/opt / 2>/dev/null
 fi
 
 printf "${info}DONE!${reset}\n\n"

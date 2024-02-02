@@ -26,6 +26,7 @@ then
     mv var/ old/
     mv bin/ old/
     mv sbin/ old/
+    mv opt/ old/
     cd $PWD
 fi
 
@@ -34,5 +35,6 @@ cp -r /etc /usr/bak/
 cp -r /var /usr/bak/
 cp -r /usr/bin /usr/bak/
 cp -r /usr/sbin /usr/bak/
+cp -r /opt /usr/bak/
 
 exit 0
