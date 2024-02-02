@@ -221,7 +221,7 @@ if [[ "$FIREWALL" == "firewalld" ]]
 then
     # reload and backup
     firewall-cmd --reload
-    cp /etc/firewalld/zones/$zone.* /opt/bak/
+    cp /etc/firewalld/zones/$zone.* /usr/bak/
 
     # list rules for review
     firewall-cmd --list-all
@@ -271,8 +271,8 @@ else
     iptables -A INPUT -j DROP
     iptables -A OUTPUT -j DROP
 
-    # Backup Rules (iptables-restore < /opt/bak/ip_rules)
-    iptables-save > /opt/bak/ip_rules
+    # Backup Rules (iptables-restore < /usr/bak/ip_rules)
+    iptables-save > /usr/bak/ip_rules
 
     # list rules for review
     iptables -L -v -n

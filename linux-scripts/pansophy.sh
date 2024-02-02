@@ -74,7 +74,7 @@ fi
 
 
 # Create folders
-mkdir /opt/bak
+mkdir /usr/bak
 mkdir ./data-files
 
 # clear tmp folder
@@ -131,10 +131,10 @@ then
     # Stopping tmux rename so our window names can work
     tmux set-option -g allow-rename off
 
-    # First window for a bash session (already created)
+    # First window for part2 (already created)
     tmux rename-window -t 0 "Tasks"
     # Read about part2.sh in it's header
-    tmux send-keys -t "Tasks" "./part2.sh" C-m
+    #tmux send-keys -t "Tasks" "./part2.sh" C-m
 else
     printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
 fi
@@ -203,6 +203,11 @@ then
     # window for ports
     tmux new-window -t $SESSIONW:11 -n "ports"
     tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
+
+    # window for part2
+    tmux new-window -t $SESSIONW:12 -n "part2"
+    # Read about part2.sh in it's header
+    tmux send-keys -t "part2" "./part2.sh" C-m
 
     # Attach to the work session
     tmux attach-session -t $SESSIONW

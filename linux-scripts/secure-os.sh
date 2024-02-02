@@ -105,7 +105,7 @@ do
 
     # create backups before writing over the file
     name=`echo $f | sed 's/\//_/g'`
-    cp $f /opt/bak/$name
+    cp $f /usr/bak/$name
     ((counter++))
 
     # now use sed to edit the disable_functions line
