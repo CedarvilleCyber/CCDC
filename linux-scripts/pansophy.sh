@@ -74,7 +74,7 @@ fi
 
 
 # Create folders
-mkdir /opt/bak
+mkdir /usr/bak
 mkdir ./data-files
 
 # clear tmp folder

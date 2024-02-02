@@ -15,11 +15,11 @@ fi
 
 printf "${info}Starting backup script${reset}\n"
 
-if [[ -d /opt/bak/etc/ ]]
+if [[ -d /usr/bak/etc/ ]]
 then
     printf "${info}Old backup exists, keeping a copy${reset}\n"
     PWD=`pwd`
-    cd /opt/bak/
+    cd /usr/bak/
     rm -rf old
     mkdir old
     mv etc/ old/
@@ -30,9 +30,9 @@ then
 fi
 
 printf "${info}Copying files${reset}\n"
-cp -r /etc /opt/bak/
-cp -r /var /opt/bak/
-cp -r /usr/bin /opt/bak/
-cp -r /usr/sbin /opt/bak/
+cp -r /etc /usr/bak/
+cp -r /var /usr/bak/
+cp -r /usr/bin /usr/bak/
+cp -r /usr/sbin /usr/bak/
 
 exit 0

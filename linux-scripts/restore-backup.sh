@@ -50,22 +50,22 @@ done
 if [[ $binCheck -eq 1 ]]
 then
     printf "${info}Restoring /usr/bin${reset}\n"
-    /opt/bak/bin/cp -r /opt/bak/bin /usr 2>/dev/null
+    /usr/bak/bin/cp -r /usr/bak/bin /usr 2>/dev/null
 fi
 if [[ $sbinCheck -eq 1 ]]
 then
     printf "${info}Restoring /usr/sbin${reset}\n"
-    /opt/bak/bin/cp -r /opt/bak/sbin /usr 2>/dev/null
+    /usr/bak/bin/cp -r /usr/bak/sbin /usr 2>/dev/null
 fi
 if [[ $etcCheck -eq 1 ]]
 then
     printf "${info}Restoring /etc${reset}\n"
-    /opt/bak/bin/cp -r /opt/bak/etc / 2>/dev/null
+    /usr/bak/bin/cp -r /usr/bak/etc / 2>/dev/null
 fi
 if [[ $varCheck -eq 1 ]]
 then
     printf "${info}Restoring /var${reset}\n"
-    /opt/bak/bin/cp -r /opt/bak/var / 2>/dev/null
+    /usr/bak/bin/cp -r /usr/bak/var / 2>/dev/null
 fi
 
 printf "${info}DONE!${reset}\n\n"
