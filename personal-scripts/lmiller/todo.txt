@@ -1,2 +1,0 @@
-Add all needed passwords to shared document
- - including admin, root, mysql, prestashop (db and admin)
