@@ -2,6 +2,8 @@
 #
 # Dependencies:
 # * verify-integrity.sh
+# * visiting index.php changes something and triggers overwrite
+# * still works, but flags harmless visits
 #
 
 if [ $(id -u) -ne 0 ]; then
@@ -9,13 +11,13 @@ if [ $(id -u) -ne 0 ]; then
     exit 1
 fi
 
-read -p "Enter the directory to monitor: " DIR
-read -p "Enter the backup directory: " BK_DIR
-read -p "Enter your working directory: " WK_DIR
+read -p $'\e[36mEnter the directory to monitor: \e[0m' DIR
+read -p $'\e[36mEnter the backup directory: \e[0m' BK_DIR
+read -p $'\e[36mEnter your working directory: \e[0m' WK_DIR
 if [[ "$WK_DIR" = "." ]]; then
     WK_DIR=$(pwd)
 fi
-read -p "Force restore if modified? [y/n] " FORCE
+read -p $'\e[36mForce restore if modified? [y/n] \e[0m' FORCE
 
 ./dependencies/verify-integrity.sh $DIR $BK_DIR
 exit_code=$?
@@ -24,7 +26,7 @@ if [[ $exit_code -gt 0 && $exit_code -lt 6 ]]; then
     exit 2
 elif [[ $exit_code -gt 5 ]]; then
     echo "Error: $DIR and $BK_DIR are not the same!"
-    read -p "Would you like to continue anyway? [y/n] " CONTINUE
+    read -p $'\e[36mWould you like to continue anyway? [y/n] \e[0m' CONTINUE
     
     if [[ $CONTINUE != y ]]; then
         exit 3
