@@ -19,7 +19,7 @@ printf "\n${info}=============netstat=============${reset}\n"
 netstat -lntupa
 
 printf "\n${info}=============ss=============${reset}\n"
-ss -lntupa
+ss -lntupa | awk '{print $1,$2,$5,$6,$7}' | column -t
 
 printf "\n${info}Find any open ports that are unwanted and kill them by follwoing the PID${reset}\n"
 printf "${info}Use ps -f --pid <pid> to investigate further\n\n${reset}"
