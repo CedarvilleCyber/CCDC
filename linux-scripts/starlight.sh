@@ -135,6 +135,8 @@ rm temp
 # Backup /var/www/html/prestashop to /usr/bak/prestashop
 echo "Backing up prestashop directory"
 cp -a $presta_install_path $BK_DIR/
+# Additional prestashop backup in case first is corrupted by monitoring
+cp -a $presta_install_path $BK_DIR/prestashop_bak
 
 # Copy configuration files from repo
 cp ./configs/lmiller/.tmux.conf ~/.tmux.conf
