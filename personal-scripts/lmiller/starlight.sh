@@ -128,7 +128,7 @@ rm temp
 
 # Backup /var/www/html/prestashop to /usr/bak/prestashop
 echo "Backing up prestashop directory"
-cp -r $presta_install_path $BK_DIR/
+cp -a $presta_install_path $BK_DIR/
 
 # Copy configuration files from repo
 cp ./configs/lm.tmux.conf ~/.tmux.conf
