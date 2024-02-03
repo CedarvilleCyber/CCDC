@@ -1,9 +1,16 @@
 #!/bin/bash
+
+# Bash script to monitor a directory for modifications.
+# 
+# Author: Logan Miller
 #
 # Dependencies:
-# * verify-integrity.sh
+# * integrity/verify-integrity.sh
 # * visiting index.php changes something and triggers overwrite
 # * still works, but flags harmless visits
+#
+# Notes:
+# * need to somehow exclude prestashop/cache directory from monitoring
 #
 
 if [ $(id -u) -ne 0 ]; then
@@ -19,7 +26,7 @@ if [[ "$WK_DIR" = "." ]]; then
 fi
 read -p $'\e[36mForce restore if modified? [y/n] \e[0m' FORCE
 
-./dependencies/verify-integrity.sh $DIR $BK_DIR
+./integrity/verify-integrity.sh $DIR $BK_DIR
 exit_code=$?
 
 if [[ $exit_code -gt 0 && $exit_code -lt 6 ]]; then
@@ -36,7 +43,7 @@ fi
 forensics=$WK_DIR/$(basename $DIR)-tainted
 
 while true; do
-    ./dependencies/verify-integrity.sh $DIR $BK_DIR
+    ./integrity/verify-integrity.sh $DIR $BK_DIR
     
     if [[ $? -ne 0 && $FORCE = y ]]; then
         rm -rf $forensics &>/dev/null

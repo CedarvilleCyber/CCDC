@@ -5,6 +5,8 @@
 # Script to verify the integrity of a directory against a specified backup
 # directory
 #
+# Author: Logan Miller
+#
 # ------------------------------------------------------------------------------
 
 usage="Usage: ./check-integrity.sh <original> <backup>"
