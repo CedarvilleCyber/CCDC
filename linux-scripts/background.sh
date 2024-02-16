@@ -37,11 +37,18 @@ printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 # wait for update to finish
 wait $UPDATE_PID
 
-if [[ "$PKG_MAN" == "apt-get" ]]
+if [[ "$ID" == "ol" ]]
 then
-    apt-get install nmap -y --force-yes
+    yum install chrony -y
 else
-    yum install nmap -y
+    if [[ "$PKG_MAN" == "apt-get" ]]
+    then
+        apt-get install nmap -y --force-yes
+        apt-get install ntp -y --force-yes
+    else
+        yum install nmap -y
+        yum install ntp -y
+   fi
 fi
 
 tmux send-keys -t "Work:nmap" "./quick-scan.sh" C-m
