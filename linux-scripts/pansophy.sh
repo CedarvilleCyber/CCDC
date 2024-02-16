@@ -155,7 +155,6 @@ then
     # Send keys to tmux window
     # cd into machine-scripts for conveniency
     # C-m is <ENTER>
-    tmux send-keys -t "Bash" "cd ./machine-scripts" C-m
 
     # Reserve second window for ntp later on
     tmux new-window -t $SESSIONW:1 -n "ntp"
