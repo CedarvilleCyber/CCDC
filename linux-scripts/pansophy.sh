@@ -36,6 +36,33 @@ then
     exit 1
 fi
 
+MACHINE=""
+if [[ $# == 1 ]]
+then
+    MACHINE="$1"
+fi
+
+case $MACHINE in
+    "dns-ntp")     ;;
+    "ecomm")       ;;
+    "splunk")      ;;
+    "web")         ;;
+    "webmail")     ;;
+    "workstation") ;;
+    "")            ;;
+    *)
+printf "${error}ERROR: Enter respective name according to machine's purpose:
+    dns-ntp
+    ecomm
+    splunk
+    web
+    webmail
+    workstation
+    or leave blank for generic${reset}\n" ;;
+esac
+ 
+exit 0
+
 
 # Give user one more chance before running script
 printf "\n${info}You are "
