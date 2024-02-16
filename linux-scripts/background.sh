@@ -1,6 +1,6 @@
 #!/bin/bash
 # 
-# part2.sh
+# background.sh
 # 
 # With the lack of a better idea, this is part2 of pansophy.
 # Basically, this runs background tasks so things that 

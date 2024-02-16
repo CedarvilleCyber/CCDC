@@ -131,8 +131,8 @@ then
     # Stopping tmux rename so our window names can work
     tmux set-option -g allow-rename off
 
-    # First window for part2 (already created)
-    tmux rename-window -t 0 "Tasks"
+    # First window (already created)
+    #tmux rename-window -t 0 "Tasks"
     # Read about part2.sh in it's header
     #tmux send-keys -t "Tasks" "./part2.sh" C-m
 else
@@ -204,10 +204,9 @@ then
     tmux new-window -t $SESSIONW:11 -n "ports"
     tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
 
-    # window for part2
-    tmux new-window -t $SESSIONW:12 -n "part2"
-    # Read about part2.sh in it's header
-    tmux send-keys -t "part2" "./part2.sh" C-m
+    # window for background
+    tmux new-window -t $SESSIONW:12 -n "back"
+    tmux send-keys -t "back" "./background.sh" C-m
 
     # Attach to the work session
     tmux attach-session -t $SESSIONW
