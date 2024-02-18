@@ -58,19 +58,25 @@ printf "${error}ERROR: Enter respective name according to machine's purpose:
     web
     webmail
     workstation
-    or leave blank for generic${reset}\n" ;;
+    or no parameters for generic${reset}\n" ;;
 esac
- 
-exit 0
 
 
 # Give user one more chance before running script
-printf "\n${info}You are "
+printf "\nYou are ${info}"
 whoami
 printf "${reset}"
 printf "Your current working directory is: ${info}"
 pwd
-printf "${reset}\n"
+printf "${reset}"
+if [[ "$MACHINE" == "" ]]
+then
+    printf "You have chosen the ${info}generic${reset} machine.\n\n"
+else
+    printf "You have chosen the ${info}$MACHINE${reset} machine.\n\n"
+fi
+
+
 printf "Continue running script? [y/n]: "
 
 # Get user input

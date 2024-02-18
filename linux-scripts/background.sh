@@ -52,7 +52,14 @@ else
 fi
 
 tmux send-keys -t "Work:nmap" "./quick-scan.sh" C-m
-tmux send-keys -t "Work:ntp" "./ntp-client.sh" C-m
+
+# Hardcode
+if [[ "$MACHINE" != "" ]]
+then
+    tmux send-keys -t "Work:ntp" "echo '172.20.240.20' | ./ntp-client.sh" C-m
+else
+    tmux send-keys -t "Work:ntp" "./ntp-client.sh" C-m
+fi
 
 # upgrade
 ./osupdater.sh
