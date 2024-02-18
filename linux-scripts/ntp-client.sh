@@ -18,9 +18,17 @@ printf "${info}Starting ntp client script${reset}\n"
 printf "${info}Please enter ip of ntp server: ${reset}"
 read ip
 
-sed -ie '/^server/ s/^/#/' /etc/ntp.conf
-sed -ie '/^pool/ s/^/#/' /etc/ntp.conf
-echo "server $ip prefer iburst" >> /etc/ntp.conf
+which ntpq > /dev/null
+if [[ $? -eq 0 ]]
+then
+    sed -ie '/^server/ s/^/#/' /etc/ntp.conf
+    sed -ie '/^pool/ s/^/#/' /etc/ntp.conf
+    echo "server $ip prefer iburst" >> /etc/ntp.conf
+else
+    sed -ie '/^server/ s/^/#/' /etc/chrony.conf
+    sed -ie '/^pool/ s/^/#/' /etc/chrony.conf
+    echo "server $ip prefer iburst" >> /etc/chrony.conf
+fi
 
 which systemctl >/dev/null
 if [[ $? -eq 0 ]]
