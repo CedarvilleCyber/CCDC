@@ -31,10 +31,10 @@ then
 fi
 
 printf "${info}Copying files${reset}\n"
-cp -r /etc /usr/bak/
-cp -r /var /usr/bak/
-cp -r /usr/bin /usr/bak/
-cp -r /usr/sbin /usr/bak/
-cp -r /opt /usr/bak/
+cp -rp /etc /usr/bak/
+cp -rp /var /usr/bak/
+cp -rp /usr/bin /usr/bak/
+cp -rp /usr/sbin /usr/bak/
+cp -rp /opt /usr/bak/
 
 exit 0
