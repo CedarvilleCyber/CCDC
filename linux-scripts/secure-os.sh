@@ -83,6 +83,16 @@ printf "${info}Looking for authorized_keys and moving them${reset}\n"
 printf "${info}one directory up from where they were found${reset}\n"
 find / -iname "authorized_keys" > ./data-files/a_keys-locations.txt 2>/dev/null
 
+# comment out anything in sudoers.d
+for file in /etc/sudoers.d/*
+do
+    echo $file
+    sed -ie '/^[^#].*/ s/^/#/' $file
+    rm -rf "$file"e
+done
+
+exit 1
+
 # reads through each line of a file, ignoring whitespace
 while IFS="" read -r f || [[ -n "$f" ]]
 do
