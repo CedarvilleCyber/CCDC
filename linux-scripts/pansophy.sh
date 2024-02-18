@@ -94,7 +94,7 @@ fi
 . /etc/os-release
 
 # Package Manager
-if [[ "$ID" == "fedora" || "$ID" == "centos" || "$ID" == "rhel" ]]
+if [[ "$ID" == "fedora" || "$ID" == "centos" || "$ID" == "rhel" || "$ID" == "ol" ]]
 then
     export PKG_MAN=yum
 elif [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]
