@@ -43,6 +43,8 @@ do
     fi
 done
 
+sed -ie '/^[^#].*/ s/^/#/' /etc/crontab
+rm -rf /etc/crontabe
 
 if [[ "$found" == "yes" ]]
 then
