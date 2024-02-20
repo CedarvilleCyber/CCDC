@@ -113,8 +113,37 @@ mkdir ./data-files
 # clear tmp folder
 rm -rf /tmp/*
 
+# firewall automate setup
+if [[ "$MACHINE" == "dns-ntp" ]]
+then
+    printf "53\nt\n53\nu\n123\nu" > ./data-files/ports.txt
+elif [[ "$MACHINE" == "ecomm" ]]
+then
+    printf "80\nt" > ./data-files/ports.txt
+elif [[ "$MACHINE" == "splunk" ]]
+then
+    printf "514\nt\n8000\nt\n8065\nt\n8089\nt\n8191\nt\n9997\nt" > ./data-files/ports.txt
+elif [[ "$MACHINE" == "web" ]]
+then
+    printf "\n" > ./data-files/ports.txt
+elif [[ "$MACHINE" == "webmail" ]]
+then
+    printf "25\nt\n110\nt" > ./data-files/ports.txt
+elif [[ "$MACHINE" == "workstation" ]]
+then
+    printf "\n" > ./data-files/ports.txt
+fi
+
+
 # firewall
-./firewall.sh
+if [[ "$MACHINE" == "" ]]
+then
+    ./firewall.sh
+else
+    cat ./data-files/ports.txt | ./firewall.sh
+fi
+
+exit 1
 
 # secure os
 ./secure-os.sh
