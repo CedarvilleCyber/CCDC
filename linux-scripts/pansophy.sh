@@ -152,8 +152,10 @@ ARCH=`uname -m`
 if [[ "$ARCH" =~ .*64.* ]]
 then
     wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64
+    chmod 700 ./pspy64
 else
     wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy32
+    chmod 700 ./pspy32
 fi
 
 # quick vimrc for root
