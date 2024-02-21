@@ -58,9 +58,10 @@ printf "${error}ERROR: Enter respective name according to machine's purpose:
     web
     webmail
     workstation
-    or no parameters for generic${reset}\n" ;;
+    or no parameters for generic${reset}\n"; exit 1 ;;
 esac
 
+export MACHINE
 
 # Give user one more chance before running script
 printf "\nYou are ${info}"
@@ -152,13 +153,13 @@ fi
 # quick vimrc for root
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
 
+
 # if run from stage1, then quit now!
-if [[ "$STAGE1" == "1" ]]
+if [[ "$2" == "stage1" ]]
 then
     exit 0
 fi
-printf "fail!\n\n"
-exit 1
+
 
 # start tmux
 which tmux >/dev/null
