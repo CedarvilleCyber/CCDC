@@ -20,7 +20,7 @@ fi
 
 read -p $'\e[36mEnter the directory to monitor: \e[0m' DIR
 read -p $'\e[36mEnter the backup directory: \e[0m' BK_DIR
-read -p $'\e[36mEnter your working directory: \e[0m' WK_DIR
+read -p $'\e[36mEnter your working directory (. for this one): \e[0m' WK_DIR
 if [[ "$WK_DIR" = "." ]]; then
     WK_DIR=$(pwd)
 fi
