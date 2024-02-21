@@ -36,11 +36,7 @@ then
     exit 1
 fi
 
-MACHINE=""
-if [[ $# == 1 ]]
-then
-    MACHINE="$1"
-fi
+MACHINE="$1"
 
 case $MACHINE in
     "dns-ntp")     ;;

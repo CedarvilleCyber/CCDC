@@ -58,7 +58,7 @@ chmod 700 secure-os.sh
 # add in prompt for which machine
 sudo ./pansophy.sh "$MACHINE" "stage1"
 
-#git clone https://github.com/CedarvilleCyber/CCDC.git
+git clone https://github.com/CedarvilleCyber/CCDC.git
 
 printf "\n\nBasics secured. Now cd into ./work/CCDC/linux-scripts
 and run pansophy.sh\n\n\n"
