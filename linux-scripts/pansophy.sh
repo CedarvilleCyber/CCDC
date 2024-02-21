@@ -146,6 +146,16 @@ fi
 # make backups
 ./backup.sh
 
+
+# quick vimrc for root
+printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
+
+# if run from stage1, then quit now!
+if [[ "$2" == "stage1" ]]
+then
+    exit 0
+fi
+
 # download pspy
 # regex for 64 to find out which one to download
 ARCH=`uname -m`
@@ -157,17 +167,6 @@ else
     wget https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy32
     chmod 700 ./pspy32
 fi
-
-# quick vimrc for root
-printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
-
-
-# if run from stage1, then quit now!
-if [[ "$2" == "stage1" ]]
-then
-    exit 0
-fi
-
 
 # start tmux
 which tmux >/dev/null
