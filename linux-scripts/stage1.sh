@@ -59,10 +59,10 @@ chmod 700 restore-backup.sh
 chmod 700 secure-os.sh
 
 # check cron now!
-sudo ./check-cron.sh
+./check-cron.sh
 
 # add in prompt for which machine
-sudo ./pansophy.sh "$MACHINE" "stage1"
+./pansophy.sh "$MACHINE" "stage1"
 
 git clone https://github.com/CedarvilleCyber/CCDC.git
 
