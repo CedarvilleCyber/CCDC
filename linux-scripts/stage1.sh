@@ -7,6 +7,13 @@
 # Kaicheng Ye
 # Feb. 2024
 
+# Check if script has been run with superuser privileges
+if [[ "$(id -u)" != "0" ]]
+then
+    printf "${error}ERROR: The script must be run with sudo privileges!${reset}\n"
+    exit 1
+fi
+
 printf "Initiating stage 1\n"
 
 STAGE1=1
@@ -15,11 +22,7 @@ export STAGE1
 mkdir work
 cd work
 
-MACHINE=""
-if [[ $# == 1 ]]
-then
-    MACHINE="$1"
-fi
+MACHINE="$1"
 
 case $MACHINE in
     "dns-ntp")     ;;

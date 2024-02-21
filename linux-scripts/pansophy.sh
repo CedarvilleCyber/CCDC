@@ -208,7 +208,7 @@ then
 
     # First window (already created)
     tmux rename-window -t 0 "Background"
-    tmux send-keys -t "Tasks" "./background.sh" C-m
+    tmux send-keys -t "Background" "./background.sh" C-m
 else
     printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
 fi
@@ -279,7 +279,7 @@ then
     # C-m is <ENTER>
 
     # window for pspy
-    tmux new-window -t $SESSIONW:3 -n "pspy"
+    tmux new-window -t $SESSIONW:1 -n "pspy"
     tmux send-keys -t "pspy" "./pspy*" C-m
 
     # window for processes

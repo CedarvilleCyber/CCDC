@@ -84,9 +84,9 @@ printf "${info}one directory up from where they were found${reset}\n"
 find / -iname "authorized_keys" > ./data-files/a_keys-locations.txt 2>/dev/null
 
 # comment out anything in sudoers.d
+printf "${info}Checking /etc/sudoers.d/ directory${reset}\n"
 for file in /etc/sudoers.d/*
 do
-    echo $file
     sed -ie '/^[^#].*/ s/^/#/' $file
     rm -rf "$file"e
 done
