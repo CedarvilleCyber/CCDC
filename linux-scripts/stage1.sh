@@ -55,6 +55,9 @@ chmod 700 firewall.sh
 chmod 700 restore-backup.sh
 chmod 700 secure-os.sh
 
+# check cron now!
+sudo ./check-cron.sh
+
 # add in prompt for which machine
 sudo ./pansophy.sh "$MACHINE" "stage1"
 
