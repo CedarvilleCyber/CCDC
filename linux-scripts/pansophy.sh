@@ -143,8 +143,6 @@ else
     cat ./data-files/ports.txt | ./firewall.sh
 fi
 
-exit 1
-
 # secure os
 ./secure-os.sh
 
@@ -153,6 +151,14 @@ exit 1
 
 # quick vimrc for root
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
+
+# if run from stage1, then quit now!
+if [[ "$STAGE1" == "1" ]]
+then
+    exit 0
+fi
+printf "fail!\n\n"
+exit 1
 
 # start tmux
 which tmux >/dev/null
