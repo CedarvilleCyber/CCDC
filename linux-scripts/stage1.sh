@@ -61,12 +61,11 @@ chmod 700 secure-os.sh
 # check cron now!
 ./check-cron.sh
 
-# add in prompt for which machine
 ./pansophy.sh "$MACHINE" "stage1"
 
 git clone https://github.com/CedarvilleCyber/CCDC.git
 
-printf "\n\nBasics secured. Now cd into ./work/CCDC/linux-scripts
+printf "\n\nBasics secured. Now   cd ./work/CCDC/linux-scripts
 and run pansophy.sh\n\n\n"
 
 exit 0
