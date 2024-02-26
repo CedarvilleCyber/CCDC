@@ -35,7 +35,7 @@ fi
 # change file permissions
 # executable only for .sh extensions.
 # user only permissions except for on directories.
-find ../ -type f > ./data-files/files.txt
+find /home -type f > ./data-files/files.txt
 find /home -type d -exec chmod 755 {} +
 chmod 644 /etc/passwd
 chmod 640 /etc/shadow
@@ -56,6 +56,69 @@ do
     fi
 
 done < ./data-files/files.txt
+
+
+# Check for LD_ Environment Variables
+printenv > ./data-files/env.txt
+# unset ${!LD_@}      useless since this script is it's own shell, but could be used manually
+FOUND=""
+find /home -maxdepth 2 -not -iname "*_history" -type f > ./data-files/env
+find /root -maxdepth 1 -not -iname "*_history" -type f >> ./data-files/env
+find /etc/profile.d -type f >> ./data-files/env
+
+# loop through each found thing and run above sed command
+while IFS="" read -r f || [[ -n "$f" ]]
+do
+    FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' "$f"`
+    rm -rf "$f"e
+done < ./data-files/env
+
+FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/profile`
+rm -rf /etc/profilee
+
+FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/environment`
+rm -rf /etc/environmente
+
+# remove temp files
+rm -rf ./data-files/env
+
+
+# ld.so.preload check
+if [[ -f /etc/ld.so.preload ]]
+then
+    FOUND+="/etc/ld.so.preload"
+    mv /etc/ld.so.preload /etc/ld.so.preload_EVIL
+fi
+
+# rc.local check
+if [[ -f /etc/rc.local ]]
+then
+    RC="/etc/rc.local"
+    mv "/etc/rc.local" "/etc/rc.local_EVIL"
+fi
+
+if [[ "$FOUND" != "" ]]
+then
+    printf "\n\n$FOUND\n\n"
+    printf "\n\n${warn}WARNING: Found things preset. Please close out of all shells and logout.\n"
+    printf "Then, come back and rerun pansophy like normal.${reset}\n\n"
+fi
+
+if [[ "$RC" == "/etc/rc.local" ]]
+then
+    printf "${warn}Discovered rc.local. Check out /etc/rc.local_EVIL and restart.${reset}\n"
+fi
+
+if [[ "$FOUND" != "" || "$RC" != "" ]]
+then
+    exit 0
+fi
 
 
 # remove uneccesary applications
