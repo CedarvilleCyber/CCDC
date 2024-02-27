@@ -156,8 +156,6 @@ then
     exit 0
 fi
 
-# create aliases
-./aliases.sh
 
 # download pspy
 # regex for 64 to find out which one to download
