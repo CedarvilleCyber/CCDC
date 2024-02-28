@@ -65,7 +65,7 @@ chmod 700 secure-os.sh
 
 git clone https://github.com/CedarvilleCyber/CCDC.git
 
-printf "\n\nBasics secured. Now   cd ./work/CCDC/linux-scripts
-and run pansophy.sh\n\n\n"
+printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
+and run pansophy.sh like normal\n\n\n"
 
 exit 0
