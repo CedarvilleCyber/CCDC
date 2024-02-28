@@ -49,7 +49,7 @@ export BK_DIR
 
 # Secure Mysql Database --------------------------------------------------------
 read -p $'\e[36mSecure MySQL? [y/n] \e[0m' sec_mysql
-if [[ "$sec_mysql" != "y" ]]; then
+if [[ "$sec_mysql" = "y" ]]; then
         echo "Securing MySQL database ..."
         
 	echo "Change the root password and answer yes to all prompts"
@@ -64,7 +64,7 @@ fi
 
 # Secure Prestashop ------------------------------------------------------------
 read -p $'\e[36mSecure Prestashop? [y/n] \e[0m' sec_presta
-if [[ "$sec_presta" != "y" ]]; then
+if [[ "$sec_presta" = "y" ]]; then
 	echo "Securing MySQL database ..."
 	
         # Get Prestashop install path and version
@@ -151,7 +151,7 @@ if [[ "$sec_presta" != "y" ]]; then
 fi
 
 # Backup MySQL -----------------------------------------------------------------
-if [[ "$sec_mysql" != "y" ]]; then
+if [[ "$sec_mysql" = "y" ]]; then
 	echo "Backing up MySQL database ..."
 	
 	echo $'\e[1;33mView how to restore the database in sql-backup-instructions.txt\e[0m'
