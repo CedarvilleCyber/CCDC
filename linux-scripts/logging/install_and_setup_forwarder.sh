@@ -21,9 +21,9 @@ fi
 
 fi #installed
 
-chown splunk:splunk ./setup_forwarder.sh
-find ./ -iname "*.conf" -exec chown splunk:splunk {} +
-su splunk ./setup_forwarder.sh
+chown splunkfwd:splunkfwd ./setup_forwarder.sh
+find ./ -iname "*.conf" -exec chown splunkfwd:splunkfwd {} +
+su splunkfwd ./setup_forwarder.sh
 if [[ $? -ne 0 ]]
 then
 	echo "Splunk Forwarder setup failed"

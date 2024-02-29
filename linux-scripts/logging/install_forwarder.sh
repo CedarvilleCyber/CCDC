@@ -7,9 +7,12 @@ then
 fi
 
 #Install
-useradd -m splunk
-groupadd splunk
-chown -R splunk:splunk $SPLUNK_HOME
+#useradd -m splunk
+useradd -m splunkfwd
+#groupadd splunk
+groupadd splunkfwd
+#chown -R splunk:splunk $SPLUNK_HOME
+chown -R splunkfwd:splunkfwd $SPLUNK_HOME
 export SPLUNK_HOME=/opt/splunkforwarder
 mkdir $SPLUNK_HOME
 
