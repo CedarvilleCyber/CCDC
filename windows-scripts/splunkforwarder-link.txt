@@ -1,1 +1,5 @@
+OLD VERSION
+https://download.splunk.com/products/universalforwarder/releases/7.3.8/windows/splunkforwarder-7.3.8-bdc98854fc40-x64-release.msi
+
+NEW VERSION
 https://download.splunk.com/products/universalforwarder/releases/9.2.0.1/windows/splunkforwarder-9.2.0.1-d8ae995bf219-x64-release.msi
