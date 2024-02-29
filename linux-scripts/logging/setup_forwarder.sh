@@ -18,7 +18,6 @@ export MACHINE=$machine
 
 
 SPLUNK_HOME=/opt/splunkforwarder
-chown -R splunk:splunk $SPLUNK_HOME
 
 case $machine in
 	1) cp ./splunk-inputs.conf $SPLUNK_HOME/etc/system/local/inputs.conf ;;
