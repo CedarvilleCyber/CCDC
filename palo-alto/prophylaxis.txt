@@ -21,3 +21,60 @@ set network profiles zone-protection-profile Default flood other-ip enable yes
 set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
 set network profiles zone-protection-profile Default flood icmpv6 enable yes
 set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set shared log-settings syslog Splunk server "Splunk 9.1.1" transport UDP
+set shared log-settings syslog Splunk server "Splunk 9.1.1" port 514
+set shared log-settings syslog Splunk server "Splunk 9.1.1" format BSD
+set shared log-settings syslog Splunk server "Splunk 9.1.1" server 172.20.241.20
+set shared log-settings syslog Splunk server "Splunk 9.1.1" facility LOG_USER
+set shared log-settings profiles default match-list traffic send-syslog Splunk
+set shared log-settings profiles default match-list traffic log-type traffic
+set shared log-settings profiles default match-list traffic filter "All Logs"
+set shared log-settings profiles default match-list traffic send-to-panorama no
+set shared log-settings profiles default match-list traffic quarantine no
+set shared log-settings profiles default match-list auth send-syslog Splunk
+set shared log-settings profiles default match-list auth log-type auth
+set shared log-settings profiles default match-list auth filter "All Logs"
+set shared log-settings profiles default match-list auth send-to-panorama no
+set shared log-settings profiles default match-list auth quarantine no
+set shared log-settings profiles default match-list data send-syslog Splunk
+set shared log-settings profiles default match-list data log-type data
+set shared log-settings profiles default match-list data filter "All Logs"
+set shared log-settings profiles default match-list data send-to-panorama no
+set shared log-settings profiles default match-list data quarantine no
+set shared log-settings profiles default match-list gtp send-syslog Splunk
+set shared log-settings profiles default match-list gtp log-type gtp
+set shared log-settings profiles default match-list gtp filter "All Logs"
+set shared log-settings profiles default match-list gtp send-to-panorama no
+set shared log-settings profiles default match-list gtp quarantine no
+set shared log-settings profiles default match-list threat send-syslog Splunk
+set shared log-settings profiles default match-list threat log-type threat
+set shared log-settings profiles default match-list threat filter "All Logs"
+set shared log-settings profiles default match-list threat send-to-panorama no
+set shared log-settings profiles default match-list threat quarantine no
+set shared log-settings profiles default match-list tunnel send-syslog Splunk
+set shared log-settings profiles default match-list tunnel log-type tunnel
+set shared log-settings profiles default match-list tunnel filter "All Logs"
+set shared log-settings profiles default match-list tunnel send-to-panorama no
+set shared log-settings profiles default match-list tunnel quarantine no
+set shared log-settings profiles default match-list url send-syslog Splunk
+set shared log-settings profiles default match-list url log-type url
+set shared log-settings profiles default match-list url filter "All Logs"
+set shared log-settings profiles default match-list url send-to-panorama no
+set shared log-settings profiles default match-list url quarantine no
+set shared log-settings profiles default match-list wildfire send-syslog Splunk
+set shared log-settings profiles default match-list wildfire log-type wildfire
+set shared log-settings profiles default match-list wildfire filter "All Logs"
+set shared log-settings profiles default match-list wildfire send-to-panorama no
+set shared log-settings profiles default match-list wildfire quarantine no
+set shared log-settings system match-list Splunk send-syslog Splunk
+set shared log-settings system match-list Splunk filter "All Logs"
+set shared log-settings config match-list Splunk send-syslog Splunk
+set shared log-settings config match-list Splunk filter "All Logs"
+set shared log-settings userid match-list Splunk send-syslog Splunk
+set shared log-settings userid match-list Splunk filter "All Logs"
+set shared log-settings hipmatch match-list Splunk send-syslog Splunk
+set shared log-settings hipmatch match-list Splunk filter "All Logs"
+set shared log-settings globalprotect match-list Splunk send-syslog Splunk
+set shared log-settings globalprotect match-list Splunk filter "All Logs"
+set shared log-settings iptag match-list Splunk send-syslog Splunk
+set shared log-settings iptag match-list Splunk filter "All Logs"
