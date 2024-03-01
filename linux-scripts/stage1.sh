@@ -63,7 +63,7 @@ chmod 700 secure-os.sh
 
 ./pansophy.sh "$MACHINE" "stage1"
 
-git clone https://github.com/CedarvilleCyber/CCDC.git
+git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
 printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
 and run pansophy.sh like normal\n\n\n"
