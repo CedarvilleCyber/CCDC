@@ -1,0 +1,5 @@
+set profile-group ccdc virus default
+set profile-group ccdc spyware strict
+set profile-group ccdc vulnerability strict
+set profile-group ccdc wildfire-analysis default
+set profile-group ccdc url-filtering default
