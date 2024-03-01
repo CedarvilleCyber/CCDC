@@ -19,13 +19,5 @@ set network profiles zone-protection-profile Default flood udp enable yes
 set network profiles zone-protection-profile Default flood udp red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
 set network profiles zone-protection-profile Default flood other-ip enable yes
 set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
-set network profiles zone-protection-profile Default flood icmpv6 enable no
+set network profiles zone-protection-profile Default flood icmpv6 enable yes
 set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
-set network qos profile default class-bandwidth-type mbps class class1 priority real-time
-set network qos profile default class-bandwidth-type mbps class class2 priority high
-set network qos profile default class-bandwidth-type mbps class class3 priority high
-set network qos profile default class-bandwidth-type mbps class class4 priority medium
-set network qos profile default class-bandwidth-type mbps class class5 priority medium
-set network qos profile default class-bandwidth-type mbps class class6 priority low
-set network qos profile default class-bandwidth-type mbps class class7 priority low
-set network qos profile default class-bandwidth-type mbps class class8 priority low
