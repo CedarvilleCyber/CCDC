@@ -53,3 +53,112 @@ set rulebase security rules EXTERNAL2SELF_DROP action drop
 set rulebase security rules EXTERNAL2SELF_DROP log-start no
 set rulebase security rules EXTERNAL2SELF_DROP log-end yes
 set rulebase security rules EXTERNAL2SELF_DROP log-setting default
+
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp profile-setting group ccdc
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp application any
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp service application-default
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp to Public
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp from External
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp source any
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp destination fedora
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp action allow
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp log-start no
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp log-end yes
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp log-setting default
+
+set rulebase security rules EXTERNAL2PUBLIC_splunk profile-setting group ccdc
+set rulebase security rules EXTERNAL2PUBLIC_splunk application any
+set rulebase security rules EXTERNAL2PUBLIC_splunk service service-splunk
+set rulebase security rules EXTERNAL2PUBLIC_splunk to Public
+set rulebase security rules EXTERNAL2PUBLIC_splunk from External
+set rulebase security rules EXTERNAL2PUBLIC_splunk source any
+set rulebase security rules EXTERNAL2PUBLIC_splunk destination splunk
+set rulebase security rules EXTERNAL2PUBLIC_splunk action allow
+set rulebase security rules EXTERNAL2PUBLIC_splunk log-start no
+set rulebase security rules EXTERNAL2PUBLIC_splunk log-end yes
+set rulebase security rules EXTERNAL2PUBLIC_splunk log-setting default
+
+set rulebase security rules EXTERNAL2PUBLIC_http profile-setting group ccdc
+set rulebase security rules EXTERNAL2PUBLIC_http application any
+set rulebase security rules EXTERNAL2PUBLIC_http service http
+set rulebase security rules EXTERNAL2PUBLIC_http to Public
+set rulebase security rules EXTERNAL2PUBLIC_http from External
+set rulebase security rules EXTERNAL2PUBLIC_http source any
+set rulebase security rules EXTERNAL2PUBLIC_http destination centos
+set rulebase security rules EXTERNAL2PUBLIC_http action allow
+set rulebase security rules EXTERNAL2PUBLIC_http log-start no
+set rulebase security rules EXTERNAL2PUBLIC_http log-end yes
+set rulebase security rules EXTERNAL2PUBLIC_http log-setting default
+
+set rulebase security rules EXTERNAL2INTERNAL_dns profile-setting group ccdc
+set rulebase security rules EXTERNAL2INTERNAL_dns application dns
+set rulebase security rules EXTERNAL2INTERNAL_dns service application-default
+set rulebase security rules EXTERNAL2INTERNAL_dns to Internal
+set rulebase security rules EXTERNAL2INTERNAL_dns from External
+set rulebase security rules EXTERNAL2INTERNAL_dns source any
+set rulebase security rules EXTERNAL2INTERNAL_dns destination debian
+set rulebase security rules EXTERNAL2INTERNAL_dns action allow
+set rulebase security rules EXTERNAL2INTERNAL_dns log-start no
+set rulebase security rules EXTERNAL2INTERNAL_dns log-end yes
+set rulebase security rules EXTERNAL2INTERNAL_dns log-setting default
+
+set rulebase security rules EXTERNAL2USER_dns profile-setting group ccdc
+set rulebase security rules EXTERNAL2USER_dns application dns
+set rulebase security rules EXTERNAL2USER_dns service application-default
+set rulebase security rules EXTERNAL2USER_dns to User
+set rulebase security rules EXTERNAL2USER_dns from External
+set rulebase security rules EXTERNAL2USER_dns source any
+set rulebase security rules EXTERNAL2USER_dns destination windows-server
+set rulebase security rules EXTERNAL2USER_dns action allow
+set rulebase security rules EXTERNAL2USER_dns log-start no
+set rulebase security rules EXTERNAL2USER_dns log-end yes
+set rulebase security rules EXTERNAL2USER_dns log-setting default
+
+set rulebase security rules WIN102SPLUNK_splunk profile-setting group ccdc
+set rulebase security rules WIN102SPLUNK_splunk application splunk
+set rulebase security rules WIN102SPLUNK_splunk service application-default
+set rulebase security rules WIN102SPLUNK_splunk to Public
+set rulebase security rules WIN102SPLUNK_splunk from External
+set rulebase security rules WIN102SPLUNK_splunk source win10
+set rulebase security rules WIN102SPLUNK_splunk destination splunk
+set rulebase security rules WIN102SPLUNK_splunk action allow
+set rulebase security rules WIN102SPLUNK_splunk log-start no
+set rulebase security rules WIN102SPLUNK_splunk log-end yes
+set rulebase security rules WIN102SPLUNK_splunk log-setting default
+
+set rulebase security rules INSIDE2EVERYWHERE_http_https profile-setting group ccdc
+set rulebase security rules INSIDE2EVERYWHERE_http_https application any
+set rulebase security rules INSIDE2EVERYWHERE_http_https service [ service-http service-https ]
+set rulebase security rules INSIDE2EVERYWHERE_http_https to [ External Internal Public User ]
+set rulebase security rules INSIDE2EVERYWHERE_http_https from [ Internal Public User ]
+set rulebase security rules INSIDE2EVERYWHERE_http_https source any
+set rulebase security rules INSIDE2EVERYWHERE_http_https destination any
+set rulebase security rules INSIDE2EVERYWHERE_http_https action allow
+set rulebase security rules INSIDE2EVERYWHERE_http_https log-start no
+set rulebase security rules INSIDE2EVERYWHERE_http_https log-end yes
+set rulebase security rules INSIDE2EVERYWHERE_http_https log-setting default
+
+set rulebase security rules INSIDE2EXTERNAL profile-setting group ccdc
+set rulebase security rules INSIDE2EXTERNAL application [ dns icmp ping ssl web-browsing ntp-base ]
+set rulebase security rules INSIDE2EXTERNAL service application-default
+set rulebase security rules INSIDE2EXTERNAL to External
+set rulebase security rules INSIDE2EXTERNAL from [ Internal Public User ]
+set rulebase security rules INSIDE2EXTERNAL source any
+set rulebase security rules INSIDE2EXTERNAL destination any
+set rulebase security rules INSIDE2EXTERNAL action allow
+set rulebase security rules INSIDE2EXTERNAL log-start no
+set rulebase security rules INSIDE2EXTERNAL log-end yes
+set rulebase security rules INSIDE2EXTERNAL log-setting default
+
+set rulebase security rules INSIDE2INSIDE profile-setting group ccdc
+set rulebase security rules INSIDE2INSIDE application [ dns splunk syslog ntp ping snmp ssh ]
+set rulebase security rules INSIDE2INSIDE service application-default
+set rulebase security rules INSIDE2INSIDE to [ Internal Public User ]
+set rulebase security rules INSIDE2INSIDE from [ Internal Public User ]
+set rulebase security rules INSIDE2INSIDE source any
+set rulebase security rules INSIDE2INSIDE destination any
+set rulebase security rules INSIDE2INSIDE action allow
+set rulebase security rules INSIDE2INSIDE log-start no
+set rulebase security rules INSIDE2INSIDE log-end yes
+set rulebase security rules INSIDE2INSIDE log-setting default
+
