@@ -27,12 +27,12 @@ echo "set address this-fw ip-netmask 172.25.$team.2" >> temp.txt
 cat ./prophylaxis.txt >> temp.txt
 cp ./prophylaxis.txt ./backup-prophylaxis.txt
 mv temp.txt prophylaxis.txt
+echo "commit" >> prophylaxis.txt
 
-
-exit 1
 
 ssh -T admin@172.20.242.150 < ./prophylaxis.txt
 
-
+cp ./prophylaxis.txt ./ran.txt
+mv ./backup-prophylaxis.txt ./prophylaxis.txt
 
 exit 0
