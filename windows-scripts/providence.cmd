@@ -5,6 +5,7 @@ title = "Cedarville Windows Script - 'Providence' "
 ::      Mackwage - https://gist.github.com/mackwage/08604751462126599d7e52f233490efe
 ::      Mike Bailey - https://github.com/mike-bailey/CCDC-Scripts
 ::      Cedarville's version of Baldwin Wallace's old script - https://github.com/CedarvilleCyber/CCDC/blob/main/CCDC-Collection/Windows/windowsBW.cmd
+:: Line 172 "CVE-2020-1350" added 2/16/2024 by Stephen Pearson
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
@@ -169,7 +170,10 @@ ipconfig /flushdns
 echo Writing over the hosts file...
 attrib -r -s C:\WINDOWS\system32\drivers\etc\hosts
 echo > C:\Windows\System32\drivers\etc\hosts
-::
+:: Patching CVE-2020-1350
+echo Patching CVE-2020-1350
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DNS\Parameters" /v TcpReceivePacketSize /t REG_DWORD /d 65280 /f
+net stop dns && net start dns
 :: Services
 echo Showing you the currently running services...
 echo Showing you the currently running services... >> output.txt
