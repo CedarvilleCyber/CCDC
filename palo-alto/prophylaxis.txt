@@ -168,6 +168,3 @@ set rulebase security rules INSIDE2INSIDE log-end yes
 set rulebase security rules INSIDE2INSIDE log-setting default
 
 move rulebase security rules any2any bottom
-set rulebase security rules PUBLIC2EXTERNAL disabled yes
-set rulebase security rules PUBLIC2INTERNAL disabled yes
-set rulebase security rules INTERNAL2PUBLIC disabled yes
