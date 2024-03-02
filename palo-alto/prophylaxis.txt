@@ -135,7 +135,7 @@ set rulebase security rules KILL_ALLOW_DNS profile-setting group ccdc
 set rulebase security rules KILL_ALLOW_DNS application dns
 set rulebase security rules KILL_ALLOW_DNS service application-default
 set rulebase security rules KILL_ALLOW_DNS to External
-set rulebase security rules KILL_ALLOW_DNS from [ Internal User ]
+set rulebase security rules KILL_ALLOW_DNS from [ Internal Public User ]
 set rulebase security rules KILL_ALLOW_DNS source [ debian windows-server ]
 set rulebase security rules KILL_ALLOW_DNS destination any
 set rulebase security rules KILL_ALLOW_DNS action allow
@@ -159,7 +159,7 @@ set rulebase security rules KILL_APPS log-setting default
 
 set rulebase security rules KILL_WEB profile-setting group ccdc
 set rulebase security rules KILL_WEB application any
-set rulebase security rules KILL_WEB service [  ]
+set rulebase security rules KILL_WEB service [ service-http service-https ]
 set rulebase security rules KILL_WEB to External
 set rulebase security rules KILL_WEB from [ Internal Public User ]
 set rulebase security rules KILL_WEB source any
