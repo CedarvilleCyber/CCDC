@@ -131,6 +131,45 @@ set rulebase security rules WIN102SPLUNK_splunk log-start no
 set rulebase security rules WIN102SPLUNK_splunk log-end yes
 set rulebase security rules WIN102SPLUNK_splunk log-setting default
 
+set rulebase security rules KILL_ALLOW_DNS profile-setting group ccdc
+set rulebase security rules KILL_ALLOW_DNS application dns
+set rulebase security rules KILL_ALLOW_DNS service application-default
+set rulebase security rules KILL_ALLOW_DNS to External
+set rulebase security rules KILL_ALLOW_DNS from [ Internal User ]
+set rulebase security rules KILL_ALLOW_DNS source [ debian windows-server ]
+set rulebase security rules KILL_ALLOW_DNS destination any
+set rulebase security rules KILL_ALLOW_DNS action allow
+set rulebase security rules KILL_ALLOW_DNS disabled yes
+set rulebase security rules KILL_ALLOW_DNS log-start no
+set rulebase security rules KILL_ALLOW_DNS log-end yes
+set rulebase security rules KILL_ALLOW_DNS log-setting default
+
+set rulebase security rules KILL_APPS profile-setting group ccdc
+set rulebase security rules KILL_APPS application [ dns icmp ping ssl web-browsing ntp-base ]
+set rulebase security rules KILL_APPS service application-default
+set rulebase security rules KILL_APPS to External
+set rulebase security rules KILL_APPS from [ Internal Public User ]
+set rulebase security rules KILL_APPS source any
+set rulebase security rules KILL_APPS destination any
+set rulebase security rules KILL_APPS action drop
+set rulebase security rules KILL_APPS disabled yes
+set rulebase security rules KILL_APPS log-start no
+set rulebase security rules KILL_APPS log-end yes
+set rulebase security rules KILL_APPS log-setting default
+
+set rulebase security rules KILL_WEB profile-setting group ccdc
+set rulebase security rules KILL_WEB application any
+set rulebase security rules KILL_WEB service [  ]
+set rulebase security rules KILL_WEB to External
+set rulebase security rules KILL_WEB from [ Internal Public User ]
+set rulebase security rules KILL_WEB source any
+set rulebase security rules KILL_WEB destination any
+set rulebase security rules KILL_WEB action drop
+set rulebase security rules KILL_WEB disabled yes
+set rulebase security rules KILL_WEB log-start no
+set rulebase security rules KILL_WEB log-end yes
+set rulebase security rules KILL_WEB log-setting default
+
 set rulebase security rules INSIDE2EVERYWHERE_http_https profile-setting group ccdc
 set rulebase security rules INSIDE2EVERYWHERE_http_https application any
 set rulebase security rules INSIDE2EVERYWHERE_http_https service [ service-http service-https ]
