@@ -167,3 +167,4 @@ set rulebase security rules INSIDE2INSIDE log-start no
 set rulebase security rules INSIDE2INSIDE log-end yes
 set rulebase security rules INSIDE2INSIDE log-setting default
 
+move rulebase security rules any2any bottom
