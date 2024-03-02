@@ -1,12 +1,11 @@
 set address priv-docker ip-netmask 172.20.240.10
 set address priv-debian ip-netmask 172.20.240.20
-set address priv-ubuntu_web ip-netmask 172.20.242.10
+set address priv-ubuntu-web ip-netmask 172.20.242.10
 set address priv-windows-server ip-netmask 172.20.242.200
-set address priv-ubuntu_wkst ip-netmask 172.20.242.102
+set address priv-ubuntu-wkst ip-netmask 172.20.242.102
 set address priv-splunk ip-netmask 172.20.241.20
 set address priv-centos ip-netmask 172.20.241.30
 set address priv-fedora ip-netmask 172.20.241.40
-
 
 set profile-group ccdc virus default
 set profile-group ccdc spyware strict
