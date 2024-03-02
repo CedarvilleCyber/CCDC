@@ -141,6 +141,19 @@ set rulebase security rules WIN102SPLUNK_splunk log-start no
 set rulebase security rules WIN102SPLUNK_splunk log-end yes
 set rulebase security rules WIN102SPLUNK_splunk log-setting default
 
+set rulebase security rules QUICK_ALLOW_WEB profile-setting group ccdc
+set rulebase security rules QUICK_ALLOW_WEB application any
+set rulebase security rules QUICK_ALLOW_WEB service [ http service-https ]
+set rulebase security rules QUICK_ALLOW_WEB to External
+set rulebase security rules QUICK_ALLOW_WEB from [ Internal Public User ]
+set rulebase security rules QUICK_ALLOW_WEB source any
+set rulebase security rules QUICK_ALLOW_WEB destination any
+set rulebase security rules QUICK_ALLOW_WEB action allow
+set rulebase security rules QUICK_ALLOW_WEB disabled yes
+set rulebase security rules QUICK_ALLOW_WEB log-start no
+set rulebase security rules QUICK_ALLOW_WEB log-end yes
+set rulebase security rules QUICK_ALLOW_WEB log-setting default
+
 set rulebase security rules KILL_ALLOW_DNS profile-setting group ccdc
 set rulebase security rules KILL_ALLOW_DNS application dns
 set rulebase security rules KILL_ALLOW_DNS service application-default
