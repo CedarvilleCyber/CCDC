@@ -3,11 +3,13 @@ set profile-group ccdc spyware strict
 set profile-group ccdc vulnerability strict
 set profile-group ccdc wildfire-analysis default
 set profile-group ccdc url-filtering default
+
 set deviceconfig system service disable-telnet yes
 set deviceconfig system service disable-http no
 set deviceconfig system service disable-snmp yes
 set deviceconfig system login-banner "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
 set deviceconfig system ack-login-banner yes
+
 set network profiles zone-protection-profile Default discard-overlapping-tcp-segment-mismatch yes
 set network profiles zone-protection-profile Default discard-unknown-option yes
 set network profiles zone-protection-profile Default tcp-reject-non-syn yes
@@ -21,6 +23,7 @@ set network profiles zone-protection-profile Default flood other-ip enable yes
 set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
 set network profiles zone-protection-profile Default flood icmpv6 enable yes
 set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+
 set shared log-settings syslog Splunk server "Splunk" transport UDP
 set shared log-settings syslog Splunk server "Splunk" port 514
 set shared log-settings syslog Splunk server "Splunk" format BSD
@@ -36,12 +39,14 @@ set shared log-settings profiles default match-list auth log-type auth
 set shared log-settings profiles default match-list auth filter "All Logs"
 set shared log-settings profiles default match-list auth send-to-panorama no
 set shared log-settings profiles default match-list auth quarantine no
+
 set service http protocol tcp port 80
 set service http protocol tcp override no 
 set service service-splunk protocol tcp port 8000
 set service service-splunk protocol tcp override no 
 set service syslog protocol udp port 514
 set service syslog protocol udp override no 
+
 set rulebase security rules EXTERNAL2SELF_DROP profile-setting group ccdc
 set rulebase security rules EXTERNAL2SELF_DROP application any
 set rulebase security rules EXTERNAL2SELF_DROP service application-default

@@ -50,6 +50,8 @@ wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linu
 wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/firewall.sh -O firewall.sh
 wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/restore-backup.sh -O restore-backup.sh
 wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/secure-os.sh -O secure-os.sh
+wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.txt -O prophylaxis.txt
+wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.sh -O prophylaxis.sh
 
 chmod 700 pansophy.sh
 chmod 700 backup.sh
@@ -57,6 +59,7 @@ chmod 700 check-cron.sh
 chmod 700 firewall.sh
 chmod 700 restore-backup.sh
 chmod 700 secure-os.sh
+chmod 700 propylaxis.sh
 
 # check cron now!
 ./check-cron.sh
