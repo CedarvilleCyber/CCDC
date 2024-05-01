@@ -148,6 +148,7 @@ fi
 
 if [[ -f './data-files/rebooted' ]]
 then
+    printf "Already updated\n"
 else
     touch ./datafiles/rebooted
     ./osupdaster
