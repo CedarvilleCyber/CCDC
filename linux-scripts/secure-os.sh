@@ -112,7 +112,7 @@ fi
 
 if [[ "$RC" == "/etc/rc.local" ]]
 then
-    printf "${warn}Discovered rc.local. Check out /etc/rc.local_EVIL and restart if needed.${reset}\n"
+    printf "${warn}Discovered rc.local, renaming to /etc/rc.local_EVIL. Check file and restart if needed.${reset}\n"
 fi
 
 if [[ "$FOUND" != "" || "$RC" != "" ]]
