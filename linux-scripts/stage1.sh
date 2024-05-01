@@ -62,13 +62,18 @@ chmod 700 secure-os.sh
 chmod 700 propylaxis.sh
 
 # check cron now!
-./check-cron.sh
+#./check-cron.sh
 
-./pansophy.sh "$MACHINE" "stage1"
+#./pansophy.sh "$MACHINE" "stage1"
 
-git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
+wget https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz
+tar -zxvf ./main.tar.gz
+cd ./CCDC-main/linux-scripts
+./pansophy.sh "$MACHINE"
 
-printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
-and run pansophy.sh like normal\n\n\n"
+#git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
+
+#printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
+#and run pansophy.sh like normal\n\n\n"
 
 exit 0
