@@ -1,0 +1,3 @@
+noop.lo: noop.c /usr/include/stdc-predef.h noop.h
+/usr/include/stdc-predef.h:
+noop.h:

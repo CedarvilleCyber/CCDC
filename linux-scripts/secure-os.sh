@@ -44,7 +44,6 @@ chmod 640 /etc/shadow
 chmod 440 /etc/sudoers
 
 
-
 # reads through each line of a file, ignoring whitespace
 while IFS="" read -r f || [[ -n "$f" ]]
 do
@@ -60,69 +59,6 @@ do
     fi
 
 done < ./data-files/files.txt
-
-
-# Check for LD_ Environment Variables
-printenv > ./data-files/env.txt
-# unset ${!LD_@}      useless since this script is it's own shell, but could be used manually
-FOUND=""
-find /home -maxdepth 2 -not -iname "*_history" -type f > ./data-files/env
-find /root -maxdepth 1 -not -iname "*_history" -type f >> ./data-files/env
-find /etc/profile.d -type f >> ./data-files/env
-
-# loop through each found thing and run above sed command
-while IFS="" read -r f || [[ -n "$f" ]]
-do
-    FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' "$f"`
-    FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' "$f"`
-    FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' "$f"`
-    rm -rf "$f"e
-done < ./data-files/env
-
-FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/profile`
-FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/profile`
-FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/profile`
-rm -rf /etc/profilee
-
-FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/environment`
-FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/environment`
-FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/environment`
-rm -rf /etc/environmente
-
-# remove temp files
-rm -rf ./data-files/env
-
-
-# ld.so.preload check
-if [[ -f /etc/ld.so.preload ]]
-then
-    FOUND+="/etc/ld.so.preload"
-    mv /etc/ld.so.preload /etc/ld.so.preload_EVIL
-fi
-
-# rc.local check
-if [[ -f /etc/rc.local ]]
-then
-    RC="/etc/rc.local"
-    mv "/etc/rc.local" "/etc/rc.local_EVIL"
-fi
-
-if [[ "$FOUND" != "" ]]
-then
-    printf "\n\n$FOUND\n\n"
-    printf "\n\n${warn}WARNING: Found things preset. Please close out of all shells and logout.\n"
-    printf "Then, come back and rerun pansophy like normal.${reset}\n\n"
-fi
-
-if [[ "$RC" == "/etc/rc.local" ]]
-then
-    printf "${warn}Discovered rc.local, renaming to /etc/rc.local_EVIL. Check file and restart if needed.${reset}\n"
-fi
-
-if [[ "$FOUND" != "" || "$RC" != "" ]]
-then
-    exit 0
-fi
 
 
 # remove uneccesary applications
@@ -210,5 +146,79 @@ then
         service nginx restart
     fi
 fi
+
+while IFS="" read -r line || [ -n "$line" ]
+do
+    line=`echo "$line" | rev | cut -c2- | rev`
+    find /usr/bin -perm /4000 -name "$line" -exec ls -al {} +
+    find /usr/bin -perm /4000 -name "$line" -exec chmod -s {} +
+    find /usr/sbin -perm /4000 -name "$line" -exec ls -al {} +
+    find /usr/sbin -perm /4000 -name "$line" -exec chmod -s {} +
+done < ./bad-suid.txt
+
+
+# Check for LD_ Environment Variables
+printenv > ./data-files/env.txt
+# unset ${!LD_@}      useless since this script is it's own shell, but could be used manually
+FOUND=""
+find /home -maxdepth 2 -not -iname "*_history" -type f > ./data-files/env
+find /root -maxdepth 1 -not -iname "*_history" -type f >> ./data-files/env
+find /etc/profile.d -type f >> ./data-files/env
+
+# loop through each found thing and run above sed command
+while IFS="" read -r f || [[ -n "$f" ]]
+do
+    FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' "$f"`
+    rm -rf "$f"e
+done < ./data-files/env
+
+FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/profile`
+rm -rf /etc/profilee
+
+FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/environment`
+rm -rf /etc/environmente
+
+# remove temp files
+rm -rf ./data-files/env
+
+
+# ld.so.preload check
+if [[ -f /etc/ld.so.preload ]]
+then
+    FOUND+="/etc/ld.so.preload"
+    mv /etc/ld.so.preload /etc/ld.so.preload_EVIL
+fi
+
+# rc.local check
+if [[ -f /etc/rc.local ]]
+then
+    RC="/etc/rc.local"
+    mv "/etc/rc.local" "/etc/rc.local_EVIL"
+fi
+
+if [[ "$FOUND" != "" ]]
+then
+    printf "\n\n$FOUND\n\n"
+    printf "\n\n${warn}WARNING: Found things preset. Please close out of all shells and logout.\n"
+    printf "Then, come back and rerun pansophy like normal.${reset}\n\n"
+fi
+
+if [[ "$RC" == "/etc/rc.local" ]]
+then
+    printf "${warn}Discovered rc.local, renaming to /etc/rc.local_EVIL. Check file and restart if needed.${reset}\n"
+fi
+
+if [[ "$FOUND" != "" || "$RC" != "" ]]
+then
+    #exit 0
+    printf "${warn}Ignore above if run with pansophy.sh. Restart required later anyway.${reset}\n"
+fi
+
 
 exit 0

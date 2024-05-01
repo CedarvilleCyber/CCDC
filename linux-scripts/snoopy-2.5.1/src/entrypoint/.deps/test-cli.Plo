@@ -1,0 +1,12 @@
+test-cli.lo: test-cli.c /usr/include/stdc-predef.h test-cli.h \
+ ../../src/snoopy.h ../../config.h ../../src/init-deinit.h \
+ ../../src/configuration.h ../../src/inputdatastorage.h \
+ /usr/lib/gcc/x86_64-linux-gnu/10/include/stddef.h
+/usr/include/stdc-predef.h:
+test-cli.h:
+../../src/snoopy.h:
+../../config.h:
+../../src/init-deinit.h:
+../../src/configuration.h:
+../../src/inputdatastorage.h:
+/usr/lib/gcc/x86_64-linux-gnu/10/include/stddef.h:

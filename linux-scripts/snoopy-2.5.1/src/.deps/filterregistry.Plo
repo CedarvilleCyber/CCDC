@@ -1,0 +1,15 @@
+filterregistry.lo: filterregistry.c /usr/include/stdc-predef.h \
+ filterregistry.h snoopy.h ../config.h genericregistry.h \
+ filter/exclude_spawns_of.h filter/exclude_uid.h filter/only_root.h \
+ filter/only_tty.h filter/only_uid.h filter/noop.h
+/usr/include/stdc-predef.h:
+filterregistry.h:
+snoopy.h:
+../config.h:
+genericregistry.h:
+filter/exclude_spawns_of.h:
+filter/exclude_uid.h:
+filter/only_root.h:
+filter/only_tty.h:
+filter/only_uid.h:
+filter/noop.h:

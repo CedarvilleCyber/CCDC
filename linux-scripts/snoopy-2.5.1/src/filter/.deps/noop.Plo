@@ -1,0 +1,6 @@
+noop.lo: noop.c /usr/include/stdc-predef.h noop.h ../../src/snoopy.h \
+ ../../config.h
+/usr/include/stdc-predef.h:
+noop.h:
+../../src/snoopy.h:
+../../config.h:

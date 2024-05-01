@@ -1,0 +1,40 @@
+outputregistry.lo: outputregistry.c /usr/include/stdc-predef.h \
+ outputregistry.h snoopy.h ../config.h configuration.h genericregistry.h \
+ /usr/include/string.h \
+ /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+ /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
+ /usr/include/x86_64-linux-gnu/bits/wordsize.h \
+ /usr/include/x86_64-linux-gnu/bits/long-double.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs.h \
+ /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
+ /usr/lib/gcc/x86_64-linux-gnu/10/include/stddef.h \
+ /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
+ /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
+ output/devlogoutput.h output/devnulloutput.h output/devttyoutput.h \
+ output/fileoutput.h output/socketoutput.h output/stderroutput.h \
+ output/stdoutoutput.h output/noopoutput.h
+/usr/include/stdc-predef.h:
+outputregistry.h:
+snoopy.h:
+../config.h:
+configuration.h:
+genericregistry.h:
+/usr/include/string.h:
+/usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
+/usr/include/features.h:
+/usr/include/x86_64-linux-gnu/sys/cdefs.h:
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+/usr/include/x86_64-linux-gnu/bits/long-double.h:
+/usr/include/x86_64-linux-gnu/gnu/stubs.h:
+/usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
+/usr/lib/gcc/x86_64-linux-gnu/10/include/stddef.h:
+/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+output/devlogoutput.h:
+output/devnulloutput.h:
+output/devttyoutput.h:
+output/fileoutput.h:
+output/socketoutput.h:
+output/stderroutput.h:
+output/stdoutoutput.h:
+output/noopoutput.h:
