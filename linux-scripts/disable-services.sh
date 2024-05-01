@@ -72,5 +72,6 @@ printf "${info} You have disabled these services:${reset}\n"
 cat stopped-disabled.txt
 
 printf "\n\nSee stopped-disabled.txt for all services disabled with this script\n\n"
+printf "\n\n${info}Run ./service-sort to get a list of all services${reset}\n\n"
 
 exit 0

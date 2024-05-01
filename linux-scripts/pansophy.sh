@@ -294,7 +294,7 @@ then
 
     # window for services
     tmux new-window -t $SESSIONW:4 -n "services"
-    tmux send-keys -t "services" "cmd='./service-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
+    tmux send-keys -t "services" "./disable-services.sh" C-m
 
     # window for ports
     tmux new-window -t $SESSIONW:5 -n "ports"

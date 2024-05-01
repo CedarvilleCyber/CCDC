@@ -37,9 +37,13 @@ fi
 # user only permissions except for on directories.
 find /home -type f > ./data-files/files.txt
 find /home -type d -exec chmod 755 {} +
+find /root -type f >> ./data-files/files.txt
+find /root -type d -exec chmod 755 {} +
 chmod 644 /etc/passwd
 chmod 640 /etc/shadow
 chmod 440 /etc/sudoers
+
+
 
 # reads through each line of a file, ignoring whitespace
 while IFS="" read -r f || [[ -n "$f" ]]
