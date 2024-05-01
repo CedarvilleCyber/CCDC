@@ -94,8 +94,6 @@ do
     rm -rf "$file"e
 done
 
-exit 1
-
 # reads through each line of a file, ignoring whitespace
 while IFS="" read -r f || [[ -n "$f" ]]
 do
