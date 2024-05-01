@@ -46,7 +46,7 @@ esac
 which tar > /dev/null
 if [[ $? -eq 0 ]]
 then
-	wget https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz
+	wget https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -O main.tar.gz
 	tar -zxvf ./main.tar.gz
 	cd ./CCDC-main/linux-scripts
 	./pansophy.sh "$MACHINE"
