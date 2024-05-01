@@ -150,7 +150,7 @@ if [[ -f './data-files/rebooted' ]]
 then
     printf "Already updated\n"
 else
-    touch ./datafiles/rebooted
+    touch ./data-files/rebooted
     ./osupdaster
     printf "\n\n${warn}Updates require reboot. REBOOT right after a scoring check!!${reset}\n\n"
     exit 0
