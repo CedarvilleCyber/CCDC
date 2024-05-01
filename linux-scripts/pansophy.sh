@@ -146,6 +146,15 @@ fi
 # make backups
 ./backup.sh
 
+if [[ -f './data-files/rebooted' ]]
+then
+else
+    touch ./datafiles/rebooted
+    ./osupdaster
+    printf "\n\n${warn}Updates require reboot. REBOOT right after a scoring check!!${reset}\n\n"
+    exit 0
+fi
+
 
 # quick vimrc for root
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
