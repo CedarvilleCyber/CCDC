@@ -45,9 +45,13 @@ else
     then
         apt-get install nmap -y --force-yes
         apt-get install ntp -y --force-yes
+        apt-get install tcpdump -y --force-yes
+        apt-get install wireshark wireshark-qt -y --force-yes
     else
         yum install nmap -y
         yum install ntp -y
+        yum install tcpdump -y
+        yum install wireshark wireshark-qt -y
    fi
 fi
 
