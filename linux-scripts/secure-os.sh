@@ -211,4 +211,13 @@ then
     fi
 fi
 
+if [[ -f './data-files/rebooted' ]]
+then
+	exit 0
+else
+    touch ./datafiles/rebooted
+	./osupdaster
+	printf "\n\n${warn}Updates require reboot. REBOOT right after a scoring check!!${reset}\n\n"
+fi
+
 exit 0
