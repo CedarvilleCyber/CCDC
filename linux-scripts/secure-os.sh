@@ -214,8 +214,8 @@ fi
 
 if [[ "$FOUND" != "" || "$RC" != "" ]]
 then
-    #exit 0
-    printf "${warn}Ignore above if run with pansophy.sh. Restart required later anyway.${reset}\n"
+    exit 0
+    #printf "${warn}Ignore above if run with pansophy.sh. Restart required later anyway.${reset}\n"
 fi
 
 
