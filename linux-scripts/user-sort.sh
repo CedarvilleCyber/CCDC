@@ -44,7 +44,7 @@ printf "${warn}Look out espicially for root, adm, admin, sudo, wheel groups${res
 
 # Now show the sudoers file without comments
 printf "${info}Check for suspicious priviledges in /etc/sudoers${reset}\n"
-printf "${info}Showing the file without comments. Edit with 'visudo'${reset}\n"
+printf "${info}Showing the file without comments. Edit with 'visudo' make sure to 'chattr -ia /etc/sudoers' first${reset}\n"
 cat /etc/sudoers | grep ^[^#]
 
 printf "\n\n${warn}Remove any obviously suspicious users and remove sudo priveleges from normal users${reset}\n"
