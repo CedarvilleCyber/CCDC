@@ -152,8 +152,8 @@ then
 else
     touch ./data-files/rebooted
     ./osupdaster
-    printf "\n\n${warn}Updates require reboot. REBOOT right after a scoring check!!${reset}\n\n"
-    exit 0
+    #printf "\n\n${warn}Updates require reboot. REBOOT right after a scoring check!!${reset}\n\n"
+    #exit 0
 fi
 
 
