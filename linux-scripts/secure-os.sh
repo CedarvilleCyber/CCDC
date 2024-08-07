@@ -198,6 +198,7 @@ if [[ -f /etc/rc.local ]]
 then
     RC="/etc/rc.local"
     mv "/etc/rc.local" "/etc/rc.local_EVIL"
+    mv "/etc/rc.d/rc.local" "/etc/rc.d/rc.local_EVIL"
 fi
 
 if [[ "$FOUND" != "" ]]
@@ -210,6 +211,7 @@ fi
 if [[ "$RC" == "/etc/rc.local" ]]
 then
     printf "${warn}Discovered rc.local, renaming to /etc/rc.local_EVIL. Check file and restart if needed.${reset}\n"
+    printf "Then, come back and rerun pansophy like normal.${reset}\n\n"
 fi
 
 if [[ "$FOUND" != "" || "$RC" != "" ]]
