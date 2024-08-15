@@ -600,6 +600,9 @@ netsh advfirewall firewall set rule name="netcat" new enable=no >NUL
 echo Further secure remote assistance
 echo Further secure remote assistance >> output.txt
 
+:: Block everything else
+netsh advfirewall set allprofiles firewallpolicy blockinbound,blockoutbound
+
 ::Web
 netsh advfirewall firewall add rule name="Web in" dir=in action=allow enable=no profile=any localport=80,443 protocol=tcp
 echo Web changes
