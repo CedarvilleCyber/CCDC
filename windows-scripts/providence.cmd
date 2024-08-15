@@ -6,6 +6,7 @@ title = "Cedarville Windows Script - 'Providence' "
 ::      Mike Bailey - https://github.com/mike-bailey/CCDC-Scripts
 ::      Cedarville's version of Baldwin Wallace's old script - https://github.com/CedarvilleCyber/CCDC/blob/main/CCDC-Collection/Windows/windowsBW.cmd
 :: Line 172 "CVE-2020-1350" added 2/16/2024 by Stephen Pearson
+:: Firewall default block all added 8/15/2024 by Kaicheng Ye
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
