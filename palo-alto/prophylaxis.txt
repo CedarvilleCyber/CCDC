@@ -6,6 +6,8 @@ set address priv-ubuntu-wkst ip-netmask 172.20.242.102
 set address priv-splunk ip-netmask 172.20.241.20
 set address priv-centos ip-netmask 172.20.241.30
 set address priv-fedora ip-netmask 172.20.241.40
+set address google-dns ip-netmask 8.8.8.8
+set address cloudflare-dns ip-netmask 1.1.1.1
 
 set profile-group ccdc virus default
 set profile-group ccdc spyware strict
@@ -153,18 +155,18 @@ set rulebase security rules QUICK_ALLOW_WEB log-start no
 set rulebase security rules QUICK_ALLOW_WEB log-end yes
 set rulebase security rules QUICK_ALLOW_WEB log-setting default
 
-set rulebase security rules KILL_ALLOW_DNS profile-setting group ccdc
-set rulebase security rules KILL_ALLOW_DNS application dns
-set rulebase security rules KILL_ALLOW_DNS service application-default
-set rulebase security rules KILL_ALLOW_DNS to External
-set rulebase security rules KILL_ALLOW_DNS from [ Internal Public User ]
-set rulebase security rules KILL_ALLOW_DNS source [ priv-debian priv-windows-server ]
-set rulebase security rules KILL_ALLOW_DNS destination any
-set rulebase security rules KILL_ALLOW_DNS action allow
-set rulebase security rules KILL_ALLOW_DNS disabled yes
-set rulebase security rules KILL_ALLOW_DNS log-start no
-set rulebase security rules KILL_ALLOW_DNS log-end yes
-set rulebase security rules KILL_ALLOW_DNS log-setting default
+set rulebase security rules KILL_BUT_ALLOW_DNS profile-setting group ccdc
+set rulebase security rules KILL_BUT_ALLOW_DNS application dns
+set rulebase security rules KILL_BUT_ALLOW_DNS service application-default
+set rulebase security rules KILL_BUT_ALLOW_DNS to External
+set rulebase security rules KILL_BUT_ALLOW_DNS from [ Internal Public User ]
+set rulebase security rules KILL_BUT_ALLOW_DNS source [ priv-debian priv-windows-server ]
+set rulebase security rules KILL_BUT_ALLOW_DNS destination [ cloudflare-dns google-dns ]
+set rulebase security rules KILL_BUT_ALLOW_DNS action allow
+set rulebase security rules KILL_BUT_ALLOW_DNS disabled yes
+set rulebase security rules KILL_BUT_ALLOW_DNS log-start no
+set rulebase security rules KILL_BUT_ALLOW_DNS log-end yes
+set rulebase security rules KILL_BUT_ALLOW_DNS log-setting default
 
 set rulebase security rules KILL_APPS profile-setting group ccdc
 set rulebase security rules KILL_APPS application [ dns icmp ping ssl web-browsing ntp-base ]
