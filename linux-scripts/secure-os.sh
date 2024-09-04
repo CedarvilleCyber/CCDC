@@ -145,6 +145,7 @@ then
     fi
 fi
 
+# suid and sgid
 while IFS="" read -r line || [ -n "$line" ]
 do
     line=`echo "$line" | rev | cut -c2- | rev`
@@ -152,6 +153,11 @@ do
     find /usr/bin -perm /4000 -name "$line" -exec chmod -s {} +
     find /usr/sbin -perm /4000 -name "$line" -exec ls -al {} +
     find /usr/sbin -perm /4000 -name "$line" -exec chmod -s {} +
+    
+    find /usr/bin -perm /2000 -name "$line" -exec ls -al {} +
+    find /usr/bin -perm /2000 -name "$line" -exec chmod g-s {} +
+    find /usr/sbin -perm /2000 -name "$line" -exec ls -al {} +
+    find /usr/sbin -perm /2000 -name "$line" -exec chmod g-s {} +
 done < ./bad-suid.txt
 
 
