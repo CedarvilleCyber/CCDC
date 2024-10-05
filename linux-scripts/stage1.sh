@@ -23,7 +23,7 @@ print_usage() {
     -m <machine> to run pansophy with preconfigred firewall rules\n"
 }
 
-while getopts 'fm:h' flag do
+while getopts 'fm:h' flag; do
     case "${flag}" in
         f) FORCE=1 ;;
         m) MACHINE="${OPTARG}" ;;
@@ -62,14 +62,16 @@ printf "${error}ERROR: Enter respective name according to machine's purpose:
     or no parameters for generic${reset}\n"; exit 1 ;;
 esac
 
-which tar > /dev/null
-if [[ $? -eq 0 ]]
+if [[ $FORCE -eq 0 ]]
 then
+    which tar > /dev/null
+    if [[ $? -eq 0 ]]
+    then
 	wget https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -O main.tar.gz
 	tar -zxvf ./main.tar.gz
 	cd ./CCDC-main/linux-scripts
 	./pansophy.sh "$MACHINE"
-else
+    else
 	wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/pansophy.sh -O pansophy.sh
 	wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -O backup.sh
 	wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/check-cron.sh -O check-cron.sh
@@ -95,6 +97,42 @@ else
 
 	printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
 and run pansophy.sh like normal\n\n\n"
+    fi
+else
+    which tar > /dev/null
+    if [[ $? -eq 0 ]]
+    then
+	wget --no-check-certificate https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -O main.tar.gz
+	tar -zxvf ./main.tar.gz
+	cd ./CCDC-main/linux-scripts
+	./pansophy.sh "$MACHINE"
+    else
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/pansophy.sh -O pansophy.sh
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -O backup.sh
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/check-cron.sh -O check-cron.sh
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/firewall.sh -O firewall.sh
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/restore-backup.sh -O restore-backup.sh
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/secure-os.sh -O secure-os.sh
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.txt -O prophylaxis.txt
+	wget --no-check-certificate --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.sh -O prophylaxis.sh
+
+	chmod 700 pansophy.sh
+	chmod 700 backup.sh
+	chmod 700 check-cron.sh
+	chmod 700 firewall.sh
+	chmod 700 restore-backup.sh
+	chmod 700 secure-os.sh
+	chmod 700 propylaxis.sh
+
+	# check cron now!
+	./check-cron.sh
+
+	#./pansophy.sh "$MACHINE" "stage1"
+	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
+
+	printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
+and run pansophy.sh like normal\n\n\n"
+    fi
 fi
 
 exit 0
