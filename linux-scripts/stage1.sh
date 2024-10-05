@@ -14,6 +14,27 @@ then
     exit 1
 fi
 
+# command line flags
+MACHINE=''
+FORCE=0
+
+print_usage() {
+    printf "    -f force wget without certificate check
+    -m <machine> to run pansophy with preconfigred firewall rules\n"
+}
+
+while getopts 'fm:h' flag do
+    case "${flag}" in
+        f) FORCE=1 ;;
+        m) MACHINE="${OPTARG}" ;;
+        h) print_usage
+	   exit 0 ;;
+        *) print_usage
+	   exit 1 ;;
+    esac
+done
+
+
 printf "Initiating stage 1\n"
 
 STAGE1=1
@@ -21,8 +42,6 @@ export STAGE1
 
 mkdir work
 cd work
-
-MACHINE="$1"
 
 case $MACHINE in
     "dns-ntp")     ;;
