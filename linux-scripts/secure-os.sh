@@ -149,15 +149,15 @@ fi
 while IFS="" read -r line || [ -n "$line" ]
 do
     line=`echo "$line" | rev | cut -c2- | rev`
-    find /usr/bin -perm /4000 -name "$line" -exec ls -al {} +
-    find /usr/bin -perm /4000 -name "$line" -exec chmod -s {} +
-    find /usr/sbin -perm /4000 -name "$line" -exec ls -al {} +
-    find /usr/sbin -perm /4000 -name "$line" -exec chmod -s {} +
+    find /usr/bin -user root -perm /4000 -name "$line" -exec ls -al {} +
+    find /usr/bin -user root -perm /4000 -name "$line" -exec chmod -s {} +
+    find /usr/sbin -user root -perm /4000 -name "$line" -exec ls -al {} +
+    find /usr/sbin -user root -perm /4000 -name "$line" -exec chmod -s {} +
     
-    find /usr/bin -perm /2000 -name "$line" -exec ls -al {} +
-    find /usr/bin -perm /2000 -name "$line" -exec chmod g-s {} +
-    find /usr/sbin -perm /2000 -name "$line" -exec ls -al {} +
-    find /usr/sbin -perm /2000 -name "$line" -exec chmod g-s {} +
+    find /usr/bin -group root -perm /2000 -name "$line" -exec ls -al {} +
+    find /usr/bin -group root -perm /2000 -name "$line" -exec chmod g-s {} +
+    find /usr/sbin -group root -perm /2000 -name "$line" -exec ls -al {} +
+    find /usr/sbin -group root -perm /2000 -name "$line" -exec chmod g-s {} +
 done < ./bad-suid.txt
 
 
