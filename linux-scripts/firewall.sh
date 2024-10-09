@@ -230,6 +230,7 @@ else
     # Accept by default in case of flush
     iptables -P INPUT ACCEPT
     iptables -P OUTPUT ACCEPT
+    iptables -P FORWARD ACCEPT
 
     # Allow basic connections
     # Allow ICMP 
