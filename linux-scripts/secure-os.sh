@@ -26,8 +26,16 @@ then
 elif [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]
 then
     export PKG_MAN=apt-get
+
+    # disable apt user input
+    export DEBIAN_FRONTEND=noninteractive
+    export NEEDRESTART_MODE=a
 else
     export PKG_MAN=apt-get
+
+    # disable apt user input
+    export DEBIAN_FRONTEND=noninteractive
+    export NEEDRESTART_MODE=a
     printf "${error}ERROR: Unsupported OS, assuming apt-get${reset}\n"
 fi
 

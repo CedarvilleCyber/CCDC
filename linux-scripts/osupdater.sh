@@ -12,10 +12,13 @@ fi
 # script start
 printf "${info}STARTING OSUPDATER... SYSTEM MAY TEMPORARILY HALT${reset}\n"
 
+# disable apt user input
+export DEBIAN_FRONTEND=noninteractive
+export NEEDRESTART_MODE=a
+
 # apt-get
 if [[ $PKG_MAN == "apt-get" ]]
 then
-
 	#updates list of available packages/versions
 	apt-get update -y
 	
