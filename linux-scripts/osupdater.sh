@@ -12,6 +12,9 @@ fi
 # script start
 printf "${info}STARTING OSUPDATER... SYSTEM MAY TEMPORARILY HALT${reset}\n"
 
+# add 8.8.8.8 to resolv.conf
+sed -i '1s/^/nameserver 8.8.8.8\n/' /etc/resolv.conf
+
 # disable apt user input
 export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a

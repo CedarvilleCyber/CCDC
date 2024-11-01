@@ -67,6 +67,10 @@ fi
 
 # upgrade
 ./osupdater.sh
+
+# add 8.8.8.8 to resolv.conf
+sed -i '1s/^/nameserver 8.8.8.8\n/' /etc/resolv.conf
+
 # backup again after update
 ./backup.sh
 
