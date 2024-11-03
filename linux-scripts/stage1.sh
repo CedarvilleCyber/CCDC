@@ -64,7 +64,7 @@ esac
 
 # check if wget is installed
 which wget > /dev/null
-if [[ $? -eq 1 ]]
+if [[ $? -eq 0 ]]
 then
 
     # wget is installed
@@ -73,7 +73,7 @@ then
     then
     # NO force
         which tar > /dev/null
-        if [[ $? -eq 0 ]]
+        if [[ $? -eq 1 ]]
         then
             if [[ "$PKG_MAN" == "apt-get" ]]
             then
@@ -122,7 +122,7 @@ and run pansophy.sh like normal\n\n\n"
     else
     # YES force
         which tar > /dev/null
-        if [[ $? -eq 0 ]]
+        if [[ $? -eq 1 ]]
         then
             if [[ "$PKG_MAN" == "apt-get" ]]
             then
