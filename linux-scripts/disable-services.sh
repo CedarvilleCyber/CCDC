@@ -59,9 +59,9 @@ for line in $(cat services.txt); do
 
         if [[ $answer == "y" ]]
         then
-            mv /etc/systemd/system/$service.service /etc/systemd/system/bad-$service.service
-            printf "see /etc/systemd/system/bad-* files for removed services"
-            printf "SEE Specifically ExecStart inside the file"
+            mv /etc/systemd/system/$service /etc/systemd/system/bad-$service
+            printf "see /etc/systemd/system/bad-* files for removed services\n"
+            printf "SEE Specifically ExecStart inside the file\n"
         fi
 
         printf "Stopping and disabling $service\n"
