@@ -24,7 +24,7 @@ then
     # mirrors file
     # /etc/yum.repos.d/CentOS-Base.repo
 
-    sed -ie '/mirrorlisti=http/ s/^/#/' /etc/yum.repos.d/CentOS-Base.repo
+    sed -ie '/mirrorlist=http/ s/^/#/' /etc/yum.repos.d/CentOS-Base.repo
     sed -ie '/#baseurl/ s/^#//' /etc/yum.repos.d/CentOS-Base.repo
     sed -ie '/baseurl/ s/mirror.centos.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Base.repo
 fi
