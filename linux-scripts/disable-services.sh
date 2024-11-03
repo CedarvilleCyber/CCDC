@@ -52,10 +52,23 @@ for line in $(cat services.txt); do
 
     if [[ $answer == "y" ]]
     then
+        printf "Do you want to fully remove this service? [y/n]:\n"
+        service=`echo $line | awk '{print $1}'`
+    
+        read answer
+
+        if [[ $answer == "y" ]]
+        then
+            mv /etc/systemd/system/$service.service /etc/systemd/system/bad-$service.service
+            printf "see /etc/systemd/system/bad-* files for removed services"
+            printf "SEE Specifically ExecStart inside the file"
+        fi
+
         printf "Stopping and disabling $service\n"
         sleep 0.5
+
         systemctl stop $service 2>> disable-services-stderr.txt
-        systemctl disable $service 2>> disable-services-stderr.txt
+        systemctl disable $service 2>> disable-services-stderr.txt        
         echo $service >> stopped-disabled.txt
         sleep 0.5
     elif [[ $answer != "n" ]]
