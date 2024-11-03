@@ -194,19 +194,19 @@ else
         which tar > /dev/null
         if [[ $? -eq 0 ]]
         then
-    	    curl -L https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -o main.tar.gz
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -o main.tar.gz
     	    tar -zxvf ./main.tar.gz
     	    cd ./CCDC-main/linux-scripts
     	    ./pansophy.sh "$MACHINE"
         else
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/pansophy.sh -o pansophy.sh
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -o backup.sh
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/check-cron.sh -o check-cron.sh
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/firewall.sh -o firewall.sh
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/restore-backup.sh -o restore-backup.sh
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/secure-os.sh -o secure-os.sh
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.txt -o prophylaxis.txt
-    	    curl -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.sh -o prophylaxis.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/pansophy.sh -o pansophy.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -o backup.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/check-cron.sh -o check-cron.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/firewall.sh -o firewall.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/restore-backup.sh -o restore-backup.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/secure-os.sh -o secure-os.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.txt -o prophylaxis.txt
+    	    curl -H 'Cache-Control: no-cache, no-store' -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.sh -o prophylaxis.sh
 
     	    chmod 700 pansophy.sh
     	    chmod 700 backup.sh
@@ -243,19 +243,19 @@ and run pansophy.sh like normal\n\n\n"
         which tar > /dev/null
         if [[ $? -eq 0 ]]
         then
-    	    curl -k -L https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -o main.tar.gz
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -o main.tar.gz
     	    tar -zxvf ./main.tar.gz
     	    cd ./CCDC-main/linux-scripts
 	        ./pansophy.sh "$MACHINE"
         else
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/pansophy.sh -o pansophy.sh
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -o backup.sh
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/check-cron.sh -o check-cron.sh
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/firewall.sh -o firewall.sh
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/restore-backup.sh -o restore-backup.sh
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/secure-os.sh -o secure-os.sh
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.txt -o prophylaxis.txt
-    	    curl -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.sh -o prophylaxis.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/pansophy.sh -o pansophy.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -o backup.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/check-cron.sh -o check-cron.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/firewall.sh -o firewall.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/restore-backup.sh -o restore-backup.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/secure-os.sh -o secure-os.sh
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.txt -o prophylaxis.txt
+    	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/palo-alto/prophylaxis.sh -o prophylaxis.sh
 
 	        chmod 700 pansophy.sh
 	        chmod 700 backup.sh
