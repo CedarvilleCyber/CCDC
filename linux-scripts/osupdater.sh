@@ -15,6 +15,9 @@ printf "${info}STARTING OSUPDATER... SYSTEM MAY TEMPORARILY HALT${reset}\n"
 # add 8.8.8.8 to resolv.conf
 sed -i '1s/^/nameserver 8.8.8.8\n/' /etc/resolv.conf
 
+# fix eol mirrors for apt/yum
+./eol-mirrors.sh
+
 # disable apt user input
 export DEBIAN_FRONTEND=noninteractive
 export NEEDRESTART_MODE=a

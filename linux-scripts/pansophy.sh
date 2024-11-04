@@ -187,6 +187,9 @@ else
     chmod 700 ./pspy32
 fi
 
+# fix old mirror links for apt/yum
+./eol-mirrors.sh
+
 # start tmux
 which tmux >/dev/null
 if [[ $? -ne 0 ]]
