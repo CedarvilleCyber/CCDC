@@ -129,10 +129,10 @@ do
 
     # now use sed to edit the disable_functions line
     # Checks for different "states" of the "disable_functions" line
-    sed -i -e '/^disable_functions.*[a-zA-Z0-9]$/ s/$/,exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi/' $f
-    sed -i -e '/^disable_functions.*=$/ s/$/ exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi/' $f
-    sed -i -e '/^disable_functions.*[a-zA-Z0-9],$/ s/$/exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,/' $f
-    sed -i -e '/^disable_functions.*, $/ s/$/exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi/' $f
+    sed -i -e '/^disable_functions.*[a-zA-Z0-9]$/ s/$/,exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,phpinfo,preg_replace,mail,mb_send_mail,dl/' $f
+    sed -i -e '/^disable_functions.*=$/ s/$/ exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, preg_replace, mail, mb_send_mail, dl/' $f
+    sed -i -e '/^disable_functions.*[a-zA-Z0-9],$/ s/$/exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,phpinfo,preg_replace,mail,mb_send_mail,dl,/' $f
+    sed -i -e '/^disable_functions.*, $/ s/$/exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, preg_replace, mail, mb_send_mail, dl/' $f
 done < ./data-files/php-locations.txt
 
 # Restart apache2/httpd or nginx if we changed php
