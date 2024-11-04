@@ -62,6 +62,32 @@ printf "${error}ERROR: Enter respective name according to machine's purpose:
     or no parameters for generic${reset}\n"; exit 1 ;;
 esac
 
+
+# Set up some environment variables
+. /etc/os-release
+
+# Package Manager
+if [[ "$ID" == "fedora" || "$ID" == "centos" || "$ID" == "rhel" || "$ID" == "ol" ]]
+then
+    export PKG_MAN=yum
+elif [[ "$ID" == "debian" || "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]
+then
+    export PKG_MAN=apt-get
+
+    # disable apt user input
+    export DEBIAN_FRONTEND=noninteractive
+    export NEEDRESTART_MODE=a
+else
+    export PKG_MAN=apt-get
+
+    # disable apt user input
+    export DEBIAN_FRONTEND=noninteractive
+    export NEEDRESTART_MODE=a
+    printf "${error}ERROR: Unsupported OS, assuming apt-get${reset}\n"
+fi
+
+
+
 # check if wget is installed
 which wget > /dev/null
 if [[ $? -eq 0 ]]
@@ -73,7 +99,7 @@ then
     then
     # NO force
         which tar > /dev/null
-        if [[ $? -eq 1 ]]
+        if [[ $? -ne 0 ]]
         then
             if [[ "$PKG_MAN" == "apt-get" ]]
             then
@@ -122,7 +148,7 @@ and run pansophy.sh like normal\n\n\n"
     else
     # YES force
         which tar > /dev/null
-        if [[ $? -eq 1 ]]
+        if [[ $? -ne 0 ]]
         then
             if [[ "$PKG_MAN" == "apt-get" ]]
             then
@@ -179,7 +205,7 @@ else
     then
     # NO force
         which tar > /dev/null
-        if [[ $? -eq 0 ]]
+        if [[ $? -ne 0 ]]
         then
             if [[ "$PKG_MAN" == "apt-get" ]]
             then
@@ -228,7 +254,7 @@ and run pansophy.sh like normal\n\n\n"
     else
     # YES force
         which tar > /dev/null
-        if [[ $? -eq 0 ]]
+        if [[ $? -ne 0 ]]
         then
             if [[ "$PKG_MAN" == "apt-get" ]]
             then
