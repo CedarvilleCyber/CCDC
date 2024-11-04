@@ -76,7 +76,7 @@ set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp service application-defaul
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp to Public
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp from External
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp source any
-set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp destination fedora
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp destination public-fedora
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp action allow
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp log-start no
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp log-end yes
@@ -88,7 +88,7 @@ set rulebase security rules EXTERNAL2PUBLIC_splunk service service-splunk
 set rulebase security rules EXTERNAL2PUBLIC_splunk to Public
 set rulebase security rules EXTERNAL2PUBLIC_splunk from External
 set rulebase security rules EXTERNAL2PUBLIC_splunk source any
-set rulebase security rules EXTERNAL2PUBLIC_splunk destination splunk
+set rulebase security rules EXTERNAL2PUBLIC_splunk destination public-splunk
 set rulebase security rules EXTERNAL2PUBLIC_splunk action allow
 set rulebase security rules EXTERNAL2PUBLIC_splunk log-start no
 set rulebase security rules EXTERNAL2PUBLIC_splunk log-end yes
@@ -100,7 +100,7 @@ set rulebase security rules EXTERNAL2PUBLIC_http service http
 set rulebase security rules EXTERNAL2PUBLIC_http to Public
 set rulebase security rules EXTERNAL2PUBLIC_http from External
 set rulebase security rules EXTERNAL2PUBLIC_http source any
-set rulebase security rules EXTERNAL2PUBLIC_http destination centos
+set rulebase security rules EXTERNAL2PUBLIC_http destination public-centos
 set rulebase security rules EXTERNAL2PUBLIC_http action allow
 set rulebase security rules EXTERNAL2PUBLIC_http log-start no
 set rulebase security rules EXTERNAL2PUBLIC_http log-end yes
@@ -112,7 +112,7 @@ set rulebase security rules EXTERNAL2INTERNAL_dns service application-default
 set rulebase security rules EXTERNAL2INTERNAL_dns to Internal
 set rulebase security rules EXTERNAL2INTERNAL_dns from External
 set rulebase security rules EXTERNAL2INTERNAL_dns source any
-set rulebase security rules EXTERNAL2INTERNAL_dns destination debian
+set rulebase security rules EXTERNAL2INTERNAL_dns destination public-debian
 set rulebase security rules EXTERNAL2INTERNAL_dns action allow
 set rulebase security rules EXTERNAL2INTERNAL_dns log-start no
 set rulebase security rules EXTERNAL2INTERNAL_dns log-end yes
@@ -124,7 +124,7 @@ set rulebase security rules EXTERNAL2USER_dns service application-default
 set rulebase security rules EXTERNAL2USER_dns to User
 set rulebase security rules EXTERNAL2USER_dns from External
 set rulebase security rules EXTERNAL2USER_dns source any
-set rulebase security rules EXTERNAL2USER_dns destination windows-server
+set rulebase security rules EXTERNAL2USER_dns destination public-windows-server
 set rulebase security rules EXTERNAL2USER_dns action allow
 set rulebase security rules EXTERNAL2USER_dns log-start no
 set rulebase security rules EXTERNAL2USER_dns log-end yes
@@ -135,8 +135,8 @@ set rulebase security rules WIN102SPLUNK_splunk application splunk
 set rulebase security rules WIN102SPLUNK_splunk service application-default
 set rulebase security rules WIN102SPLUNK_splunk to Public
 set rulebase security rules WIN102SPLUNK_splunk from External
-set rulebase security rules WIN102SPLUNK_splunk source win10
-set rulebase security rules WIN102SPLUNK_splunk destination splunk
+set rulebase security rules WIN102SPLUNK_splunk source public-win10
+set rulebase security rules WIN102SPLUNK_splunk destination public-splunk
 set rulebase security rules WIN102SPLUNK_splunk action allow
 set rulebase security rules WIN102SPLUNK_splunk log-start no
 set rulebase security rules WIN102SPLUNK_splunk log-end yes
