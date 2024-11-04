@@ -60,6 +60,16 @@ for line in $(cat services.txt); do
         if [[ $answer == "y" ]]
         then
             mv /etc/systemd/system/$service /etc/systemd/system/bad-$service
+            # check to see if service file has been actually moved
+            
+            if [[ $? -ne 0 ]] 
+            then
+                printf "ERROR: could not find file /etc/systemd/system/$service\n"
+                printf "please check MANUALLY\n"
+                printf "sleeping for 10 seconds, write down the name!\n"
+                sleep 10
+            fi           
+
             printf "see /etc/systemd/system/bad-* files for removed services\n"
             printf "SEE Specifically ExecStart inside the file\n"
         fi
