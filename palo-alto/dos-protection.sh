@@ -4,6 +4,7 @@
 # 
 # Palo alto set up dos-protection after you make the profile manually
 # Objects > Security Profiles > DoS Protection
+# Name: CCDC-profile
 # Just make one and no need to configure
 # 
 # Kaicheng Ye
