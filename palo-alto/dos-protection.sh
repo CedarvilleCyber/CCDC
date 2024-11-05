@@ -11,6 +11,6 @@
 
 printf "Starting dos-protection script\n"
 
-ssh -T admin@172.20.242.150 < ./dos-protection.sh
+ssh -T admin@172.20.242.150 < ./dos-protection.txt
 
 exit 0
