@@ -230,42 +230,6 @@ set rulebase security rules INSIDE2INSIDE log-start no
 set rulebase security rules INSIDE2INSIDE log-end yes
 set rulebase security rules INSIDE2INSIDE log-setting default
 
-set profiles dos-protection CCDC-profile type classified
-set profiles dos-protection CCDC-profile flood tcp-syn enable yes
-set profiles dos-protection CCDC-profile flood tcp-syn red alarm-rate 1000
-set profiles dos-protection CCDC-profile flood tcp-syn red activate-rate 1500
-set profiles dos-protection CCDC-profile flood tcp-syn red maximal-rate 2000
-
-set profiles dos-protection CCDC-profile flood udp enable yes
-set profiles dos-protection CCDC-profile flood udp alarm-rate 1000
-set profiles dos-protection CCDC-profile flood udp activate-rate 1500
-set profiles dos-protection CCDC-profile flood udp maximal-rate 2000
-
-set profiles dos-protection CCDC-profile flood icmp enable yes
-set profiles dos-protection CCDC-profile flood icmp alarm-rate 1000
-set profiles dos-protection CCDC-profile flood icmp activate-rate 1500
-set profiles dos-protection CCDC-profile flood icmp maximal-rate 2000
-
-set profiles dos-protection CCDC-profile flood icmpv6 enable yes
-set profiles dos-protection CCDC-profile flood icmpv6 alarm-rate 1000
-set profiles dos-protection CCDC-profile flood icmpv6 activate-rate 1500
-set profiles dos-protection CCDC-profile flood icmpv6 maximal-rate 2000
-
-set profiles dos-protection CCDC-profile flood other-ip enable yes
-set profiles dos-protection CCDC-profile flood other-ip alarm-rate 1000
-set profiles dos-protection CCDC-profile flood other-ip activate-rate 1500
-set profiles dos-protection CCDC-profile flood other-ip maximal-rate 2000
-
-set rulebase dos rules CCDC-dos action protect
-set rulebase dos rules CCDC-dos from zone [ External ]
-set rulebase dos rules CCDC-dos to zone [ Internal Public User ]
-set rulebase dos rules CCDC-dos protection classified classification-criteria address source-ip-only
-set rulebase dos rules CCDC-dos protection classified profile CCDC-profile
-set rulebase dos rules CCDC-dos source any
-set rulebase dos rules CCDC-dos destination any
-set rulebase dos rules CCDC-dos source-user any
-set rulebase dos rules CCDC-dos service any
-
 set service 8000-tcp protocol tcp port 8000
 set rulebase nat rules splunk-to-wkst to External
 set rulebase nat rules splunk-to-wkst from External
