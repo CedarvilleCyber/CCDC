@@ -288,25 +288,22 @@ set rulebase nat rules ecomm-to-wkst destination-translation translated-port 80
 set rulebase nat rules ecomm-to-wkst disabled yes
 move rulebase nat rules ecomm-to-wkst top
 
-set service 53-udp protocol udp port 53
-set service 53-tcp protocol tcp port 53
 set rulebase nat rules dns-to-wkst to External
 set rulebase nat rules dns-to-wkst from External
 set rulebase nat rules dns-to-wkst source any
 set rulebase nat rules dns-to-wkst destination [ public-debian public-windows-server ]
-set rulebase nat rules dns-to-wkst service [ 53-udp 53-tcp ]
+set rulebase nat rules dns-to-wkst service any
 set rulebase nat rules dns-to-wkst destination-translation translated-address private-ubuntu-workstation
 set rulebase nat rules dns-to-wkst destination-translation translated-port 53
 set rulebase nat rules dns-to-wkst disabled yes
 move rulebase nat rules dns-to-wkst top
 
-set service 25-tcp protocol tcp port 25
-set service 110-tcp protocol tcp port 110
+set service 25-110-tcp protocol tcp port [ 25 110 ]
 set rulebase nat rules mail-to-wkst to External
 set rulebase nat rules mail-to-wkst from External
 set rulebase nat rules mail-to-wkst source any
 set rulebase nat rules mail-to-wkst destination public-fedora
-set rulebase nat rules mail-to-wkst service [ 25-tcp 110-tcp ]
+set rulebase nat rules mail-to-wkst service 25-110-tcp
 set rulebase nat rules mail-to-wkst destination-translation translated-address private-ubuntu-workstation
 set rulebase nat rules mail-to-wkst destination-translation translated-port 53
 set rulebase nat rules mail-to-wkst disabled yes
