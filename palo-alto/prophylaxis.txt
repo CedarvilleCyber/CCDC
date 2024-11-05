@@ -266,4 +266,50 @@ set rulebase dos rules CCDC-dos destination any
 set rulebase dos rules CCDC-dos source-user any
 set rulebase dos rules CCDC-dos service any
 
+set service 8000-tcp protocol tcp port 8000
+set rulebase nat rules splunk-to-wkst to External
+set rulebase nat rules splunk-to-wkst from External
+set rulebase nat rules splunk-to-wkst source any
+set rulebase nat rules splunk-to-wkst destination public-splunk
+set rulebase nat rules splunk-to-wkst service 8000-tcp
+set rulebase nat rules splunk-to-wkst destination-translation translated-address private-ubuntu-workstation
+set rulebase nat rules splunk-to-wkst destination-translation translated-port 8000
+set rulebase nat rules splunk-to-wkst disabled yes
+move rulebase nat rules splunk-to-wkst top
+
+set service 80-tcp protocol tcp port 80
+set rulebase nat rules ecomm-to-wkst to External
+set rulebase nat rules ecomm-to-wkst from External
+set rulebase nat rules ecomm-to-wkst source any
+set rulebase nat rules ecomm-to-wkst destination public-ecomm
+set rulebase nat rules ecomm-to-wkst service 80-tcp
+set rulebase nat rules ecomm-to-wkst destination-translation translated-address private-ubuntu-workstation
+set rulebase nat rules ecomm-to-wkst destination-translation translated-port 80
+set rulebase nat rules ecomm-to-wkst disabled yes
+move rulebase nat rules ecomm-to-wkst top
+
+set service 53-udp protocol udp port 53
+set service 53-tcp protocol tcp port 53
+set rulebase nat rules dns-to-wkst to External
+set rulebase nat rules dns-to-wkst from External
+set rulebase nat rules dns-to-wkst source any
+set rulebase nat rules dns-to-wkst destination [ public-debian public-windows-server ]
+set rulebase nat rules dns-to-wkst service [ 53-udp 53-tcp ]
+set rulebase nat rules dns-to-wkst destination-translation translated-address private-ubuntu-workstation
+set rulebase nat rules dns-to-wkst destination-translation translated-port 53
+set rulebase nat rules dns-to-wkst disabled yes
+move rulebase nat rules dns-to-wkst top
+
+set service 25-tcp protocol tcp port 25
+set service 110-tcp protocol tcp port 110
+set rulebase nat rules mail-to-wkst to External
+set rulebase nat rules mail-to-wkst from External
+set rulebase nat rules mail-to-wkst source any
+set rulebase nat rules mail-to-wkst destination public-fedora
+set rulebase nat rules mail-to-wkst service [ 25-tcp 110-tcp ]
+set rulebase nat rules mail-to-wkst destination-translation translated-address private-ubuntu-workstation
+set rulebase nat rules mail-to-wkst destination-translation translated-port 53
+set rulebase nat rules mail-to-wkst disabled yes
+move rulebase nat rules mail-to-wkst top
+
 move rulebase security rules any2any bottom
