@@ -1,0 +1,11 @@
+$TTL 2d
+$ORIGIN testzone.com.
+@ IN SOA testzone.com. ns.testzone.com. (
+    2024110632 ; serial
+    3h ; refresh
+    15 ; retry
+    1w ; expire
+    3h ; minimum
+)
+@ IN NS ns.testzone.com.
+
