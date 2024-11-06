@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mail:
+    build: .
+    ports:
+      - "110:110/tcp"
+      - "25:25/tcp"
+    volumes:
+      - ./startup:/startup:ro
+    environment:
+      - DOMAIN_NAME=allsafe.com
+      - SUB_DOMAIN=mail
