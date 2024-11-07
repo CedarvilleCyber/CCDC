@@ -1,10 +1,10 @@
 #!/bin/bash
 
-read -p "Is forwarder installed [y/n]? " installed
+read -p "Would you like to install the forwarder? [y/n]? " answer
 
 export SPLUNK_HOME=/opt/splunkforwarder
 
-if [[ "$installed" = "n" ]] #installed
+if [[ "$answer" = "y" ]] #install
 then
 
 if [[ `id -u` -ne 0 ]]
@@ -19,7 +19,7 @@ then
 	exit 1
 fi
 
-fi #installed
+fi #install
 
 chown splunk:splunk ./setup_forwarder.sh
 find ./ -iname "*.conf" -exec chown splunk:splunk {} +
