@@ -189,6 +189,7 @@ and run pansophy.sh like normal\n\n\n"
         	./check-cron.sh
 
         	#./pansophy.sh "$MACHINE" "stage1"
+            git config --global http.sslVerify False
         	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
         	printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
@@ -295,6 +296,7 @@ and run pansophy.sh like normal\n\n\n"
         	./check-cron.sh
 
         	#./pansophy.sh "$MACHINE" "stage1"
+            git config --global http.sslVerify False
         	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
         	printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
