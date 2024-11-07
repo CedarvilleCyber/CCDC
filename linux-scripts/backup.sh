@@ -35,9 +35,8 @@ cp -rp /etc /usr/bak/
 cp -rp /var /usr/bak/
 cp -rp /usr/bin /usr/bak/
 cp -rp /usr/sbin /usr/bak/
-DIR=$(pwd)
-cd /
+pushd /
 tar -cpf - --exclude='./opt/splunk/var' ./opt | tar -xpf - -C /usr/bak
-cd $DIR
+popd
 
 exit 0
