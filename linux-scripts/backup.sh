@@ -35,6 +35,7 @@ cp -rp /etc /usr/bak/
 cp -rp /var /usr/bak/
 cp -rp /usr/bin /usr/bak/
 cp -rp /usr/sbin /usr/bak/
-cp -rp /opt /usr/bak/
+tar -cpf - --exclude='/opt/splunk/var/log' /opt | tar -xpf - -C /usr/bak/
+#cp -rp /opt /usr/bak/
 
 exit 0
