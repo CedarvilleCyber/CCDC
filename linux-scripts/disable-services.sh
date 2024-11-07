@@ -17,6 +17,7 @@ fi
 
 printf "${info}==================================>  Disable Services  <==================================${reset}\n\n"
 printf "${info}If your machine doesn't have systemctl, let the maintainer know${reset}\n\n"
+printf "${info}Also, try just installing systemd${reset}\n\n"
 
 # Get input from systemctl.
 # Trim lines which don't contain services.
@@ -27,8 +28,8 @@ systemctl --type=service | tail -n +2 | head -n -7 | \
     sed -e 's/\(\S*\)\s*\(\S*\)\s*\(\S*\)\s*\(.*\)/\1\t\2\t\3\t\4/' > \
     services.txt
 
-printf "This script removes services which are in systemctl-safe-services.txt.\n"
-printf "Always use systemctl to see all of the services\n\n"
+printf "This script ignores services which are in systemctl-safe-services.txt.\n"
+printf "Always use  systemctl --type=service  to see all of the services\n\n"
 
 printf "${info}There are $(cat services.txt | wc -l) services to be considered.${reset}\n"
 printf "Press any key to start..."
