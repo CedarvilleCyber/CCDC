@@ -234,7 +234,7 @@ then
 
     # Second window for secure-os.sh background loop
     tmux rename-window -t 1 "secure_loop"
-    tmux send-keys -t "secure_loop" "./secure-os background" C-m
+    tmux send-keys -t "secure_loop" "cmd='./secure-os.sh background'; while (true); do \$cmd; sleep 300; clear -x; sleep 1; done" C-m
 else
     printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
 fi
@@ -311,11 +311,11 @@ then
     # window for processes
     tmux new-window -t $SESSIONW:2 -n "procs"
     # the last few commands are refreshed every minute
-    tmux send-keys -t "procs" "cmd='ps -fea --forest'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
+    tmux send-keys -t "procs" "cmd='ps -fea --forest'; while (true); do \$cmd; sleep 60; clear -x; sleep 0.5; done" C-m
 
     # window for users
     tmux new-window -t $SESSIONW:3 -n "users"
-    tmux send-keys -t "users" "cmd='./user-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
+    tmux send-keys -t "users" "cmd='./user-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 0.5; done" C-m
 
     # window for services
     tmux new-window -t $SESSIONW:4 -n "services"
@@ -323,7 +323,7 @@ then
 
     # window for ports
     tmux new-window -t $SESSIONW:5 -n "ports"
-    tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 1; done" C-m
+    tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 0.5; done" C-m
 
     # Attach to the work session
     tmux attach-session -t $SESSIONW

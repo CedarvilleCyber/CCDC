@@ -53,6 +53,10 @@ then
     chmod 640 /etc/shadow
     chmod 440 /etc/sudoers
 
+    chattr +ia /etc/passwd
+    chattr +ia /etc/shadow
+    chattr +ia /etc/sudoers
+
     # reads through each line of a file, ignoring whitespace
     while IFS="" read -r f || [[ -n "$f" ]]
     do
@@ -117,13 +121,13 @@ do
 done
 
 
+counter=0
 if [[ "$1" != "background" ]]
 then
     # stop php web shells
     # First find all php.ini file locations
     find / -iname "php.ini" > ./data-files/php-locations.txt 2>/dev/null
 
-    counter=0
     # reads through each line of a file, ignoring whitespace
     while IFS="" read -r f || [[ -n "$f" ]]
     do
@@ -141,27 +145,33 @@ then
         sed -i -e '/^disable_functions.*[a-zA-Z0-9],$/ s/$/exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,phpinfo,mail,mb_send_mail,dl,/' $f
         sed -i -e '/^disable_functions.*, $/ s/$/exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl/' $f
     done < ./data-files/php-locations.txt
-
-
-    # Restart apache2/httpd or nginx if we changed php
-    # Just try everything. No need to test one at a time
-    if [[ $counter -ne 0 ]]
-    then
-        printf "${info}Restarting Web Server${reset}\n"
-        which systemctl >/dev/null
-        if [[ $? -eq 0 ]]
-        then
-            systemctl restart apache2
-            systemctl restart httpd
-            systemctl restart nginx
-        else
-            service apache2 restart
-            service httpd restart
-            service nginx restart
-        fi
-    fi
 fi
 
+TEMP=""
+TEMP+=`sed -ie '/rootme/ s/^/#/w /dev/stdout' /etc/httpd/conf/httpd.conf`
+TEMP+=`sed -ie '/rootme/ s/^/#/w /dev/stdout' /etc/apache2/apache2.conf`
+if [[ "$TEMP" != "" ]]
+then
+    ((counter++))
+fi
+
+# Restart apache2/httpd or nginx if we changed php
+# Just try everything. No need to test one at a time
+if [[ $counter -ne 0 ]]
+then
+    printf "${info}Restarting Web Server${reset}\n"
+    which systemctl >/dev/null
+    if [[ $? -eq 0 ]]
+    then
+        systemctl restart apache2
+        systemctl restart httpd
+        systemctl restart nginx
+    else
+        service apache2 restart
+        service httpd restart
+        service nginx restart
+    fi
+fi
 
 # suid and sgid
 while IFS="" read -r line || [ -n "$line" ]
