@@ -12,7 +12,7 @@
 #   rm -rf install
 #   mv admin ADMIN_PANEL
 #
-# add curl_exec to php.ini disable_functions and run docker restart prestashop
+# add curl_exec to php.ini disable_functions, add read_only limitations to volumes, and run docker restart prestashop
 #
 # docker exec -it presta_db bash (changes DON'T persist in volume) ??
 #   mysql_secure_installation
@@ -35,7 +35,7 @@ services:
       DB_PASSWD: ${PRESTA_DB_PASSWD}
     restart: unless-stopped
     ports:
-      - '127.0.0.1:${PRESTA_PORT}:80'
+      - '${PRESTA_PORT}:80'
     networks:
       - presta_net
     volumes:
@@ -56,7 +56,7 @@ services:
       PMA_PORT: 3306
     restart: unless-stopped
     ports:
-      - '127.0.0.1:${PHPMYADMIN_PORT}:80'
+      - '${PHPMYADMIN_PORT}:80'
     networks:
       - pma_net
     depends_on:
