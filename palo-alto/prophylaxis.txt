@@ -71,7 +71,7 @@ set rulebase security rules EXTERNAL2SELF_DROP log-end yes
 set rulebase security rules EXTERNAL2SELF_DROP log-setting default
 
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp profile-setting group ccdc
-set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp application any
+set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp application [ pop3 smtp ]
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp service application-default
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp to Public
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp from External
