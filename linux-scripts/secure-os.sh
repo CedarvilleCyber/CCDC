@@ -53,10 +53,6 @@ then
     chmod 640 /etc/shadow
     chmod 440 /etc/sudoers
 
-    chattr +ia /etc/passwd
-    chattr +ia /etc/shadow
-    chattr +ia /etc/sudoers
-
     # reads through each line of a file, ignoring whitespace
     while IFS="" read -r f || [[ -n "$f" ]]
     do
