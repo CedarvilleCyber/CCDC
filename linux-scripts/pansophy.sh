@@ -233,7 +233,7 @@ then
     tmux send-keys -t "Background" "./background.sh" C-m
 
     # Second window for secure-os.sh background loop
-    tmux rename-window -t 1 "secure_loop"
+    tmux new-window -t $SESSIONB:1 -n "secure_loop"
     tmux send-keys -t "secure_loop" "cmd='./secure-os.sh background'; while (true); do \$cmd; sleep 300; clear -x; sleep 1; done" C-m
 else
     printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
