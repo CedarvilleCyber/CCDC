@@ -239,6 +239,7 @@ set rulebase nat rules splunk-to-wkst service 8000-tcp
 set rulebase nat rules splunk-to-wkst destination-translation translated-address private-ubuntu-wkst
 set rulebase nat rules splunk-to-wkst destination-translation translated-port 8000
 set rulebase nat rules splunk-to-wkst disabled yes
+set rulebase nat rules splunk-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules splunk-to-wkst top
 
 set service 80-tcp protocol tcp port 80
@@ -250,6 +251,7 @@ set rulebase nat rules ecomm-to-wkst service 80-tcp
 set rulebase nat rules ecomm-to-wkst destination-translation translated-address private-ubuntu-wkst
 set rulebase nat rules ecomm-to-wkst destination-translation translated-port 80
 set rulebase nat rules ecomm-to-wkst disabled yes
+set rulebase nat rules ecomm-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules ecomm-to-wkst top
 
 set rulebase nat rules dns-to-wkst to External
@@ -260,17 +262,31 @@ set rulebase nat rules dns-to-wkst service any
 set rulebase nat rules dns-to-wkst destination-translation translated-address private-ubuntu-wkst
 set rulebase nat rules dns-to-wkst destination-translation translated-port 53
 set rulebase nat rules dns-to-wkst disabled yes
+set rulebase nat rules dns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules dns-to-wkst top
 
-set service 25-110-tcp protocol tcp port 25,110
-set rulebase nat rules mail-to-wkst to External
-set rulebase nat rules mail-to-wkst from External
-set rulebase nat rules mail-to-wkst source any
-set rulebase nat rules mail-to-wkst destination public-fedora
-set rulebase nat rules mail-to-wkst service 25-110-tcp
-set rulebase nat rules mail-to-wkst destination-translation translated-address private-ubuntu-wkst
-set rulebase nat rules mail-to-wkst destination-translation translated-port 53
-set rulebase nat rules mail-to-wkst disabled yes
-move rulebase nat rules mail-to-wkst top
+set service 25-tcp protocol tcp port 25
+set rulebase nat rules smtp-to-wkst to External
+set rulebase nat rules smtp-to-wkst from External
+set rulebase nat rules smtp-to-wkst source any
+set rulebase nat rules smtp-to-wkst destination public-fedora
+set rulebase nat rules smtp-to-wkst service 25-tcp
+set rulebase nat rules smtp-to-wkst destination-translation translated-address private-ubuntu-wkst
+set rulebase nat rules smtp-to-wkst destination-translation translated-port 25
+set rulebase nat rules smtp-to-wkst disabled yes
+set rulebase nat rules smtp-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules smtp-to-wkst top
+
+set service 110-tcp protocol tcp port 110
+set rulebase nat rules pop3-to-wkst to External
+set rulebase nat rules pop3-to-wkst from External
+set rulebase nat rules pop3-to-wkst source any
+set rulebase nat rules pop3-to-wkst destination public-fedora
+set rulebase nat rules pop3-to-wkst service 110-tcp
+set rulebase nat rules pop3-to-wkst destination-translation translated-address private-ubuntu-wkst
+set rulebase nat rules pop3-to-wkst destination-translation translated-port 110
+set rulebase nat rules pop3-to-wkst disabled yes
+set rulebase nat rules pop3-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules pop3-to-wkst top
 
 move rulebase security rules any2any bottom
