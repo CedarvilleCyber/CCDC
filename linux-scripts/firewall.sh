@@ -101,8 +101,25 @@ else
         fi
     fi
 
+    # Accept by default in case of flush
+    iptables -P INPUT ACCEPT
+    iptables -P OUTPUT ACCEPT
+    iptables -P FORWARD ACCEPT
+
     # Clearing the rules
+    iptables-save > /usr/bak/iptables_original_rules
     iptables -F
+    iptables -t nat -F
+    iptables -t mangle -F
+    iptables -t raw -F
+    iptables -t security -F
+
+    iptables -X
+    iptables -t nat -X
+    iptables -t mangle -X
+    iptables -t raw -X
+    iptables -t security -X
+    
 fi
 
 
@@ -227,10 +244,6 @@ then
     firewall-cmd --list-all
 else
     # iptables
-    # Accept by default in case of flush
-    iptables -P INPUT ACCEPT
-    iptables -P OUTPUT ACCEPT
-    iptables -P FORWARD ACCEPT
 
     # Allow basic connections
     # Allow ICMP 
