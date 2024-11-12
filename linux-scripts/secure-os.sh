@@ -146,6 +146,10 @@ fi
 TEMP=""
 TEMP+=`sed -ie '/rootme/ s/^/#/w /dev/stdout' /etc/httpd/conf/httpd.conf`
 TEMP+=`sed -ie '/rootme/ s/^/#/w /dev/stdout' /etc/apache2/apache2.conf`
+TEMP+=`find /etc/httpd/conf.nodules.d/ -type f -exec sed -ie '/rootme/ s/^/#/w /dev/stdout' {} +`
+a2dismod mod_rootme
+a2dismod rootme
+TEMP+=`apache2ctl -M | grep rootme`
 if [[ "$TEMP" != "" ]]
 then
     ((counter++))
