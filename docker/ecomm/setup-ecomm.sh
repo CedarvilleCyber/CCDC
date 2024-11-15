@@ -23,6 +23,8 @@ mv /var/www/html/* ./prestashop
 
 cp -r ./prestashop ./html/
 
-chown www-data:www-data ./html
+chown -R www-data:www-data ./html
+
+echo "Ready to begin installation"
 
 exit 0
