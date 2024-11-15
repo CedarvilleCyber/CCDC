@@ -3,7 +3,7 @@ name: ecomm-state
 services:
   prestashop:
     container_name: prestashop
-    image: prestashop/prestashop:1.5.6.3
+    image: prestashop/prestashop:latest
     environment:
       DB_SERVER: mysql
       DB_NAME: prestashop
@@ -41,7 +41,7 @@ services:
   
   mysql:
     container_name: presta_db
-    image: mysql:5.5
+    image: mysql:latest
     environment:
       MYSQL_DATABASE: prestashop
       MYSQL_USER: prestashop
