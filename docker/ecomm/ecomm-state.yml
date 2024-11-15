@@ -1,27 +1,3 @@
-# docker compose -f ecomm-state.yml --env-file ccdc.env up --remove-orphans
-#
-# walk through prestashop install (changes persist in volume)
-#   store name: Bob's Duck Shop
-#   name: Bob Ducky
-#   prestashop account: bob@allsafe.com|PRESTA_SITE_PASSWD
-#   database server: mysql
-#   database name: prestashop
-#   database creds: prestashop|PRESTA_DB_PASSWD
-#
-# docker exec -it prestashop bash (changes persist in volume)
-#   rm -rf install
-#   mv admin ADMIN_PANEL
-#
-# add curl_exec to php.ini disable_functions, add read_only limitations to volumes, and run docker restart prestashop
-#
-# docker exec -it presta_db bash (changes DON'T persist in volume) ??
-#   mysql_secure_installation
-# 
-# backup all volumes and configs, integrity check these periodically
-# 
-
-# what about an earlier version of prestashop??
-
 name: ecomm-state
 
 services:
