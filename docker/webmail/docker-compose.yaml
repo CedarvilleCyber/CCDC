@@ -1,4 +1,7 @@
 version: '3'
+
+name: webmail-state
+
 services:
   mail:
     build: .

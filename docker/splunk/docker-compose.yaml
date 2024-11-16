@@ -1,4 +1,7 @@
 version: '3'
+
+name: splunk-state
+
 services:
   splunk:
     image: "splunk/splunk:9.1.1"

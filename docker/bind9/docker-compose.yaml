@@ -1,5 +1,7 @@
 version: '3'
 
+name: bind9-state
+
 services:
   bind9:
     image: ubuntu/bind9
