@@ -11,5 +11,5 @@ services:
     volumes:
       - ./startup:/startup:ro
     environment:
-      - DOMAIN_NAME=allsafe.com
+      - DOMAIN_NAME=frog.com
       - SUB_DOMAIN=mail
