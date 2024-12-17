@@ -50,10 +50,11 @@ done
 # based on what flags were flipped, we restore each one
 # Uses the cp in out backup /bin folder in case the real
 # /bin got messed with
+pushd /
 if [[ $binCheck -eq 1 ]]
 then
     printf "${info}Restoring /usr/bin${reset}\n"
-    /usr/bak/bin/cp -rp /usr/bak/bin /usr 2>/dev/null
+    /usr/bak/tar -xzf /usr/bak/b1n.tar.gz -C ./usr/
 fi
 if [[ $sbinCheck -eq 1 ]]
 then
@@ -75,6 +76,7 @@ then
     printf "${info}Restoring /opt${reset}\n"
     /usr/bak/bin/cp -rp /usr/bak/opt / 2>/dev/null
 fi
+popd
 
 printf "${info}DONE!${reset}\n\n"
 
