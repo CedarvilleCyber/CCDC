@@ -54,7 +54,7 @@ pushd /
 if [[ $binCheck -eq 1 ]]
 then
     printf "${info}Restoring /usr/bin${reset}\n"
-    /usr/bak/tar -xzf /usr/bak/b1n.tar.gz -C ./usr/
+    /usr/bak/bin/cp -rp /usr/bak/bin /usr 2>/dev/null
 fi
 if [[ $sbinCheck -eq 1 ]]
 then
