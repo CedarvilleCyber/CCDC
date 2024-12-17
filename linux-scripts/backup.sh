@@ -23,6 +23,7 @@ then
     rm -rf old
     mkdir old
     mv etc/ old/
+    rm -rf var/log
     mv var/ old/
     mv bin/ old/
     mv sbin/ old/
