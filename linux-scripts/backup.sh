@@ -22,7 +22,11 @@ then
     cd /usr/bak/
     rm -rf old
     mkdir old
-    zip -r ./old/old.zip ./etc/ ./var/ ./bin/ ./sbin/ ./opt/
+    mv etc/ old/
+    mv var/ old/
+    mv bin/ old/
+    mv sbin/ old/
+    mv opt/ old/
     cd $PWD
 fi
 
