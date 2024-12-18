@@ -114,10 +114,12 @@ then
     done
 
     # disable and stop
+    # as well as try to move the service
     while IFS="" read -r line || [ -n "$line" ]
     do
         systemctl disable $line
         systemctl stop $line
+        mv /etc/systemd/system/$line /etc/systemd/system/bad-$line
     done < ./data-files/blues.txt
 fi
 
