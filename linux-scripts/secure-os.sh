@@ -267,4 +267,6 @@ then
     fi
 fi
 
+printf "${info}secure-os finish\n\n${reset}"
+
 exit 0
