@@ -39,6 +39,11 @@ else
     printf "${error}ERROR: Unsupported OS, assuming apt-get${reset}\n"
 fi
 
+# create ./data-files if it doesn't already exist
+if [[ ! -d ./data-files ]]
+then
+    mkdir data-files
+fi
 
 if [[ "$1" != "background" ]]
 then
@@ -135,7 +140,7 @@ then
         ((counter++))
 
         # make sure disable_functions is not commented out
-        sed -i -e '/s/;disable_functions\(.*\)/disable_functions\1/' $f
+        sed -i -e 's/;disable_functions\(.*\)/disable_functions\1/' $f
 
         # now use sed to edit the disable_functions line
         # Checks for different "states" of the "disable_functions" line
@@ -147,10 +152,6 @@ then
             sed -i -e '/^disable_functions.*=.*$/ s/disable_functions.*=\(.*\)/disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,\1/' $f
         fi
 
-        #sed -i -e '/^disable_functions.*[a-zA-Z0-9]$/ s/$/,exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,phpinfo,mail,mb_send_mail,dl/' $f
-        #sed -i -e '/^disable_functions.*=$/ s/$/ exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl/' $f
-        #sed -i -e '/^disable_functions.*[a-zA-Z0-9],$/ s/$/exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,phpinfo,mail,mb_send_mail,dl,/' $f
-        #sed -i -e '/^disable_functions.*, $/ s/$/exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl/' $f
     done < ./data-files/php-locations.txt
 fi
 
