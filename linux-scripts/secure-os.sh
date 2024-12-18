@@ -122,43 +122,41 @@ do
 done
 
 
+# counter to keep track of if we need to restart web server or not
 counter=0
-if [[ "$1" != "background" ]]
-then
-    # stop php web shells
-    # First find all php.ini file locations
-    find / -iname "php.ini" > ./data-files/php-locations.txt 2>/dev/null
+# stop php web shells
+# First find all php.ini file locations
+find / -iname "php.ini" > ./data-files/php-locations.txt 2>/dev/null
 
-    # reads through each line of a file, ignoring whitespace
-    while IFS="" read -r f || [[ -n "$f" ]]
-    do
-        printf "${info}$f${reset}\n"
+# reads through each line of a file, ignoring whitespace
+while IFS="" read -r f || [[ -n "$f" ]]
+do
+    printf "${info}$f${reset}\n"
 
-        # create backups before writing over the file
-        name=`echo $f | sed 's/\//_/g'`
-        cp $f /usr/bak/$name
+    # create backups before writing over the file
+    name=`echo $f | sed 's/\//_/g'`
+    cp $f /usr/bak/$name
+
+    # make sure disable_functions is not commented out
+    sed -i -e 's/;disable_functions\(.*\)/disable_functions\1/' $f
+
+    # now use sed to edit the disable_functions line
+    # Checks for different "states" of the "disable_functions" line
+
+    CHECK=$(cat $f | grep "disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,")
+
+    if [[ -z "$CHECK" ]]
+    then
+        sed -i -e '/^disable_functions.*=.*$/ s/disable_functions.*=\(.*\)/disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,\1/' $f
         ((counter++))
+    fi
 
-        # make sure disable_functions is not commented out
-        sed -i -e 's/;disable_functions\(.*\)/disable_functions\1/' $f
-
-        # now use sed to edit the disable_functions line
-        # Checks for different "states" of the "disable_functions" line
-
-        CHECK=$(cat $f | grep "disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,")
-
-        if [[ -z "$CHECK" ]]
-        then
-            sed -i -e '/^disable_functions.*=.*$/ s/disable_functions.*=\(.*\)/disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,\1/' $f
-        fi
-
-    done < ./data-files/php-locations.txt
-fi
+done < ./data-files/php-locations.txt
 
 TEMP=""
-TEMP+=`sed -ie '/rootme/ s/^/#/w /dev/stdout' /etc/httpd/conf/httpd.conf`
-TEMP+=`sed -ie '/rootme/ s/^/#/w /dev/stdout' /etc/apache2/apache2.conf`
-TEMP+=`find /etc/httpd/conf.nodules.d/ -type f -exec sed -ie '/rootme/ s/^/#/w /dev/stdout' {} +`
+TEMP+=`sed -ie '/^[^#].*rootme/ s/^/#/w /dev/stdout' /etc/httpd/conf/httpd.conf`
+TEMP+=`sed -ie '/^[^#].*rootme/ s/^/#/w /dev/stdout' /etc/apache2/apache2.conf`
+TEMP+=`find /etc/httpd/conf.modules.d/ -type f -exec sed -ie '/^[^#].*rootme/ s/^/#/w /dev/stdout' {} +`
 a2dismod mod_rootme
 a2dismod rootme
 TEMP+=`apache2ctl -M | grep rootme`
