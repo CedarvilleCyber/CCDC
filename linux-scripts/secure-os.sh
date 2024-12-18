@@ -87,15 +87,41 @@ then
     then
         # cups is a printing service
         # speech-dispatcher is some tts thing
-        systemctl stop cups
         systemctl disable cups
-        systemctl stop speech-dispatcher
+        systemctl stop cups
         systemctl disable speech-dispatcher
+        systemctl stop speech-dispatcher
     else
         service cups stop
         service speech-dispatcher stop
     fi
+
 fi
+
+# brute remove any service that contains blue or blu3...
+# list of possible blues
+which systemctl >/dev/null
+if [[ $? -eq 0 ]]
+then
+    rm -rf ./data-files/blues.txt
+    touch ./data-files/blues.txt
+    BLUES="blue blu3 b1ue b1u3"
+
+    # hunt for those services
+    for blue in $BLUES
+    do
+        systemctl --type=service | tail -n +2 | head -n -7 | awk '{print $1}' | grep -i $blue >> ./data-files/blues.txt
+    done
+
+    # disable and stop
+    while IFS="" read -r line || [ -n "$line" ]
+    do
+        systemctl disable $line
+        systemctl stop $line
+    done < ./data-files/blues.txt
+fi
+
+
 
 # move pre authorized keys
 printf "${info}Looking for authorized_keys and moving them${reset}\n"
