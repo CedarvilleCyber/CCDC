@@ -134,6 +134,9 @@ then
         cp $f /usr/bak/$name
         ((counter++))
 
+        # make sure disable_functions is not commented out
+        sed -i -e '/s/;disable_functions\(.*\)/disable_functions\1/' $f
+
         # now use sed to edit the disable_functions line
         # Checks for different "states" of the "disable_functions" line
 
@@ -141,7 +144,7 @@ then
 
         if [[ -z "$CHECK" ]]
         then
-            sed -i -e '/^disable_functions.*=.*$/ s/disable_functions.*=\(.*\)/disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,\2/' $f
+            sed -i -e '/^disable_functions.*=.*$/ s/disable_functions.*=\(.*\)/disable_functions = exec, shell_exec, system, passthru, popen, proc_open, pcntl_exec, pcntl_fork, curl_exec, curl_exec_multi, phpinfo, mail, mb_send_mail, dl,\1/' $f
         fi
 
         #sed -i -e '/^disable_functions.*[a-zA-Z0-9]$/ s/$/,exec,shell_exec,system,passthru,popen,proc_open,pcntl_exec,pcntl_fork,curl_exec,curl_exec_multi,phpinfo,mail,mb_send_mail,dl/' $f
