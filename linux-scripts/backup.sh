@@ -17,18 +17,35 @@ printf "${info}Starting backup script${reset}\n"
 
 if [[ -d /usr/bak/etc/ ]]
 then
-    printf "${info}Old backup exists, keeping a copy${reset}\n"
-    PWD=`pwd`
-    cd /usr/bak/
-    rm -rf old
-    mkdir old
-    mv etc/ old/
-    rm -rf var/log
-    mv var/ old/
-    mv bin/ old/
-    mv sbin/ old/
-    mv opt/ old/
-    cd $PWD
+    sum=$(du -s /usr/bak/etc | awk '{print $1}')
+    sum=$(( sum + $(du -s /usr/bak/var | awk '{print $1}') ))
+    sum=$(( sum + $(du -s /usr/bak/bin | awk '{print $1}') ))
+    sum=$(( sum + $(du -s /usr/bak/sbin | awk '{print $1}') ))
+    sum=$(( sum + $(du -s /usr/bak/opt | awk '{print $1}') ))
+
+    avail=$(( $(df / | awk 'NR==2{print $4}') - sum ))
+
+    pushd /usr/bak/
+    if [[ avail -gte 3000000 ]]
+    then
+        printf "${warn}Not enough disk space. Removing old backup files.${reset}\n"
+        rm -rf etc/
+        rm -rf var/
+        rm -rf bin/
+        rm -rf sbin/
+        rm -rf opt/
+    else
+        printf "${info}Old backup exists, keeping a copy${reset}\n"
+        rm -rf old
+        mkdir old
+        mv etc/ old/
+        mv var/ old/
+        rm -rf old/var/log
+        mv bin/ old/
+        mv sbin/ old/
+        mv opt/ old/
+    fi
+    popd
 fi
 
 printf "${info}Copying files${reset}\n"
