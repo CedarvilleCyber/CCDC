@@ -114,6 +114,9 @@ then
 
 fi
 
+# check cronjobs and other timer related things
+./check-cron.sh
+
 # brute remove any service that contains blue or blu3...
 # list of possible blues
 which systemctl >/dev/null
