@@ -46,6 +46,9 @@ done
 sed -ie '/^[^#].*/ s/^/#/' /etc/crontab
 rm -rf /etc/crontabe
 
+# just get rid of all crontabs defaults included
+find /etc -type f -iname "*cron*" -exec sed -i '/^[^#].*/ s/^/#/' {} +
+
 if [[ "$found" == "yes" ]]
 then
     printf "${warn}Found crontabs!${reset}\n"
