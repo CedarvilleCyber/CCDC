@@ -75,5 +75,7 @@ umountroot.service
 unattended-upgrades.service
 upower.service
 urandom.service
+user@1000.service
+uuidd.service
 whoopsie.service
 wpa_supplicant.service

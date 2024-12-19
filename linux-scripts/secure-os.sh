@@ -91,9 +91,15 @@ then
         systemctl stop cups
         systemctl disable speech-dispatcher
         systemctl stop speech-dispatcher
+        systemctl disable atd
+        systemctl stop atd
+        systemctl disable anacron
+        systemctl stop anacron
     else
         service cups stop
         service speech-dispatcher stop
+        service atd stop
+        service anacron stop
     fi
 
     # remove previous bad services
@@ -116,6 +122,7 @@ fi
 
 # check cronjobs and other timer related things
 ./check-cron.sh
+./timers-disable.sh
 
 # brute remove any service that contains blue or blu3...
 # list of possible blues
