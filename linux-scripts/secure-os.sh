@@ -96,6 +96,22 @@ then
         service speech-dispatcher stop
     fi
 
+    # remove previous bad services
+    which systemctl >/dev/null
+    if [[ $? -eq 0 ]]
+    then
+        # cups is a printing service
+        # speech-dispatcher is some tts thing
+        systemctl disable cpud
+        systemctl stop cpud
+    else
+        service cpud stop
+    fi
+
+    # kill previous bad binaries
+    ./kill-all.sh dnbt move
+    ./kill-all.sh cpud move
+
 fi
 
 # brute remove any service that contains blue or blu3...
