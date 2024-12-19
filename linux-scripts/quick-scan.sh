@@ -15,6 +15,12 @@ fi
 
 printf "${info}Starting quick-scan script${reset}\n"
 
+# create ./data-files if it doesn't already exist
+if [[ ! -d ./data-files ]]
+then
+    mkdir data-files
+fi
+
 printf "${info}Starting nmap scan.${reset}\n"
 printf "${info}NOTE: firewall rules allows for local communication${reset}\n"
 printf "${info}therefore, some unexpected ports may be open to a local scan${reset}\n"

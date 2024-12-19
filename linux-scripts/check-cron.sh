@@ -16,6 +16,12 @@ fi
 
 printf "${info}Starting check-cron script${reset}\n"
 
+# create ./data-files if it doesn't already exist
+if [[ ! -d ./data-files ]]
+then
+    mkdir data-files
+fi
+
 CRON_DIR="/var/spool/cron/crontabs/"
 found="no"
 for cron in `ls $CRON_DIR`

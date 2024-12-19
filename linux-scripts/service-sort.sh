@@ -16,6 +16,11 @@ fi
 
 printf "${info}Starting service-sort script${reset}\n"
 
+# create ./data-files if it doesn't already exist
+if [[ ! -d ./data-files ]]
+then
+    mkdir data-files
+fi
 
 printf "${info}Services not in the safe list${reset}\n"
 

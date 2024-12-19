@@ -16,6 +16,12 @@ fi
 
 printf "${info}Starting user-sort script${reset}\n"
 
+# create ./data-files if it doesn't already exist
+if [[ ! -d ./data-files ]]
+then
+    mkdir data-files
+fi
+
 # first remove old file if exists
 rm -rf ./data-files/users-output.txt
 
