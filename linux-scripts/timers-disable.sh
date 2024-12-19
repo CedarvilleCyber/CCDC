@@ -15,14 +15,18 @@ fi
 
 printf "${info}Starting Disable Timers script${reset}\n"
 
-systemctl list-timers | head -n -3 | tail -n +2 | grep -v -f systemctl-safe-timers.txt | awk '{print $(NF-1)}' > ./timers-temp.txt
+# create ./data-files if it doesn't already exist
+if [[ ! -d ./data-files ]]
+then
+    mkdir data-files
+fi
+
+systemctl list-timers | head -n -3 | tail -n +2 | grep -v -f systemctl-safe-timers.txt | awk '{print $(NF-1)}' > ./data-files/timers.txt
 
 while IFS="" read -r line || [ -n "$line" ]
 do
     systemctl disable $line
     systemctl stop $line
-done < ./timers-temp.txt
-
-rm -rf ./timers-temp.txt
+done < ./data-files/timers.txt
 
 exit 0
