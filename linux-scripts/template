@@ -17,4 +17,6 @@ printf "${info}Starting <fill in> script${reset}\n"
 
 
 
+printf "${info}Finished <fill in> script${reset}\n"
+
 exit 0

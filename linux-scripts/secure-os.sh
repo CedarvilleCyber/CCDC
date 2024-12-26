@@ -237,6 +237,9 @@ then
     fi
 fi
 
+# bind9 stuff
+./bind-forwarder.sh
+
 # suid and sgid
 while IFS="" read -r line || [ -n "$line" ]
 do
