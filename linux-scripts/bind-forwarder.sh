@@ -68,7 +68,7 @@ do
                     replace=1
                 fi
                 
-                if [[ $replace -eq 0 && -z "$END" ]]
+                if [[ $replace -eq 0 ]]
                 then
                     printf "$line\n" >> ./$newfile
                 fi
