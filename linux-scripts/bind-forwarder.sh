@@ -43,7 +43,7 @@ do
         if grep -q 'forwarders\s*{.*}' "$file"
         then
             # Update forwarder setting
-            sed -i "s/forwarders\s*{.*}/forwarders { address 8.8.8.8; address 1.1.1.1; };/" "$file"
+            sed -i "s/forwarders\s*{.*};*/forwarders { 8.8.8.8; 1.1.1.1; };/" "$file"
             echo "Updated forwarder setting in $file"
             ((found++))
         
@@ -64,7 +64,7 @@ do
                     replace=2
                 elif [[ $replace -eq 2 && ! -z "$END" ]]                
                 then
-                    printf "forwarders { address 8.8.8.8; address 1.1.1.1; };\n" >> ./$newfile
+                    printf "forwarders { 8.8.8.8; 1.1.1.1; };\n" >> ./$newfile
                     replace=1
                 fi
                 
