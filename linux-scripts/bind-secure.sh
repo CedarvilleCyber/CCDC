@@ -1,9 +1,8 @@
 #!/bin/bash
 # 
-# bind-forwarder.sh
+# bind-secure.sh
 # 
-# Makes bind DNS forwarder settings 8.8.8.8 and 1.1.1.1
-# to get rid of potentially malicious forwarders
+# Secures bind9
 # 
 # Kaicheng Ye
 # Dec. 2024
@@ -14,7 +13,7 @@ then
     exit 1
 fi
 
-printf "${info}Starting bind forwarder script${reset}\n"
+printf "${info}Starting bind secure script${reset}\n"
 
 . /etc/os-release
 
@@ -38,6 +37,7 @@ found=0
 
 for file in "${config_files[@]}"
 do
+    # check for forwarder and replace with good ones
     if [ -f "$file" ]; then
         # Check if forwarder setting is one line
         if grep -q 'forwarders\s*{.*}' "$file"
@@ -87,6 +87,59 @@ do
             ((found++))
         fi
     fi
+
+    
+    # check for zone transfer and disallow
+    if [ -f "$file" ]; then
+        # Check if forwarder setting is one line
+        if grep -q 'allow-transfer\s*{.*}' "$file"
+        then
+            # Update forwarder setting
+            sed -i "s/allow-transfer\s*{.*};*/allow-transfer { localhost; };/" "$file"
+            echo "Updated forwarder setting in $file"
+            ((found++))
+        
+        # check if forwarder setting exists at all (multi-line)
+        # if it is, then create a new file and replace the old one
+        elif grep -q 'allow-transfer\s*{' "$file"
+        then
+            replace=0
+            newfile=$(basename $file)
+            rm -rf ./$newfile
+            touch ./$newfile
+            while IFS="" read -r line || [ -n "$line" ]
+            do
+                START=$(echo $line | grep "allow-transfer\s*{")
+                END=$(echo $line | grep "}")
+                if [[ ! -z "$START" ]]
+                then
+                    replace=2
+                elif [[ $replace -eq 2 && ! -z "$END" ]]                
+                then
+                    printf "allow-transfer { localhost; };\n" >> ./$newfile
+                    replace=1
+                fi
+                
+                if [[ $replace -eq 0 ]]
+                then
+                    printf "$line\n" >> ./$newfile
+                fi
+
+                if [[ $replace -eq 1 ]]
+                then
+                    replace=0
+                fi
+
+            done < "$file"
+            #move newfile to the actual location and rename the old file
+
+            mv $file $(dirname $file)/old-$(basename $file)
+            mv ./$newfile $(dirname $file)/$newfile
+
+            ((found++))
+        fi
+    fi
+
 done
 
 if [[ $found -ne 0 ]]
@@ -104,6 +157,6 @@ then
 
 fi
 
-printf "${info}Finished bind forwarder script${reset}\n"
+printf "${info}Finished bind secure script${reset}\n"
 
 exit 0
