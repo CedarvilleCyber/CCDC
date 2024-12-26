@@ -20,8 +20,7 @@ printf "${info}Starting bind forwarder script${reset}\n"
 
 case "$ID" in
     "debian"|"ubuntu"|"linuxmint")
-      #config_files=( /etc/bind/named.conf.options /etc/bind/named.conf.local )
-      config_files=( /home/kaich/Documents/conf.local )
+      config_files=( /etc/bind/named.conf.options /etc/bind/named.conf.local )
       ;;
     "centos"|"rhel"|"fedora"|"ol")
       config_files=( /etc/named.conf /etc/named.rfc1912.zones )
