@@ -4,7 +4,7 @@
 # Date: 12/30/2024
 # File: watchfulwhale.sh
 # Status: Tested and works, but display is weird if tmux send-keys ends
-# up being over 79 characters.
+# up being over 79 characters including the cmd prompt itself.
 #
 # Purpose: Create a single admin tmux session with one window per scored
 # docker service.
@@ -39,14 +39,16 @@ if [[ "$QUIT" != "true" ]]; then
 	WIN_NAME=$ECOMM_WIN
 	tmux new-window -n $WIN_NAME
 	sleep 1
-	tmux split-window -h -t $SESSION_NAME:1	
-	
+	tmux split-window -h -t $SESSION_NAME:1
+
 	sleep .4
-	tmux send-keys -t .+ "cd $WIN_NAME; clear" Enter
-	sleep .4
-	tmux send-keys -t 1 "docker exec -it prestashop bash"
+	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
 	sleep .4
 	tmux send-keys -t 0 "./setup-ecomm.sh"
+	sleep .4
+	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
+	sleep .4
+	tmux send-keys -t 1 "docker exec -it prestashop bash"
 
 	# Set up webmail-state window
 	WIN_NAME=$WEBMAIL_WIN
@@ -55,11 +57,13 @@ if [[ "$QUIT" != "true" ]]; then
 	tmux split-window -h -t $SESSION_NAME:2
 	
 	sleep .4
-	tmux send-keys -t .+ "cd $WIN_NAME; clear" Enter
-	sleep .4
-	tmux send-keys -t 1 "docker exec -it webmail bash"
+	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
 	sleep .4
 	tmux send-keys -t 0 "1st cmd for webmail"
+	sleep .4
+	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
+	sleep .4
+	tmux send-keys -t 1 "docker exec -it webmail bash"
 
 	# Set up bind9-state window
 	WIN_NAME=$BIND9_WIN
@@ -68,11 +72,13 @@ if [[ "$QUIT" != "true" ]]; then
 	tmux split-window -h -t $SESSION_NAME:3
 	
 	sleep .4
-	tmux send-keys -t .+ "cd $WIN_NAME; clear" Enter
-	sleep .4
-	tmux send-keys -t 1 "docker exec -it bind9 bash"
+	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
 	sleep .4
 	tmux send-keys -t 0 "1st cmd for bind9"
+	sleep .4
+	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
+	sleep .4
+	tmux send-keys -t 1 "docker exec -it bind9 bash"
 
 	# Set up splunk-state window
 	WIN_NAME=$SPLUNK_WIN
@@ -81,11 +87,13 @@ if [[ "$QUIT" != "true" ]]; then
 	tmux split-window -h -t $SESSION_NAME:4
 	
 	sleep .4
-	tmux send-keys -t .+ "cd $WIN_NAME; clear" Enter
-	sleep .4
-	tmux send-keys -t 1 "docker exec -it splunk bash"
+	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
 	sleep .4
 	tmux send-keys -t 0 "1st cmd for splunk"
+	sleep .4
+	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
+	sleep .4
+	tmux send-keys -t 1 "docker exec -it splunk bash"
 
 	printf "\e[0;32mSuccessfully generated $SESSION_NAME dashboard\e[0m\n"
 fi
