@@ -4,3 +4,4 @@ dnf-makecache.timer
 unattended-upgrades.timer
 logrotate.timer
 systemd-tmpfiles-clean.timer
+phpsessionclean.timer
