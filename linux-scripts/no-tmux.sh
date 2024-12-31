@@ -37,6 +37,7 @@ if [[ "$PKG_MAN" == "apt-get" ]]
 then
     apt-get install rkhunter -y --force-yes
 else
+    yum install epel-release -y
     yum install rkhunter -y
 fi
 

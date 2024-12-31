@@ -108,6 +108,7 @@ then
             else
                 yum clean expire-cache
                 yum check-update
+                yum install epel-release -y
                 yum install tar -y
             fi
         fi
@@ -157,6 +158,7 @@ and run pansophy.sh like normal\n\n\n"
             else
                 yum clean expire-cache
                 yum check-update
+                yum install epel-release -y
                 yum install tar -y
             fi
         fi
@@ -215,6 +217,7 @@ else
             else
                 yum clean expire-cache
                 yum check-update
+                yum install epel-release -y
                 yum install tar -y
             fi
         fi
@@ -264,6 +267,7 @@ and run pansophy.sh like normal\n\n\n"
             else
                 yum clean expire-cache
                 yum check-update
+                yum install epel-release -y
                 yum install tar -y
             fi
         fi

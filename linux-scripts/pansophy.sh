@@ -202,6 +202,7 @@ then
     else
         yum clean expire-cache
         yum check-update
+        yum install epel-release -y
         yum install tmux -y
     fi
 fi

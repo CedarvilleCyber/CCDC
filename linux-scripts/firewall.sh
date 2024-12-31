@@ -31,6 +31,7 @@ then
     which iptables >/dev/null
     if [[ $? -ne 0 ]]
     then
+        yum install epel-release -y
         yum install iptables -y
         yum install iptables-services -y
     fi
