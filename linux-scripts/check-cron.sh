@@ -53,12 +53,23 @@ sed -ie '/^[^#].*/ s/^/#/' /etc/crontab
 rm -rf /etc/crontabe
 
 # just get rid of all crontabs defaults included
-find /etc -type f -iname "*cron*" -exec sed -i '/^[^#].*/ s/^/#/' {} +
+#find /etc -type f -iname "*cron*" -exec sed -i '/^[^#].*/ s/^/#/' {} +
+
+# just kill the cron service since we don't need cronjobs almost ever
+which systemctl >/dev/null
+if [[ $? -eq 0 ]]
+then
+    systemctl disable cron
+    systemctl stop cron
+else
+    service cron stop
+fi
 
 if [[ "$found" == "yes" ]]
 then
     printf "${warn}Found crontabs!${reset}\n"
     printf "${warn}Check ./data-files/<user>-cron to see if anything should be uncommented${reset}\n"
+    printf "${warn}If anything is needed, start the cron.service service as well!${reset}\n"
 fi
 
 printf "${info}Also, remeber to check the /etc/crontab file as well!!${reset}\n"
