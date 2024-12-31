@@ -8,6 +8,9 @@ set address priv-centos ip-netmask 172.20.241.30
 set address priv-fedora ip-netmask 172.20.241.40
 set address google-dns ip-netmask 8.8.8.8
 set address cloudflare-dns ip-netmask 1.1.1.1
+set address priv-10 ip-netmask 10.0.0.0/8
+set address priv-172 ip-netmask 172.16.0.0/12
+set address priv-192 ip-netmask 192.168.0.0/16
 
 set profile-group ccdc virus default
 set profile-group ccdc spyware strict
@@ -141,6 +144,18 @@ set rulebase security rules WIN102SPLUNK_splunk action allow
 set rulebase security rules WIN102SPLUNK_splunk log-start no
 set rulebase security rules WIN102SPLUNK_splunk log-end yes
 set rulebase security rules WIN102SPLUNK_splunk log-setting default
+
+set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
+set rulebase security rules KILL_INSIDE2PRIVATE application any
+set rulebase security rules KILL_INSIDE2PRIVATE service application-default
+set rulebase security rules KILL_INSIDE2PRIVATE to External
+set rulebase security rules KILL_INSIDE2PRIVATE from [ Internal Public User ]
+set rulebase security rules KILL_INSIDE2PRIVATE source any
+set rulebase security rules KILL_INSIDE2PRIVATE destination [ priv-10 priv-172 priv-192 ]
+set rulebase security rules KILL_INSIDE2PRIVATE action deny
+set rulebase security rules KILL_INSIDE2PRIVATE log-start no
+set rulebase security rules KILL_INSIDE2PRIVATE log-end yes
+set rulebase security rules KILL_INSIDE2PRIVATE log-setting default
 
 set rulebase security rules QUICK_ALLOW_WEB profile-setting group ccdc
 set rulebase security rules QUICK_ALLOW_WEB application any
