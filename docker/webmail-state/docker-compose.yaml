@@ -4,6 +4,7 @@ name: webmail-state
 
 services:
   mail:
+    container_name: webmail
     build: .
     ports:
       - "110:110/tcp"

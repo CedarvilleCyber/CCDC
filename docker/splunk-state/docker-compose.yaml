@@ -4,6 +4,7 @@ name: splunk-state
 
 services:
   splunk:
+    container_name: splunk
     image: "splunk/splunk:9.1.1"
     ports:
       - "8000:8000/tcp"
