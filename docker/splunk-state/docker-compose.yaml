@@ -11,5 +11,15 @@ services:
     environment:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_PASSWORD=password
+    volumes:
+      - opt_data:/opt
+      - var_tmp_dat:/var/tmp
+      - ansible_data:/home/ansible
+    read_only: true
+
+volunes:
+  opt_data:
+  ansible_data:
+  var_tmp_data:
 
 # username admin
