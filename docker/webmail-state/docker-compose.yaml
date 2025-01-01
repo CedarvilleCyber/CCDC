@@ -11,6 +11,21 @@ services:
       - "25:25/tcp"
     volumes:
       - ./startup:/startup:ro
+      - mail_data:/home
+      - etc_data:/etc
+      - dovecot_data:/run/dovecot
+      - lib_data:/var/lib/postfix
+      - spool_data:/var/spool/postfix
+      - var_tmp_data:/var/tmp
     environment:
       - DOMAIN_NAME=frog.com
       - SUB_DOMAIN=mail
+    read_only: true
+
+volumes:
+  mail_data:
+  etc_data:
+  dovecot_data:
+  lib_data:
+  spool_data:
+  var_tmp_data:
