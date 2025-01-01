@@ -13,11 +13,11 @@ services:
       - SPLUNK_PASSWORD=password
     volumes:
       - opt_data:/opt
-      - var_tmp_dat:/var/tmp
+      - var_tmp_data:/var/tmp
       - ansible_data:/home/ansible
     read_only: true
 
-volunes:
+volumes:
   opt_data:
   ansible_data:
   var_tmp_data:
