@@ -7,6 +7,14 @@ title = "Cedarville Windows Script - 'Providence' "
 ::      Cedarville's version of Baldwin Wallace's old script - https://github.com/CedarvilleCyber/CCDC/blob/main/CCDC-Collection/Windows/windowsBW.cmd
 :: Line 172 "CVE-2020-1350" added 2/16/2024 by Stephen Pearson
 :: Firewall default block all added 8/15/2024 by Kaicheng Ye
+:: The following was added on 1/2/2025 by Stephen Pearson:
+::      Line 292: Changed SmartScreen level to "Warn" from "Block"
+::      Line 429: Stopped and disabled the print spooler
+::      Line 596: Removed "blockoutbound" to restore Internet access
+::      Line 600: Enabled web traffic requests in and out via "Web" firewall rules
+::      Line 162: Removed "net stop dns && net start dns" due to outdated command
+::      Line 572: Checked for the DNSNTP IP address for General Windows Hardening
+::      Moved the logon banner to the general Windows hardening portion
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
@@ -57,6 +65,8 @@ reg export HKCR %ccdcpath%\Regback\hlcr.reg
 reg export HKU %ccdcpath%\Regback\hlku.reg
 reg export HKCC %ccdcpath%\Regback\hlcc.reg
 
+
+
 set /p box="If you are running this on 2012AD enter any key. Otherwise for general windows use enter 'W': "
 if "%box%" == "W" (
 	GOTO :GeneralWindows
@@ -65,7 +75,6 @@ if "%box%" == "W" (
 )
 echo the following prompts only matter on the 2012AD computer
 echo the following prompts only matter on the 2012AD computer >> output.txt
-::set /p Dname="[ What is the Domain Name in DOMAIN.COM format? This is only for the logon banner ]:   "
 set /p EComm="ENTER EComm IP: "
 set /p DNSNTP="ENTER DNS/NTP 10 IP: "
 set /p WebMail="ENTER WEBMAIL IP: "
@@ -90,11 +99,6 @@ echo 2012AD Commands running... >> output.txt
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters" /v "TCP/IP Port" /t REG_DWORD /d 50243 /f
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" /v "DCTcpipPort" /t REG_DWORD /d 50244 /f
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTFRS\Parameters" /v "RPC TCP/IP Port Assignment" /t REG_DWORD /d 50245 /f
-:: Logon Banner text settings \/
-REG add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption /t REG_SZ /d "* * * * * * * * * * W A R N I N G * * * * * * * * * *"
-REG add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticetext /t REG_SZ /d "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
-echo Logon Banner Set
-echo Logon Banner Set >> output.txt
 
 echo Running AD Specific firewall rules
 echo Running AD Specific firewall rules >> output.txt
@@ -147,6 +151,9 @@ echo DHCP changes >> output.txt
 :GeneralWindows
 echo General Windows Commands running...
 echo General Windows Commands running... >> output.txt
+if "%DNSNTP%"=="" (
+	set /p DNSNTP=ENTER DNS/NTP 10 IP:
+)
 :: Clean DNS cache and hosts file
 echo Cleaning out the DNS cache...
 echo Cleaning out the DNS cache... >> output.txt
@@ -154,10 +161,16 @@ ipconfig /flushdns
 echo Writing over the hosts file...
 attrib -r -s C:\WINDOWS\system32\drivers\etc\hosts
 echo > C:\Windows\System32\drivers\etc\hosts
+
+:: Logon Banner text settings \/
+REG add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption /t REG_SZ /d "* * * * * * * * * * W A R N I N G * * * * * * * * * *"
+REG add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticetext /t REG_SZ /d "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
+echo Logon Banner Set
+echo Logon Banner Set >> output.txt
+
 :: Patching CVE-2020-1350
 echo Patching CVE-2020-1350
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DNS\Parameters" /v TcpReceivePacketSize /t REG_DWORD /d 65280 /f
-net stop dns && net start dns
 :: Services
 echo Showing you the currently running services...
 echo Showing you the currently running services... >> output.txt
@@ -289,7 +302,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" /v SignSecu
 ::
 :: Enable SmartScreen
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v EnableSmartScreen /t REG_DWORD /d 1 /f
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v ShellSmartScreenLevel /t REG_SZ /d Block /f
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\System" /v ShellSmartScreenLevel /t REG_SZ /d Warn /f
 ::
 :: Enforce device driver signing
 BCDEDIT /set nointegritychecks OFF
@@ -426,6 +439,10 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg\AllowedP
 reg add "HKLM\SYSTEM\CurrentControlSet\services\LanmanServer\Parameters" /v NullSessionShares /t REG_MULTI_SZ /d "" /f
 :: Allow to use Machine ID for NTLM
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v UseMachineId /t REG_DWORD /d 0 /f
+:: Stop and disable the print spooler
+net stop spooler
+sc config spooler start=disabled
+
 echo Tons of smaller fixes done, check code for more info
 echo Tons of smaller fixes done, check code for more info >> output.txt
 ::
@@ -438,7 +455,7 @@ reg add "HKCU\Software\Microsoft\Internet Explorer\PhishingFilter" /v EnabledV9 
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v Hidden /t REG_DWORD /d 1 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v ShowSuperHidden /t REG_DWORD /d 1 /f
 :: Disable Dump file creation
-reg "add HKLM\SYSTEM\CurrentControlSet\Control\CrashControl" /v CrashDumpEnabled /t REG_DWORD /d 0 /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\CrashControl" /v CrashDumpEnabled /t REG_DWORD /d 0 /f
 :: Disable Autorun
 reg add "HKCU\SYSTEM\CurrentControlSet\Services\CDROM" /v AutoRun /t REG_DWORD /d 1 /f
 :: Disabled Internet Explorer Password Caching
@@ -447,7 +464,7 @@ reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v Di
 reg add "HKCU\Software\Microsoft\Internet Explorer\Main" /v DoNotTrack /t REG_DWORD /d 1 /f
 reg add "HKCU\Software\Microsoft\Internet Explorer\Download" /v RunInvalidSignatures /t REG_DWORD /d 1 /f
 reg add "HKCU\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_LOCALMACHINE_LOCKDOWN\Settings" /v LOCALMACHINE_CD_UNLOCK /t REG_DWORD /d 1 /t
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v WarnonBadCertRecving /t REG_DWORD /d /1 /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v WarnonBadCertRecving /t REG_DWORD /d 1 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v WarnOnPostRedirect /t REG_DWORD /d 1 /f
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings" /v WarnonZoneCrossing /t REG_DWORD /d 1 /f
 echo Secured IE
@@ -481,7 +498,7 @@ reg delete "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v UseMachineID /f
 :: Change notification packages
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v "Notification Packages" /t REG_MULTI_SZ /d "scecli" /f
 :: Show hidden users in gui
-reg delete "HKLM\Software\Microsoft\WindowsNT\CurrentVersion\Winlogon\SpecialAccounts" /f
+reg delete "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts" /f
 :: Disable possible backdoors
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\utilman.exe" /v "Debugger" /t REG_SZ /d "systray.exe" /f
 reg add "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\osk.exe" /v Debugger /t REG_SZ /d "systray.exe" /f
@@ -546,7 +563,6 @@ echo Firewall Commands Running...
 echo Firewall Commands Running... >> output.txt
 :: Enable Firewall Logging
 netsh advfirewall export %ccdcpath%\firewall.old
-netsh firewall set notifications ENABLE
 netsh advfirewall set allprofiles settings inboundusernotification enable
 netsh advfirewall set allprofiles logging filename %ccdcpath%\pfirewall.log
 netsh advfirewall set allprofiles logging maxfilesize 8192
@@ -558,6 +574,7 @@ echo Firewall logging enabled
 echo Firewall logging enabled >> output.txt
 echo Changing rules...
 echo Changing rules... >> output.txt
+
 netsh advfirewall firewall add rule name="NTP Allow" dir=out action=allow enable=yes profile=any remoteport=123 remoteip=%DNSNTP% protocol=udp
 
 :: Block Win32 binaries from making netconns when they shouldn't - specifically targeting native processes known to be abused by bad actors
@@ -585,11 +602,12 @@ echo Further secure remote assistance
 echo Further secure remote assistance >> output.txt
 
 :: Block everything else
-netsh advfirewall set allprofiles firewallpolicy blockinbound,blockoutbound
+netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 
-::Web
-netsh advfirewall firewall add rule name="Web in" dir=in action=allow enable=no profile=any localport=80,443 protocol=tcp
-echo Web changes
+::Enable Web Traffic on ports 443 and 80
+netsh advfirewall firewall add rule name="Web in" dir=in action=allow enable=yes profile=any localport=80,443 protocol=tcp
+netsh advfirewall firewall add rule name="Web out" dir=out action=allow enable=yes profile=any localport=80,443 protocol=tcp
+echo Enabled Web Traffic on Ports 80 and 443
 echo Web changes >> output.txt
 
 :: See other AD specific firewall rules in 2012AD section...
@@ -598,7 +616,6 @@ echo Web changes >> output.txt
 ::_____________________________________________ ### Section for dangerous commands ### __________________________________________
 :: If something broke and its not a firewall issue it could be one of these commands
 :Danger
-echo Running dangerous commands, but don't worry, it'll be okay (maybe), I promise (hopefully), trust me (actually)
 echo Running dangerous commands >> output.txt
 :: Enforce NTLMv2 and LM authentication
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
@@ -630,9 +647,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" /v LDAPClientIntegrity /t 
 
 :: Prevent unauthenticated RPC connections
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Rpc" /v RestrictRemoteClients /t REG_DWORD /d 1 /f
-echo Danger completed
 echo Danger completed >> output.txt
-
 
 set /p prestep="Would you like to run the presteps of sfc scannow and dism health checks? May take up to 20 min (recommended yes) [y/n]: "
 if "%prestep%" == "y" (
