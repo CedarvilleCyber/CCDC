@@ -25,12 +25,33 @@ if (( EUID != 0 )); then
     exit 1
 fi
 
-apt-get install tftpd-hpa > /tmp/tftp-setup.log
-systemctl start tftpd-hpa >> /tmp/tftp-setup.log 
-chmod 777 /srv/tftp
+printf "Updating package list...\n"
+apt-get update > /tmp/tftp-setup.log
 
+printf "Installing the TFTP server...\n"
+apt-get install tftpd-hpa >> /tmp/tftp-setup.log
+if [ $? -eq 0 ]
+then
+    printf "${GREEN}TFTP server installed.\n${RESET}"
+else
+    printf "${RED} TFTP server installation failed.\n${RESET}"
+fi
+
+printf "Starting the server...\n"
+systemctl start tftpd-hpa >> /tmp/tftp-setup.log 
+if [ $? -ne 0 ]
+then
+    printf "${YELLOW}Server start failed.\n${RESET}"
+fi
+
+printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
+chmod 777 /srv/tftp
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
 systemctl restart tftpd-hpa >> /tmp/tftp-setup.log
+if [ $? -ne 0 ]
+then
+    printf "${YELLOW}Server restart failed.\n${RESET}"
+fi
 
 printf "This is a test file.\n" > test.txt
 
@@ -38,7 +59,7 @@ if systemctl is-active tftpd-hpa >> /tmp/tftp-setup.log
 then
     printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
 else
-    printf "${RED}\nTHE TFTP SERVER DIDN'T INSTALL! \n${RESET}"
+    printf "${RED}\nThe TFTP server is not running. \n${RESET}"
 fi
 
 apt-get install tftp-hpa >> /tmp/tftp-setup.log
