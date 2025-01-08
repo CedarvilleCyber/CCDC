@@ -317,4 +317,15 @@ set rulebase nat rules pop3-to-wkst disabled yes
 set rulebase nat rules pop3-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules pop3-to-wkst top
 
+set rulebase security rules any2any application any
+set rulebase security rules any2any service application-default
+set rulebase security rules any2any to any
+set rulebase security rules any2any from any
+set rulebase security rules any2any source any
+set rulebase security rules any2any destination any
+set rulebase security rules any2any action allow
 move rulebase security rules any2any bottom
+
+set rulebase application-override
+set rulebase default-security-rules rules interzone-default action deny
+set rulebase default-security-rules rules interzone-default log-end yes
