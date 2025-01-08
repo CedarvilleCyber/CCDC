@@ -73,6 +73,19 @@ set rulebase security rules EXTERNAL2SELF_DROP log-start no
 set rulebase security rules EXTERNAL2SELF_DROP log-end yes
 set rulebase security rules EXTERNAL2SELF_DROP log-setting default
 
+set rulebase security rules INSIDE2OUT_PRIV profile-setting group ccdc
+set rulebase security rules INSIDE2OUT_PRIV application any
+set rulebase security rules INSIDE2OUT_PRIV service application-default
+set rulebase security rules INSIDE2OUT_PRIV to any
+set rulebase security rules INSIDE2OUT_PRIV from any
+set rulebase security rules INSIDE2OUT_PRIV source [ priv-10 priv-172 priv-192 ]
+set rulebase security rules INSIDE2OUT_PRIV destination any
+set rulebase security rules INSIDE2OUT_PRIV action drop
+set rulebase security rules INSIDE2OUT_PRIV negate-source yes
+set rulebase security rules INSIDE2OUT_PRIV log-start no
+set rulebase security rules INSIDE2OUT_PRIV log-end yes
+set rulebase security rules INSIDE2OUT_PRIV log-setting default
+
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp profile-setting group ccdc
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp application [ pop3 smtp ]
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp service application-default
