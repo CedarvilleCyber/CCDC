@@ -20,10 +20,41 @@ else
 fi
 
 # EUID means "Effective User ID." Root has a UID of 0.
-if (( EUID != 0 )); then
+if (( EUID != 0 )) 
+then
     printf "${RED}ERROR: This script must be run with sudo privileges!\n${RESET}"
     exit 1
 fi
+
+
+# BEGINNING OF TEST PORTION
+
+if command -v systemctl &> /dev/null && [ -d /run/systemd/system ]
+then
+    printf "Systemd is used to manage services on this system.\n"
+    SERVICE_MANAGER="systemctl"
+
+# Check if service is available (SysVinit/Upstart compatibility)
+elif command -v service &> /dev/null
+then
+    printf "SysVinit/Upstart is used to manage services on this system.\n"
+    SERVICE_MANAGER="service"
+
+# Check if initctl is available (Upstart)
+elif command -v initctl &> /dev/null
+then
+    printf "Upstart is used to manage services on this system.\n"
+    SERVICE_MANAGER="initctl"
+
+else
+    printf "Unable to determine the service manager. Please check your system manually.\n"
+    SERVICE_MANAGER="unknown"
+fi
+
+printf "\nYou can manage services using: $SERVICE_MANAGER\n\n"
+
+# END OF TEST PORTION
+
 
 printf "Updating package list...\n"
 apt-get update > /tmp/tftp-setup.log
