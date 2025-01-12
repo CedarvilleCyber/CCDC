@@ -29,16 +29,17 @@ fi
 
 # BEGINNING OF TEST PORTION
 
-if command -v systemctl &> /dev/null && [ -d /run/systemd/system ]
-then
-    printf "Systemd is used to manage services on this system.\n"
-    SERVICE_MANAGER="systemctl"
-
 # Check if service is available (SysVinit/Upstart compatibility)
-elif command -v service &> /dev/null
+if command -v service &> /dev/null
 then
     printf "SysVinit/Upstart is used to manage services on this system.\n"
     SERVICE_MANAGER="service"
+
+# Check for systemctl
+elif command -v systemctl &> /dev/null && [ -d /run/systemd/system ]
+then
+    printf "Systemd is used to manage services on this system.\n"
+    SERVICE_MANAGER="systemctl"
 
 # Check if initctl is available (Upstart)
 elif command -v initctl &> /dev/null
