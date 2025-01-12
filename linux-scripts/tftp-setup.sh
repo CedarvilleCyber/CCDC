@@ -26,9 +26,7 @@ then
     exit 1
 fi
 
-
-# BEGINNING OF TEST PORTION
-
+#Check the validity of these if & elif commands.
 # Check if service is available (SysVinit/Upstart compatibility)
 if command -v service &> /dev/null
 then
@@ -48,13 +46,12 @@ then
     SERVICE_MANAGER="initctl"
 
 else
-    printf "Unable to determine the service manager. Please check your system manually.\n"
+    printf "${RED}Unable to determine the service manager. Please check your system manually.\n${RESET}"
     SERVICE_MANAGER="unknown"
+    exit 1
 fi
 
 printf "\nYou can manage services using: $SERVICE_MANAGER\n\n"
-
-# END OF TEST PORTION
 
 
 printf "Updating package list...\n"
@@ -69,8 +66,23 @@ else
     printf "${RED} TFTP server installation failed.\n${RESET}"
 fi
 
-printf "Starting the server...\n"
-systemctl start tftpd-hpa >> /tmp/tftp-setup.log 
+printf "Starting the server via $SERVICE_MANAGER...\n"
+
+if [$SERVICE_MANAGER -eq service]
+then
+    printf "Starting tftpd-hpa via ${YELLOW}service${RESET}\n" >> /tmp/tftp-setup.log
+    service tftpd-hpa start >> /tmp/tftp-setup.log
+fi
+elif [$SERVICE_MANAGER -eq systemctl]
+then
+    printf "Starting tftpd-hpa via ${YELLOW}systemctl${RESET}\n" >> /tmp/tftp-setup.log
+    systemctl start tftp-hpa >> /tmp/tftp-setup.log
+elif [$SERVICE_MANAGER -eq initctl]
+then
+    printf "Starting tftpd-hpa via ${YELLOW}initctl${RESET}\n" >> /tmp/tftp-setup.log
+    initctl start tftpd-hpa
+fi
+
 if [ $? -ne 0 ]
 then
     printf "${YELLOW}Server start failed.\n${RESET}"
@@ -79,7 +91,18 @@ fi
 printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
 chmod 777 /srv/tftp
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
-systemctl restart tftpd-hpa >> /tmp/tftp-setup.log
+
+if [$SERVICE_MANAGER -eq service]
+then
+    service tftpd-hpa restart >> /tmp/tftp-setup.log
+elif [$SERVICE_MANAGER -eq systemctl]
+then
+    systemctl restart tftpd-hpa >> /tmp/tftp-setup.log
+elif [$SERVICE_MANAGER -eq initctl]
+then
+    initctl restart tftpd-hpa
+fi
+
 if [ $? -ne 0 ]
 then
     printf "${YELLOW}Server restart failed.\n${RESET}"
@@ -87,9 +110,18 @@ fi
 
 printf "This is a test file.\n" > test.txt
 
-if systemctl is-active tftpd-hpa >> /tmp/tftp-setup.log
+if [$SERVICE_MANAGER -eq service] && service tftpd-hpa status | grep -q 'start/running'
 then
     printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
+
+elif [$SERVICE_MANAGER -eq systemctl] && systemctl is-active tftpd-hpa >> /tmp/tftp-setup.log
+then
+    printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
+
+elif [$SERVICE_MANAGER -eq initctl] && initctl list | grep -q "^tftpd-hpa.*start"
+then
+    printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
+
 else
     printf "${RED}\nThe TFTP server is not running. \n${RESET}"
 fi
