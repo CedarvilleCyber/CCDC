@@ -41,6 +41,7 @@ case $SERVICE_MANAGER in
         then
             SERVICE_COMMAND='initctl'
         elif /sbin/init --version | grep -q sysvinit
+        then
             SERVICE_COMMAND='service'
         fi
         ;;
