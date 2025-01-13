@@ -130,7 +130,7 @@ elif [$SERVICE_COMMAND -eq service] && service tftpd-hpa status | grep -q 'start
 then
     printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
 
-elif [$SERVICE_COMMAND -eq initctl] && initctl list | grep -q "tftpd-hpa start/running"
+elif [$SERVICE_COMMAND -eq initctl] && initctl status tftpd-hpa | grep -q "tftpd-hpa start/running" # tweak this somehow
 then
     printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
 elif [$SERVICE_COMMAND -eq rc.service] && rc.service tftpd-hpa status | grep -q 'start/running'
