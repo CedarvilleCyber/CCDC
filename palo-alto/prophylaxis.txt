@@ -73,6 +73,19 @@ set rulebase security rules EXTERNAL2SELF_DROP log-start no
 set rulebase security rules EXTERNAL2SELF_DROP log-end yes
 set rulebase security rules EXTERNAL2SELF_DROP log-setting default
 
+set rulebase security rules EXTERNAL_PRIV profile-setting group ccdc
+set rulebase security rules EXTERNAL_PRIV application any
+set rulebase security rules EXTERNAL_PRIV service application-default
+set rulebase security rules EXTERNAL_PRIV to any
+set rulebase security rules EXTERNAL_PRIV from any
+set rulebase security rules EXTERNAL_PRIV source [ priv-10 priv-172 priv-192 ]
+set rulebase security rules EXTERNAL_PRIV destination any
+set rulebase security rules EXTERNAL_PRIV action drop
+set rulebase security rules EXTERNAL_PRIV negate-source yes
+set rulebase security rules EXTERNAL_PRIV log-start no
+set rulebase security rules EXTERNAL_PRIV log-end yes
+set rulebase security rules EXTERNAL_PRIV log-setting default
+
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp profile-setting group ccdc
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp application [ pop3 smtp ]
 set rulebase security rules EXTERNAL2PUBLIC_pop3_smtp service application-default
@@ -304,4 +317,15 @@ set rulebase nat rules pop3-to-wkst disabled yes
 set rulebase nat rules pop3-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules pop3-to-wkst top
 
+set rulebase security rules any2any application any
+set rulebase security rules any2any service application-default
+set rulebase security rules any2any to any
+set rulebase security rules any2any from any
+set rulebase security rules any2any source any
+set rulebase security rules any2any destination any
+set rulebase security rules any2any action allow
 move rulebase security rules any2any bottom
+
+set rulebase application-override
+set rulebase default-security-rules rules interzone-default action deny
+set rulebase default-security-rules rules interzone-default log-end yes
