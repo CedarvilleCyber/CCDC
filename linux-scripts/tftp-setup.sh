@@ -66,7 +66,7 @@ case $SERVICE_MANAGER in
         fi
         ;;
     openrc)
-        SERVICE_COMMAND="rc-service"
+        SERVICE_COMMAND="rc.service"
         ;;
     *)
         SERVICE_COMMAND="unknown"
@@ -96,21 +96,25 @@ sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
 
 
-printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n" | tee --append ~/tftp/setup.log
+printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n"
 if [[ $SERVICE_COMMAND -eq "systemctl" ]]
 then
+    printf "systemctl start tftpd-hpa\n" >> ~/tftp/setup.log
     systemctl start tftpd-hpa >> ~/tftp/setup.log
 
 elif [[ $SERVICE_COMMAND -eq "service" ]]
 then
+    printf "service tftpd-hpa start\n" >> ~/tftp/setup.log
     service tftpd-hpa start >> ~/tftp/setup.log
 
 elif [[ $SERVICE_COMMAND -eq "initctl" ]]
 then
+    printf "initctl start tftpd-hpa\n" >> ~/tftp/setup.log
     initctl start tftpd-hpa >> ~/tftp/setup.log
 elif [[ $SERVICE_COMMAND -eq "rc.service" ]]
 then
-    rc-service tftpd-hpa start >> ~/tftp/setup.log
+    printf "rc.service tftpd-hpa start\n" >> ~/tftp/setup.log
+    rc.service tftpd-hpa start >> ~/tftp/setup.log
 else
     printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
     printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n"
@@ -128,15 +132,19 @@ fi
 
 if [[ $SERVICE_COMMAND -eq "systemctl" ]]
 then
+    printf "systemctl restart tftpd-hpa\n" >> ~/tftp/setup.log
     systemctl restart tftpd-hpa >> ~/tftp/setup.log
 elif [[ $SERVICE_COMMAND -eq "service" ]]
 then
+    printf "service tftpd-hpa restart\n" >> ~/tftp/setup.log
     service tftpd-hpa restart >> ~/tftp/setup.log
 elif [[ $SERVICE_COMMAND -eq "initctl" ]]
 then
+    printf "initctl restart tftpd-hpa\n" >> ~/tftp/setup.log
     initctl restart tftpd-hpa >> ~/tftp/setup.log
 elif [[ $SERVICE_COMMAND -eq "rc.service" ]]
 then
+    printf "rc.service tftpd-hpa restart\n" >> ~/tftp/setup.log
     rc.service tftpd-hpa restart >> ~/tftp/setup.log
 else
     printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
