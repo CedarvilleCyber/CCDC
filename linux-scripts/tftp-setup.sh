@@ -98,7 +98,6 @@ fi
 printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
 sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
-chmod 777 /srv/tftp
 
 
 
@@ -112,6 +111,7 @@ elif [ $SERVICE_COMMAND -eq initctl ]
 then
     initctl restart tftpd-hpa >> /tmp/tftp-setup.log
 elif [ $SERVICE_COMMAND - eq rc.service ]
+then
     rc.service tftpd-hpa restart >> /tmp/tftp-setup.log
 fi
 
@@ -141,6 +141,8 @@ else
 fi
 
 
+
+chmod 777 /srv/tftp
 
 apt-get install tftp-hpa >> /tmp/tftp-setup.log
 if [ $? -eq 0 ]
