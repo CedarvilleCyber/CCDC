@@ -72,20 +72,23 @@ fi
 
 
 printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n" | tee --append /tmp/tftp-setup.log
-if [$SERVICE_COMMAND -eq systemctl]
+if [[ $SERVICE_COMMAND -eq "systemctl" ]]
 then
     systemctl start tftpd-hpa >> /tmp/tftp-setup.log
 
-elif [$SERVICE_COMMAND -eq service]
+elif [[ $SERVICE_COMMAND -eq "service" ]]
 then
     service tftpd-hpa start >> /tmp/tftp-setup.log
 
-elif [$SERVICE_COMMAND -eq initctl]
+elif [[ $SERVICE_COMMAND -eq "initctl" ]]
 then
     initctl start tftpd-hpa >> /tmp/tftp-setup.log
-elif [$SERVICE_COMMAND -eq rc.service]
+elif [[ $SERVICE_COMMAND -eq "rc.service" ]]
 then
     rc-service tftpd-hpa start >> /tmp/tftp-setup.log
+else
+    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
+    printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n"
 fi
 
 if [ $? -eq 0 ]
@@ -101,18 +104,21 @@ sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
 
 
-if [ $SERVICE_COMMAND -eq systemctl ]
+if [[ $SERVICE_COMMAND -eq "systemctl" ]]
 then
     systemctl restart tftpd-hpa >> /tmp/tftp-setup.log
-elif [ $SERVICE_COMMAND -eq service ]
+elif [[ $SERVICE_COMMAND -eq "service" ]]
 then
     service tftpd-hpa restart >> /tmp/tftp-setup.log
-elif [ $SERVICE_COMMAND -eq initctl ]
+elif [[ $SERVICE_COMMAND -eq "initctl" ]]
 then
     initctl restart tftpd-hpa >> /tmp/tftp-setup.log
-elif [ $SERVICE_COMMAND - eq rc.service ]
+elif [[ $SERVICE_COMMAND -eq "rc.service" ]]
 then
     rc.service tftpd-hpa restart >> /tmp/tftp-setup.log
+else
+    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
+    printf "incorrectly set, so the script ${RED}didn't restart tftpd-hpa.${RESET}\n"
 fi
 
 if [ $? -eq 0 ]
@@ -122,20 +128,20 @@ else
     printf "${YELLOW}Server restart failed.\n${RESET}"
 fi
 
-if [$SERVICE_COMMAND -eq systemctl] && systemctl is-active tftpd-hpa >> /tmp/tftp-setup.log
+if [[ $SERVICE_COMMAND -eq "systemctl" ]] && systemctl is-active tftpd-hpa >> /tmp/tftp-setup.log
 then
-    printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
+    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 
-elif [$SERVICE_COMMAND -eq service] && service tftpd-hpa status | grep -q 'start/running'
+elif [[ $SERVICE_COMMAND -eq "service" ]] && service tftpd-hpa status | grep -q 'start/running'
 then
-    printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
+    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 
-elif [$SERVICE_COMMAND -eq initctl] && initctl status tftpd-hpa | grep -q "tftpd-hpa start/running" # tweak this somehow
+elif [[ $SERVICE_COMMAND -eq "initctl" ]] && initctl status tftpd-hpa | grep -q "tftpd-hpa start/running" # tweak this somehow
 then
-    printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
-elif [$SERVICE_COMMAND -eq rc.service] && rc.service tftpd-hpa status | grep -q 'start/running'
+    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
+elif [[ $SERVICE_COMMAND -eq "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
 then
-    printf "${GREEN}\nThe TFTP server is running. It's default directory is /srv/tftp.\n\n${RESET}"
+    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 else
     printf "${RED}\nThe TFTP server is not running. \n${RESET}"
 fi
@@ -162,6 +168,9 @@ printf "    put test.txt\n\n${RESET}"
 
 printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done, so\n"
 printf "screenshot and submit the inject.\n\n"
+
+printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, and it's config file is /etc/default/tftpd-hpa\n${RESET}"
+printf "It's old default directory is ${RED}/var/lib/tftpboot
 
 printf "${YELLOW}Note: the output from the commands in this script were sent to \n"
 printf "/tmp/tftp-setup.log just in case you need to review them.\n\n${RESET}"
