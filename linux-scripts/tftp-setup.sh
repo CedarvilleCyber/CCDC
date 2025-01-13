@@ -97,21 +97,21 @@ sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
 
 printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n"
-if [[ $SERVICE_COMMAND -eq "systemctl" ]]
+if [[ $SERVICE_COMMAND == "systemctl" ]]
 then
     printf "systemctl start tftpd-hpa\n" >> ~/tftp/setup.log
     systemctl start tftpd-hpa >> ~/tftp/setup.log
 
-elif [[ $SERVICE_COMMAND -eq "service" ]]
+elif [[ $SERVICE_COMMAND == "service" ]]
 then
     printf "service tftpd-hpa start\n" >> ~/tftp/setup.log
     service tftpd-hpa start >> ~/tftp/setup.log
 
-elif [[ $SERVICE_COMMAND -eq "initctl" ]]
+elif [[ $SERVICE_COMMAND == "initctl" ]]
 then
     printf "initctl start tftpd-hpa\n" >> ~/tftp/setup.log
     initctl start tftpd-hpa >> ~/tftp/setup.log
-elif [[ $SERVICE_COMMAND -eq "rc.service" ]]
+elif [[ $SERVICE_COMMAND == "rc.service" ]]
 then
     printf "rc.service tftpd-hpa start\n" >> ~/tftp/setup.log
     rc.service tftpd-hpa start >> ~/tftp/setup.log
@@ -130,19 +130,19 @@ fi
 
 
 
-if [[ $SERVICE_COMMAND -eq "systemctl" ]]
+if [[ $SERVICE_COMMAND == "systemctl" ]]
 then
     printf "systemctl restart tftpd-hpa\n" >> ~/tftp/setup.log
     systemctl restart tftpd-hpa >> ~/tftp/setup.log
-elif [[ $SERVICE_COMMAND -eq "service" ]]
+elif [[ $SERVICE_COMMAND == "service" ]]
 then
     printf "service tftpd-hpa restart\n" >> ~/tftp/setup.log
     service tftpd-hpa restart >> ~/tftp/setup.log
-elif [[ $SERVICE_COMMAND -eq "initctl" ]]
+elif [[ $SERVICE_COMMAND == "initctl" ]]
 then
     printf "initctl restart tftpd-hpa\n" >> ~/tftp/setup.log
     initctl restart tftpd-hpa >> ~/tftp/setup.log
-elif [[ $SERVICE_COMMAND -eq "rc.service" ]]
+elif [[ $SERVICE_COMMAND == "rc.service" ]]
 then
     printf "rc.service tftpd-hpa restart\n" >> ~/tftp/setup.log
     rc.service tftpd-hpa restart >> ~/tftp/setup.log
@@ -158,18 +158,18 @@ else
     printf "${YELLOW}Server restart failed.\n${RESET}"
 fi
 
-if [[ $SERVICE_COMMAND -eq "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
+if [[ $SERVICE_COMMAND == "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
 then
     printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 
-elif [[ $SERVICE_COMMAND -eq "service" ]] && service tftpd-hpa status | grep -q 'start/running'
+elif [[ $SERVICE_COMMAND == "service" ]] && service tftpd-hpa status | grep -q 'start/running'
 then
     printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 
-elif [[ $SERVICE_COMMAND -eq "initctl" ]] && initctl status tftpd-hpa | grep -q "tftpd-hpa start/running" # tweak this somehow
+elif [[ $SERVICE_COMMAND == "initctl" ]] && initctl status tftpd-hpa | grep -q "tftpd-hpa start/running" # tweak this somehow
 then
     printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
-elif [[ $SERVICE_COMMAND -eq "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
+elif [[ $SERVICE_COMMAND == "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
 then
     printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 else
