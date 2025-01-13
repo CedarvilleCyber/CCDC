@@ -73,6 +73,8 @@ fi
 printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
 sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+mkdir /srv/tftp
+rmdir /var/lib/tftpboot
 
 printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n" | tee --append /tmp/tftp-setup.log
 if [[ $SERVICE_COMMAND -eq "systemctl" ]]
@@ -170,7 +172,7 @@ printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done
 printf "screenshot and submit the inject.\n\n"
 
 printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, and it's config file is /etc/default/tftpd-hpa\n${RESET}"
-printf "It's old default directory is ${RED}/var/lib/tftpboot
+printf "It's old default directory is ${RED}/var/lib/tftpboot"
 
 printf "${YELLOW}Note: the output from the commands in this script were sent to \n"
 printf "/tmp/tftp-setup.log just in case you need to review them.\n\n${RESET}"
