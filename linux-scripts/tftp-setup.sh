@@ -34,22 +34,22 @@ SERVICE_MANAGER=$(cat /proc/1/comm)
 
 case $SERVICE_MANAGER in
     systemd)
-        SERVICE_COMMAND='systemctl'
+        SERVICE_COMMAND="systemctl"
         ;;
     init)
         if /sbin/init --version | grep -q upstart
         then
-            SERVICE_COMMAND='initctl'
+            SERVICE_COMMAND="initctl"
         elif /sbin/init --version | grep -q sysvinit
         then
-            SERVICE_COMMAND='service'
+            SERVICE_COMMAND="service"
         fi
         ;;
     openrc)
-        SERVICE_COMMAND='rc-service'
+        SERVICE_COMMAND="rc-service"
         ;;
     *)
-        SERVICE_COMMAND='unknown'
+        SERVICE_COMMAND="unknown"
         exit 1
         ;;
 esac
@@ -70,6 +70,9 @@ else
     printf "${RED}TFTP server installation failed.\n${RESET}"
 fi
 
+printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
+sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
+sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
 printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n" | tee --append /tmp/tftp-setup.log
 if [[ $SERVICE_COMMAND -eq "systemctl" ]]
@@ -98,9 +101,6 @@ else
     printf "${YELLOW}Server start failed.\n${RESET}"
 fi
 
-printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
-sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
-sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
 
 
