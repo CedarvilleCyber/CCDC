@@ -200,7 +200,7 @@ printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done
 printf "screenshot and submit the inject.\n\n"
 
 printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, and it's config file is /etc/default/tftpd-hpa\n${RESET}"
-printf "It's old default directory is ${RED}/var/lib/tftpboot\n"
+printf "It's old default directory is ${RED}/var/lib/tftpboot,${RESET} but if it existed I moved it to ${RED}/var/lib/old_tftpboot${RESET}\n\n"
 
 printf "${YELLOW}Note: the output from the commands in this script were sent to \n"
 printf "~/tftp/setup.log just in case you need to review them.\n\n${RESET}"
