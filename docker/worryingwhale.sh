@@ -2,7 +2,7 @@
 #
 # Author: Logan Miller
 # Date: 12/30/2024
-# File: winnowingwhale.sh
+# File: worryingwhale.sh
 # Status: Tested and working, need to test w/ docker running, though
 # 
 # Purpose: Construct individual dashboards for each scored docker service. 
