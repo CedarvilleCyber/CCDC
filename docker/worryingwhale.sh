@@ -46,9 +46,9 @@ if [[ "$QUIT" != "true" ]]; then
 	
 	# Prep tmux dashboard with admin commands
 	tmux send-keys -t 0 "clear" Enter
-	tmux send-keys -t 0 "docker ps"
+	tmux send-keys -t 0 "docker compose -f docker-compose.yaml --env-file ../ccdc.env up --remove-orphans"
 	tmux send-keys -t 1 "docker exec -it prestashop bash"
-	tmux send-keys -t 2 "docker log -f prestashop"
+	tmux send-keys -t 2 "docker logs -f prestashop"
 
 	QUIT="false"
 	cd ..
@@ -80,9 +80,9 @@ if [[ "$QUIT" != "true" ]]; then
 	
 	# Prep tmux dashboard with admin commands
 	tmux send-keys -t 0 "clear" Enter
-	tmux send-keys -t 0 "docker ps"
+	tmux send-keys -t 0 "docker compose -f docker-compose.yaml --env-file ../ccdc.env up --remove-orphans"
 	tmux send-keys -t 1 "docker exec -it webmail bash"
-	tmux send-keys -t 2 "docker log -f webmail"
+	tmux send-keys -t 2 "docker logs -f webmail"
 
 	QUIT="false"
 	cd ..
@@ -114,9 +114,9 @@ if [[ "$QUIT" != "true" ]]; then
 	
 	# Prep tmux dashboard with admin commands
 	tmux send-keys -t 0 "clear" Enter
-	tmux send-keys -t 0 "docker ps"
+	tmux send-keys -t 0 "docker compose -f docker-compose.yaml --env-file ../ccdc.env up --remove-orphans"
 	tmux send-keys -t 1 "docker exec -it bind9 bash"
-	tmux send-keys -t 2 "docker log -f bind9"
+	tmux send-keys -t 2 "docker logs -f bind9"
 
 	QUIT="false"
 	cd ..
@@ -148,9 +148,9 @@ if [[ "$QUIT" != "true" ]]; then
 	
 	# Prep tmux dashboard with admin commands
 	tmux send-keys -t 0 "clear" Enter
-	tmux send-keys -t 0 "docker ps"
+	tmux send-keys -t 0 "docker compose -f docker-compose.yaml --env-file ../ccdc.env up --remove-orphans"
 	tmux send-keys -t 1 "docker exec -it splunk bash"
-	tmux send-keys -t 2 "docker log -f splunk"
+	tmux send-keys -t 2 "docker logs -f splunk"
 
 	QUIT="false"
 	cd ..

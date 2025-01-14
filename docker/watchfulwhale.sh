@@ -44,8 +44,6 @@ if [[ "$QUIT" != "true" ]]; then
 	sleep .4
 	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
 	sleep .4
-	tmux send-keys -t 0 "./setup-ecomm.sh"
-	sleep .4
 	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
 	sleep .4
 	tmux send-keys -t 1 "docker exec -it prestashop bash"
@@ -58,8 +56,6 @@ if [[ "$QUIT" != "true" ]]; then
 	
 	sleep .4
 	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
-	sleep .4
-	tmux send-keys -t 0 "1st cmd for webmail"
 	sleep .4
 	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
 	sleep .4
@@ -74,8 +70,6 @@ if [[ "$QUIT" != "true" ]]; then
 	sleep .4
 	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
 	sleep .4
-	tmux send-keys -t 0 "1st cmd for bind9"
-	sleep .4
 	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
 	sleep .4
 	tmux send-keys -t 1 "docker exec -it bind9 bash"
@@ -88,8 +82,6 @@ if [[ "$QUIT" != "true" ]]; then
 	
 	sleep .4
 	tmux send-keys -t 0 "cd $WIN_NAME; clear" Enter
-	sleep .4
-	tmux send-keys -t 0 "1st cmd for splunk"
 	sleep .4
 	tmux send-keys -t 1 "cd $WIN_NAME; clear" Enter
 	sleep .4
