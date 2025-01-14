@@ -122,7 +122,7 @@ printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
 sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
-if ! is_running()
+if ! is_running
 then
     printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n"
     if [[ $SERVICE_COMMAND == "systemctl" ]]
@@ -185,7 +185,7 @@ else
     printf "${YELLOW}Server restart failed.\n${RESET}"
 fi
 
-if is_running()
+if is_running
 then
     printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 else
