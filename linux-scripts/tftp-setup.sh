@@ -9,6 +9,28 @@
 # TO DO: add support for different package managers, such as yum.
 # Pansophy has this feature, so use it as an example.
 
+is_running() {
+    if [[ $SERVICE_COMMAND == "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
+    then
+        RUNNING=1
+
+    elif [[ $SERVICE_COMMAND == "service" ]] && service tftpd-hpa status | grep -q 'start/running'
+    then
+        RUNNING=1
+
+    elif [[ $SERVICE_COMMAND == "initctl" ]] && initctl status tftpd-hpa | grep -q "start/running"
+    then
+        RUNNING=1
+    elif [[ $SERVICE_COMMAND == "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
+    then
+        RUNNING=1
+    else
+        RUNNING=0
+    fi
+}
+
+
+# Set up color for the output print statements
 if which tput > /dev/null 2>&1
 then
     GREEN=$(tput setaf 2)
@@ -30,12 +52,14 @@ then
 fi
 
 
+# Create the script's output directory
 if [ ! -d ~/tftp ]
 then
     mkdir ~/tftp
     printf "Created directory ~/tftp \n"
 fi
 
+# Make sure tftp lives in the right directory
 if [ -d "/var/lib/tftpboot" ]
 then
     mv /var/lib/tftpboot /var/lib/old_tftpboot
@@ -53,6 +77,7 @@ then
 fi
 
 
+# Figures out what command to use when starting things
 # /proc/1/comm contains the command name of the 1st process (the process with PID = 1)
 SERVICE_MANAGER=$(cat /proc/1/comm)
 
@@ -81,7 +106,6 @@ esac
 printf "\nThe service manager is $SERVICE_MANAGER, so you can manage services using the '$SERVICE_COMMAND' command\n\n" | tee ~/tftp/setup.log
 
 
-
 printf "Updating package list...\n" | tee --append ~/tftp/setup.log
 apt-get update >> ~/tftp/setup.log
 
@@ -98,30 +122,31 @@ printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
 sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
-
-
-printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n"
-if [[ $SERVICE_COMMAND == "systemctl" ]]
+if is_running()
 then
-    printf "systemctl start tftpd-hpa\n" >> ~/tftp/setup.log
-    systemctl start tftpd-hpa >> ~/tftp/setup.log
+    printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n"
+    if [[ $SERVICE_COMMAND == "systemctl" ]]
+    then
+        printf "systemctl start tftpd-hpa\n" >> ~/tftp/setup.log
+        systemctl start tftpd-hpa >> ~/tftp/setup.log
 
-elif [[ $SERVICE_COMMAND == "service" ]]
-then
-    printf "service tftpd-hpa start\n" >> ~/tftp/setup.log
-    service tftpd-hpa start >> ~/tftp/setup.log
+    elif [[ $SERVICE_COMMAND == "service" ]]
+    then
+        printf "service tftpd-hpa start\n" >> ~/tftp/setup.log
+        service tftpd-hpa start >> ~/tftp/setup.log
 
-elif [[ $SERVICE_COMMAND == "initctl" ]]
-then
-    printf "initctl start tftpd-hpa\n" >> ~/tftp/setup.log
-    initctl start tftpd-hpa >> ~/tftp/setup.log
-elif [[ $SERVICE_COMMAND == "rc.service" ]]
-then
-    printf "rc.service tftpd-hpa start\n" >> ~/tftp/setup.log
-    rc.service tftpd-hpa start >> ~/tftp/setup.log
-else
-    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
-    printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n"
+    elif [[ $SERVICE_COMMAND == "initctl" ]]
+    then
+        printf "initctl start tftpd-hpa\n" >> ~/tftp/setup.log
+        initctl start tftpd-hpa >> ~/tftp/setup.log
+    elif [[ $SERVICE_COMMAND == "rc.service" ]]
+    then
+        printf "rc.service tftpd-hpa start\n" >> ~/tftp/setup.log
+        rc.service tftpd-hpa start >> ~/tftp/setup.log
+    else
+        printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
+        printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n"
+    fi
 fi
 
 if [ $? -eq 0 ]
@@ -130,8 +155,6 @@ then
 else
     printf "${YELLOW}Server start failed.\n${RESET}"
 fi
-
-
 
 
 if [[ $SERVICE_COMMAND == "systemctl" ]]
@@ -162,25 +185,12 @@ else
     printf "${YELLOW}Server restart failed.\n${RESET}"
 fi
 
-if [[ $SERVICE_COMMAND == "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
-then
-    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
-
-elif [[ $SERVICE_COMMAND == "service" ]] && service tftpd-hpa status | grep -q 'start/running'
-then
-    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
-
-elif [[ $SERVICE_COMMAND == "initctl" ]] && initctl status tftpd-hpa | grep -q "tftpd-hpa start/running" # tweak this somehow
-then
-    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
-elif [[ $SERVICE_COMMAND == "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
+if is_running()
 then
     printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
 else
     printf "${RED}\nThe TFTP server is not running. \n${RESET}"
 fi
-
-
 
 apt-get install tftp-hpa >> ~/tftp/setup.log
 if [ $? -eq 0 ]
@@ -189,6 +199,7 @@ then
 else
     printf "${YELLOW}The tftp-hpa client installation failed. Install a backup client.\n${RESET}"
 fi
+
 
 printf "This is a test file.\n" > ~/tftp/test.txt
 
