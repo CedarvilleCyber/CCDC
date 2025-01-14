@@ -12,20 +12,20 @@
 is_running() {
     if [[ $SERVICE_COMMAND == "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
     then
-        RUNNING=1
+        return 1
 
     elif [[ $SERVICE_COMMAND == "service" ]] && service tftpd-hpa status | grep -q 'start/running'
     then
-        RUNNING=1
+        return 1
 
     elif [[ $SERVICE_COMMAND == "initctl" ]] && initctl status tftpd-hpa | grep -q "start/running"
     then
-        RUNNING=1
+        return 1
     elif [[ $SERVICE_COMMAND == "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
     then
-        RUNNING=1
+        return 1
     else
-        RUNNING=0
+        return 0
     fi
 }
 
@@ -122,7 +122,7 @@ printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
 sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
 sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
 
-if is_running()
+if ! is_running()
 then
     printf "Starting tftpd-hpa via ${YELLOW}$SERVICE_COMMAND${RESET}\n"
     if [[ $SERVICE_COMMAND == "systemctl" ]]
