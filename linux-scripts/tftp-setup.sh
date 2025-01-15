@@ -116,7 +116,8 @@ then
         printf "Created directory /srv/tftp \n" | tee --append ~/tftp/setup.log
     else
         printf "ERROR: Something went wrong while trying to create /srv/tftp \n" | tee --append ~/tftp/setup.log
-    chmod 777 /srv/tftp
+        chmod 777 /srv/tftp
+    fi
 fi
 
 # Setting up the configuration file
@@ -124,7 +125,7 @@ if [ ! -f /etc/default/tftpd-hpa ]
 then
     printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
     touch /etc/default/tftpd-hpa
-    chmod 777 /etc/default/tftpd- # tftp user owns the file, so root can only edit if we use 777
+    chmod 777 /etc/default/tftpd-hpa # tftp user owns the file, so root can only edit if we use 777
     echo 'TFTP_USERNAME="tftp"' > /etc/default/tftpd-hpa
     echo 'TFTP_DIRECTORY="/srv/tftp"' >> /etc/default/tftpd-hpa
     echo 'TFTP_ADDRESS="0.0.0.0:69"' >> /etc/default/tftpd-hpa
