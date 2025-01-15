@@ -52,31 +52,6 @@ then
 fi
 
 
-# Create the script's output directory
-if [ ! -d ~/tftp ]
-then
-    mkdir ~/tftp
-    printf "Created directory ~/tftp \n"
-fi
-
-# Make sure tftp lives in the right directory
-if [ -d "/var/lib/tftpboot" ]
-then
-    mv /var/lib/tftpboot /var/lib/old_tftpboot
-    printf "Moved /var/lib/tftpboot to /var/lib/old_tftpboot \n"
-fi
-
-if [ ! -d /srv/tftp ]
-then
-    mkdir -p /srv/tftp
-    if [ $? -eq 0 ]
-    then
-        printf "Created directory /srv/tftp \n"
-    fi
-    chmod 777 /srv/tftp
-fi
-
-
 # Figures out what command to use when starting things
 # /proc/1/comm contains the command name of the 1st process (the process with PID = 1)
 SERVICE_MANAGER=$(cat /proc/1/comm)
@@ -113,14 +88,64 @@ printf "Installing the TFTP server...\n" | tee --append ~/tftp/setup.log
 apt-get install tftpd-hpa >> ~/tftp/setup.log
 if [ $? -eq 0 ]
 then
-    printf "${GREEN}TFTP server installed.\n${RESET}"
+    printf "${GREEN}TFTP server installed.\n${RESET}" | tee --append ~/tftp/setup.log
 else
-    printf "${RED}TFTP server installation failed.\n${RESET}"
+    printf "${RED}TFTP server installation failed.\n${RESET}" | tee --append ~/tftp/setup.log
 fi
 
-printf "Attempting to configure /srv/tftp and /etc/default/tftpd-hpa...\n"
-sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
-sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+
+# Create the script's output directory
+if [ ! -d ~/tftp ]
+then
+    mkdir ~/tftp
+    printf "Created directory ~/tftp \n" | tee --append ~/tftp/setup.log
+fi
+
+# Make sure tftp lives in the right directory
+if [ -d "/var/lib/tftpboot" ]
+then
+    mv /var/lib/tftpboot /var/lib/old_tftpboot
+    printf "Moved /var/lib/tftpboot to /var/lib/old_tftpboot \n" | tee --append ~/tftp/setup.log
+fi
+
+if [ ! -d /srv/tftp ]
+then
+    mkdir -p /srv/tftp
+    if [ $? -eq 0 ]
+    then
+        printf "Created directory /srv/tftp \n" | tee --append ~/tftp/setup.log
+    else
+        printf "ERROR: Something went wrong while trying to create /srv/tftp \n" | tee --append ~/tftp/setup.log
+    chmod 777 /srv/tftp
+fi
+
+# Setting up the configuration file
+if [ ! -f /etc/default/tftpd-hpa ]
+then
+    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
+    touch /etc/default/tftpd-hpa
+    chmod 777 /etc/default/tftpd- # tftp user owns the file, so root can only edit if we use 777
+    echo 'TFTP_USERNAME="tftp"' > /etc/default/tftpd-hpa
+    echo 'TFTP_DIRECTORY="/srv/tftp"' >> /etc/default/tftpd-hpa
+    echo 'TFTP_ADDRESS="0.0.0.0:69"' >> /etc/default/tftpd-hpa
+    echo 'TFTP_OPTIONS="--create --secure"' >> /etc/default/tftpd-hpa
+elif ! grep -q 'TFTP_DIRECTORY="/srv/tftp"' && ! grep -q 'TFTP_OPTIONS="--create --secure"'
+then
+    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
+    sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
+    sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+elif ! grep -q 'TFTP_DIRECTORY="/srv/tftp"'
+then
+    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
+    sed -i.bak '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+elif ! grep -q 'TFTP_OPTIONS="--create --secure"'
+then
+    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
+    sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
+else
+    printf "Bypassing config file manipulation. /etc/default/tftpd-hpa is already correct.\n" | tee --append ~/tftp/setup.log
+fi
+
 
 if ! is_running
 then
@@ -144,16 +169,16 @@ then
         printf "rc.service tftpd-hpa start\n" >> ~/tftp/setup.log
         rc.service tftpd-hpa start >> ~/tftp/setup.log
     else
-        printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
-        printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n"
+        printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or" | tee --append ~/tftp/setup.log
+        printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n" | tee --append ~/tftp/setup.log
     fi
-fi
 
-if [ $? -eq 0 ]
-then
-    printf "${GREEN}Server started.\n${RESET}"
-else
-    printf "${YELLOW}Server start failed.\n${RESET}"
+    if [ $? -eq 0 ]
+    then
+        printf "${GREEN}Server started.\n${RESET}" | tee --append ~/tftp/setup.log
+    else
+        printf "${YELLOW}Server start failed.\n${RESET}" | tee --append ~/tftp/setup.log
+    fi
 fi
 
 
@@ -174,24 +199,25 @@ then
     printf "rc.service tftpd-hpa restart\n" >> ~/tftp/setup.log
     rc.service tftpd-hpa restart >> ~/tftp/setup.log
 else
-    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or"
-    printf "incorrectly set, so the script ${RED}didn't restart tftpd-hpa.${RESET}\n"
+    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or" | tee --append ~/tftp/setup.log
+    printf "incorrectly set, so the script ${RED}didn't restart tftpd-hpa.${RESET}\n" | tee --append ~/tftp/setup.log
 fi
 
 if [ $? -eq 0 ]
 then
-    printf "${GREEN}Server restarted successfully.\n${RESET}"
+    printf "${GREEN}Server restarted successfully.\n${RESET}" | tee --append ~/tftp/setup.log
 else
-    printf "${YELLOW}Server restart failed.\n${RESET}"
+    printf "${YELLOW}Server restart failed.\n${RESET}" | tee --append ~/tftp/setup.log
 fi
 
 if is_running
 then
-    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}"
+    printf "${GREEN}\nThe TFTP server is running.\n\n${RESET}" | tee --append ~/tftp/setup.log
 else
-    printf "${RED}\nThe TFTP server is not running. \n${RESET}"
+    printf "${RED}\nThe TFTP server is not running. \n${RESET}" | tee --append ~/tftp/setup.log
 fi
 
+printf "Installing the tftp-hpa client...\n" >> ~/tftp/setup.log
 apt-get install tftp-hpa >> ~/tftp/setup.log
 if [ $? -eq 0 ]
 then
@@ -203,7 +229,7 @@ fi
 
 printf "This is a test file.\n" > ~/tftp/test.txt
 
-printf "We also created a test file called test.txt.\n"
+printf "We also created a test file called test.txt in ~/tftp.\n"
 printf "Use the client to connect to the server like so:\n\n"
 
 printf "    ${GREEN}tftp 127.0.0.1\n"
