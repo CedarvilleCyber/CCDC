@@ -12,20 +12,20 @@
 is_running() {
     if [[ $SERVICE_COMMAND == "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
     then
-        return 1
+        return 0
 
     elif [[ $SERVICE_COMMAND == "service" ]] && service tftpd-hpa status | grep -q 'start/running'
     then
-        return 1
+        return 0
 
     elif [[ $SERVICE_COMMAND == "initctl" ]] && initctl status tftpd-hpa | grep -q "start/running"
     then
-        return 1
+        return 0
     elif [[ $SERVICE_COMMAND == "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
     then
-        return 1
-    else
         return 0
+    else
+        return 1
     fi
 }
 
