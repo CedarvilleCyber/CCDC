@@ -147,7 +147,7 @@ else
     then
         printf "Updating TFTP_DIRECTORY...\n" | tee --append ~/tftp/setup.log
 
-        sed -i.bak '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+        sed -i.bak '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa \
         || echo 'TFTP_DIRECTORY="/srv/tftp"' >> /etc/default/tftpd-hpa
     fi
 
@@ -261,9 +261,7 @@ printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, \
 and it's config file is /etc/default/tftpd-hpa\n${RESET}"
 
 printf "It's old default directory is ${RED}/var/lib/tftpboot,${RESET} \
-but if it existed I moved it to \n"
-
-printf "${RED}/var/lib/old_tftpboot${RESET}\n\n"
+but if it existed I moved it to \n${RED}/var/lib/old_tftpboot${RESET}\n\n"
 
 
 printf "${YELLOW}Note: the output from the commands in this script were sent to \n"
