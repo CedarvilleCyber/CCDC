@@ -10,18 +10,22 @@
 # Pansophy has this feature, so use it as an example.
 
 is_running() {
-    if [[ $SERVICE_COMMAND == "systemctl" ]] && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
+    if [[ $SERVICE_COMMAND == "systemctl" ]] \
+       && systemctl is-active tftpd-hpa >> ~/tftp/setup.log
     then
         return 0
 
-    elif [[ $SERVICE_COMMAND == "service" ]] && service tftpd-hpa status | grep -q 'start/running'
+    elif [[ $SERVICE_COMMAND == "service" ]] \
+         && service tftpd-hpa status | grep -q 'start/running'
     then
         return 0
 
-    elif [[ $SERVICE_COMMAND == "initctl" ]] && initctl status tftpd-hpa | grep -q "start/running"
+    elif [[ $SERVICE_COMMAND == "initctl" ]] \
+         && initctl status tftpd-hpa | grep -q "start/running"
     then
         return 0
-    elif [[ $SERVICE_COMMAND == "rc.service" ]] && rc.service tftpd-hpa status | grep -q 'start/running'
+    elif [[ $SERVICE_COMMAND == "rc.service" ]] \
+         && rc.service tftpd-hpa status | grep -q 'start/running'
     then
         return 0
     else
@@ -52,8 +56,9 @@ then
 fi
 
 
-# Figures out what command to use when starting things
-# /proc/1/comm contains the command name of the 1st process (the process with PID = 1)
+# Figures out what command to use when starting things.
+# /proc/1/comm contains the command name of the 1st process 
+# (the process with PID = 1)
 SERVICE_MANAGER=$(cat /proc/1/comm)
 
 case $SERVICE_MANAGER in
@@ -86,7 +91,8 @@ then
     printf "Created directory ~/tftp \n" | tee ~/tftp/setup.log
 fi
 
-printf "\nThe service manager is $SERVICE_MANAGER, so you can manage services using the '$SERVICE_COMMAND' command\n\n" | tee --append ~/tftp/setup.log
+printf "\nThe service manager is $SERVICE_MANAGER, so you can manage services \
+using the '$SERVICE_COMMAND' command\n\n" | tee --append ~/tftp/setup.log
 
 printf "Updating package list...\n" | tee --append ~/tftp/setup.log
 apt-get update >> ~/tftp/setup.log
@@ -115,7 +121,8 @@ then
     then
         printf "Created directory /srv/tftp \n" | tee --append ~/tftp/setup.log
     else
-        printf "ERROR: Something went wrong while trying to create /srv/tftp \n" | tee --append ~/tftp/setup.log
+        printf "ERROR: Something went wrong while trying to \
+        create /srv/tftp \n" | tee --append ~/tftp/setup.log
         chmod 777 /srv/tftp
     fi
 fi
@@ -125,26 +132,34 @@ if [ ! -f /etc/default/tftpd-hpa ]
 then
     printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
     touch /etc/default/tftpd-hpa
-    chmod 777 /etc/default/tftpd-hpa # tftp user owns the file, so root can only edit if we use 777
+    chmod 777 /etc/default/tftpd-hpa # So we can edit it
+
     echo 'TFTP_USERNAME="tftp"' > /etc/default/tftpd-hpa
     echo 'TFTP_DIRECTORY="/srv/tftp"' >> /etc/default/tftpd-hpa
     echo 'TFTP_ADDRESS="0.0.0.0:69"' >> /etc/default/tftpd-hpa
     echo 'TFTP_OPTIONS="--create --secure"' >> /etc/default/tftpd-hpa
-elif ! grep -q 'TFTP_DIRECTORY="/srv/tftp"' && ! grep -q 'TFTP_OPTIONS="--create --secure"'
-then
-    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
-    sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
-    sed -i '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
-elif ! grep -q 'TFTP_DIRECTORY="/srv/tftp"'
-then
-    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
-    sed -i.bak '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
-elif ! grep -q 'TFTP_OPTIONS="--create --secure"'
-then
-    printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
-    sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa
+
+    chmod 644 /etc/default/tftpd-hpa
 else
-    printf "Bypassing config file manipulation. /etc/default/tftpd-hpa is already correct.\n" | tee --append ~/tftp/setup.log
+    chmod 777 /etc/default/tftpd-hpa
+
+    if ! grep -q 'TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+    then
+        printf "Updating TFTP_DIRECTORY...\n" | tee --append ~/tftp/setup.log
+
+        sed -i.bak '/^TFTP_DIRECTORY/c\TFTP_DIRECTORY="/srv/tftp"' /etc/default/tftpd-hpa
+        || echo 'TFTP_DIRECTORY="/srv/tftp"' >> /etc/default/tftpd-hpa
+    fi
+
+    if ! grep -q 'TFTP_OPTIONS="--create --secure"' /etc/default/tftpd-hpa
+    then
+        printf "Updating TFTP_OPTIONS...\n" | tee --append ~/tftp/setup.log
+
+            sed -i.bak 's/TFTP_OPTIONS="--secure"/TFTP_OPTIONS="--create --secure"/' /etc/default/tftpd-hpa \
+            || echo 'TFTP_OPTIONS="--create --secure"' >> /etc/default/tftpd-hpa
+    fi
+
+    chmod 644 /etc/default/tftpd-hpa
 fi
 
 
@@ -170,8 +185,9 @@ then
         printf "rc.service tftpd-hpa start\n" >> ~/tftp/setup.log
         rc.service tftpd-hpa start >> ~/tftp/setup.log
     else
-        printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or" | tee --append ~/tftp/setup.log
-        printf "incorrectly set, so the script ${RED}didn't start tftpd-hpa.${RESET}\n" | tee --append ~/tftp/setup.log
+        printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been \
+        altered or incorrectly set,\n so the script ${RED}didn't \
+        start tftpd-hpa.${RESET}\n" | tee --append ~/tftp/setup.log
     fi
 
     if [ $? -eq 0 ]
@@ -200,8 +216,9 @@ then
     printf "rc.service tftpd-hpa restart\n" >> ~/tftp/setup.log
     rc.service tftpd-hpa restart >> ~/tftp/setup.log
 else
-    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been altered or" | tee --append ~/tftp/setup.log
-    printf "incorrectly set, so the script ${RED}didn't restart tftpd-hpa.${RESET}\n" | tee --append ~/tftp/setup.log
+    printf "Your ${YELLOW}SERVICE_COMMAND${RESET} variable has been \
+    altered or incorrectly set,\n so the script ${RED}didn't \
+    start tftpd-hpa.${RESET}\n" | tee --append ~/tftp/setup.log
 fi
 
 if [ $? -eq 0 ]
@@ -239,9 +256,15 @@ printf "    put test.txt\n\n${RESET}"
 printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done, so\n"
 printf "screenshot and submit the inject.\n\n"
 
-printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, and it's config file is /etc/default/tftpd-hpa\n${RESET}"
-printf "It's old default directory is ${RED}/var/lib/tftpboot,${RESET} but if it existed I moved it to \n"
+
+printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, \
+and it's config file is /etc/default/tftpd-hpa\n${RESET}"
+
+printf "It's old default directory is ${RED}/var/lib/tftpboot,${RESET} \
+but if it existed I moved it to \n"
+
 printf "${RED}/var/lib/old_tftpboot${RESET}\n\n"
+
 
 printf "${YELLOW}Note: the output from the commands in this script were sent to \n"
 printf "~/tftp/setup.log just in case you need to review them.\n\n${RESET}"
