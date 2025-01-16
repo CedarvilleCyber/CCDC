@@ -27,6 +27,7 @@ echo "set address public-windows-docker ip-netmask 172.25.$team.97" >> temp.txt
 echo "set address public-win10 ip-netmask 172.31.$team.5" >> temp.txt
 echo "set address public-ubuntu-wkst ip-netmask 172.25.$team.111" >> temp.txt
 echo "set address this-fw ip-netmask 172.31.$team.2" >> temp.txt
+echo "set address this-fw2 ip-netmask 172.25.$team.150" >> temp.txt
 
 cat ./prophylaxis.txt >> temp.txt
 cp ./prophylaxis.txt ./backup-prophylaxis.txt

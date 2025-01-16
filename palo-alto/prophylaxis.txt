@@ -67,7 +67,7 @@ set rulebase security rules EXTERNAL2SELF_DROP service application-default
 set rulebase security rules EXTERNAL2SELF_DROP to External
 set rulebase security rules EXTERNAL2SELF_DROP from External
 set rulebase security rules EXTERNAL2SELF_DROP source any
-set rulebase security rules EXTERNAL2SELF_DROP destination this-fw
+set rulebase security rules EXTERNAL2SELF_DROP destination [ this-fw this-fw2 ]
 set rulebase security rules EXTERNAL2SELF_DROP action drop
 set rulebase security rules EXTERNAL2SELF_DROP log-start no
 set rulebase security rules EXTERNAL2SELF_DROP log-end yes
