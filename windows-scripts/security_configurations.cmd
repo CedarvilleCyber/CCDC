@@ -1,3 +1,27 @@
+@echo off
+
+echo Section: Security Config
+echo Section: Security Config >> output.txt
+:: Checks for admin permissions, errorlevel indicates number of errors
+echo Administrative permissions required. Detecting permissions...
+echo Administrative permissions required. Detecting permissions... >> output.txt
+net session >nul 2>&1
+if %errorlevel% == 1 ( 
+    echo please rerun as admin.
+    goto :end
+)
+
+echo Making directories as needed see c:\ccdc for more
+echo Making directories as needed see c:\ccdc for more >> output.txt
+:: Makes some directories for us to work with
+set ccdcpath="c:\ccdc"
+mkdir %ccdcpath% >NUL
+icacls %ccdcpath% /inheritancelevel:e >NUL
+mkdir %ccdcpath%\ThreatHunting >NUL
+
+
+
+
 :: Export Services
 sc query > %ccdcpath%\ThreatHunting\Services.txt
 :: Export Session
@@ -345,11 +369,7 @@ if "%prestep%" == "y" (
     echo Registry is healthy >> output.txt
 )
 
-
-echo Please reboot when convinent to apply some changes.
-echo Please reboot when convinent to apply some changes. >> output.txt
 :end
-echo Done!
-echo Done! >> output.txt
+echo Security Config: Done
+echo Security Config: Done >> output.txt
 pause
-cmd /k

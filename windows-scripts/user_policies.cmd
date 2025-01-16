@@ -1,3 +1,27 @@
+@echo off
+
+echo Section: User Policy
+echo Section: User Policy >> output.txt
+:: Checks for admin permissions, errorlevel indicates number of errors
+echo Administrative permissions required. Detecting permissions...
+echo Administrative permissions required. Detecting permissions... >> output.txt
+net session >nul 2>&1
+if %errorlevel% == 1 ( 
+    echo please rerun as admin.
+    goto :end
+)
+
+echo Making directories as needed see c:\ccdc for more
+echo Making directories as needed see c:\ccdc for more >> output.txt
+:: Makes some directories for us to work with
+set ccdcpath="c:\ccdc"
+mkdir %ccdcpath% >NUL
+icacls %ccdcpath% /inheritancelevel:e >NUL
+mkdir %ccdcpath%\ThreatHunting >NUL
+mkdir %ccdcpath%\Config >NUL
+mkdir %ccdcpath%\Regback >NUL
+
+
 :: Export Users
 wmic useraccount list brief > %ccdcpath%\Config\Users.txt
 :: Export Groups
@@ -63,3 +87,8 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v Loca
 
 :: Ensure outgoing secure channel traffic is encrytped
 :: Commented out as it only works on domain-joined assets
+
+:end
+echo User Policy Script: Done
+echo User Policy Script: Done >> output.txt
+pause

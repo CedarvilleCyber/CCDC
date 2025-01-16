@@ -1,3 +1,17 @@
+@echo off
+
+echo Section: Software Updates
+echo Section: Software Updates >> output.txt
+:: Checks for admin permissions, errorlevel indicates number of errors
+echo Administrative permissions required. Detecting permissions...
+echo Administrative permissions required. Detecting permissions... >> output.txt
+net session >nul 2>&1
+if %errorlevel% == 1 ( 
+    echo please rerun as admin.
+    goto :end
+)
+
+
 :: Windows automatic updates
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update" /v AUOptions /t REG_DWORD /d 3 /f
 ::
@@ -21,3 +35,8 @@ echo Attempt to fix win update >> output.txt
 ::
 :: Delete the image hijack that kills taskmanager
 reg delete "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\taskmgr.exe" /f /v Debugger
+
+:end
+echo Software Updates Script: Done
+echo Software Updates Script: Done >> output.txt
+pause

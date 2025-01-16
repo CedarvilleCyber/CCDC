@@ -1,3 +1,16 @@
+@echo off
+
+echo Section: Audit and Log
+echo Section: Audit and Log >> output.txt
+:: Checks for admin permissions, errorlevel indicates number of errors
+echo Administrative permissions required. Detecting permissions...
+echo Administrative permissions required. Detecting permissions... >> output.txt
+net session >nul 2>&1
+if %errorlevel% == 1 ( 
+    echo please rerun as admin.
+    goto :end
+)
+
 :: Logon Banner text settings \/
 REG add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption /t REG_SZ /d "* * * * * * * * * * W A R N I N G * * * * * * * * * *"
 echo Logon Banner Set
@@ -42,3 +55,8 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\LanmanWorkstation" /v AllowIns
 
 :: Force SMB server signing
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
+
+:end
+echo Audit and Log Script: Done
+echo Audit and Log Script: Done: Done >> output.txt
+pause

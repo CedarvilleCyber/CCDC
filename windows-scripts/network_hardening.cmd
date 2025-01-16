@@ -1,3 +1,25 @@
+@echo off
+
+echo Section: Network Hardening
+echo Section: Network Hardening >> output.txt
+:: Checks for admin permissions, errorlevel indicates number of errors
+echo Administrative permissions required. Detecting permissions...
+echo Administrative permissions required. Detecting permissions... >> output.txt
+net session >nul 2>&1
+if %errorlevel% == 1 ( 
+    echo please rerun as admin.
+    goto :end
+)
+
+echo Making directories as needed see c:\ccdc for more
+echo Making directories as needed see c:\ccdc for more >> output.txt
+:: Makes some directories for us to work with
+set ccdcpath="c:\ccdc"
+mkdir %ccdcpath% >NUL
+icacls %ccdcpath% /inheritancelevel:e >NUL
+
+
+
 :: Turn on firewall
 netsh advfirewall set allprofiles state on
 ::netsh advfirewall firewall set rule name=all new enable=no
@@ -136,3 +158,8 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v LmCompatibilityLevel /t R
 :: This is commented out by default as it could impact access to consumer-grade file shares but it's a recommended setting
 :: Restrict privileged local admin tokens being used from network 
 :: Commented out as it only works on domain-joined assets
+
+:end
+echo Network Hardening: Done
+echo Network Hardening: Done >> output.txt
+pause
