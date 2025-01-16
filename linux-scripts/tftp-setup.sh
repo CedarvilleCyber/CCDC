@@ -194,7 +194,8 @@ then
     then
         printf "${GREEN}Server started.\n${RESET}" | tee --append ~/tftp/setup.log
     else
-        printf "${YELLOW}Server start failed.\n${RESET}" | tee --append ~/tftp/setup.log
+        printf "${YELLOW}Server start failed.\n${RESET}Check the config file at \
+        ${RED}/etc/default/tftpd-hpa${RESET} for errors." | tee --append ~/tftp/setup.log
     fi
 fi
 
@@ -225,7 +226,9 @@ if [ $? -eq 0 ]
 then
     printf "${GREEN}Server restarted successfully.\n${RESET}" | tee --append ~/tftp/setup.log
 else
-    printf "${YELLOW}Server restart failed.\n${RESET}" | tee --append ~/tftp/setup.log
+        printf "${YELLOW}Server restart failed.\n${RESET}Check the config file at \
+        ${RED}/etc/default/tftpd-hpa${RESET} for errors." | tee --append ~/tftp/setup.log
+
 fi
 
 if is_running
@@ -257,8 +260,8 @@ printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done
 printf "screenshot and submit the inject.\n\n"
 
 
-printf "${GREEN}tftpd-hpa's default directory is /srv/tftp, \
-and it's config file is /etc/default/tftpd-hpa\n${RESET}"
+printf tftpd-hpa's default directory is "${GREEN}/srv/tftp${RESET}, \
+and it's config file is "${GREEN}/etc/default/tftpd-hpa\n${RESET}"
 
 printf "It's old default directory is ${RED}/var/lib/tftpboot,${RESET} \
 but if it existed I moved it to \n${RED}/var/lib/old_tftpboot${RESET}\n\n"
