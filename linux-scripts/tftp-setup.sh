@@ -78,8 +78,15 @@ case $SERVICE_MANAGER in
         ;;
 esac
 
-printf "\nThe service manager is $SERVICE_MANAGER, so you can manage services using the '$SERVICE_COMMAND' command\n\n" | tee ~/tftp/setup.log
 
+# Create the script's output directory
+if [ ! -d ~/tftp ]
+then
+    mkdir ~/tftp
+    printf "Created directory ~/tftp \n" | tee ~/tftp/setup.log
+fi
+
+printf "\nThe service manager is $SERVICE_MANAGER, so you can manage services using the '$SERVICE_COMMAND' command\n\n" | tee --append ~/tftp/setup.log
 
 printf "Updating package list...\n" | tee --append ~/tftp/setup.log
 apt-get update >> ~/tftp/setup.log
@@ -93,13 +100,6 @@ else
     printf "${RED}TFTP server installation failed.\n${RESET}" | tee --append ~/tftp/setup.log
 fi
 
-
-# Create the script's output directory
-if [ ! -d ~/tftp ]
-then
-    mkdir ~/tftp
-    printf "Created directory ~/tftp \n" | tee --append ~/tftp/setup.log
-fi
 
 # Make sure tftp lives in the right directory
 if [ -d "/var/lib/tftpboot" ]
