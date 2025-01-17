@@ -49,6 +49,8 @@ mv crs-setup.conf.example crs-setup.conf
 # get rid of rule that old apache2 doesn't understand
 rm -rf /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/rules/REQUEST-922-MULTIPART-ATTACK.conf
 
+# make logs less verbose
+sed -i "s/SecDefaultAction.*phase:2.*/SecDefaultAction \"phase:2,auditlog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 # setting paranoia level to 1 (default anyway but easy to change)
 printf "SecAction \\
