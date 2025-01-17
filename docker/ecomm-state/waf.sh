@@ -61,9 +61,9 @@ printf "SecAction \\
     setvar:tx.blocking_paranoia_level=2\"" >> /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 
-printf "\n\nRestart apache2 using systemctl, service or by running the following commands\n\n"
+printf "\n\n\n\nRestart apache2 using systemctl, service or by running the following commands\n\n\n"
 printf "source /etc/apache2/envvars\n"
-printf "apache2 -k restart\n\n"
+printf "apache2 -k restart\n\n\n"
 printf "NOTE: will kick you out of docker exec\n\n"
 
 exit 0
