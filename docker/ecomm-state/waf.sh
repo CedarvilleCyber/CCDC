@@ -50,6 +50,7 @@ mv crs-setup.conf.example crs-setup.conf
 rm -rf /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/rules/REQUEST-922-MULTIPART-ATTACK.conf
 
 # make logs less verbose
+sed -i "s/SecDefaultAction.*phase:1.*/SecDefaultAction \"phase:1,auditlog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 sed -i "s/SecDefaultAction.*phase:2.*/SecDefaultAction \"phase:2,auditlog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 # setting paranoia level to 1 (default anyway but easy to change)
