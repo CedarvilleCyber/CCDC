@@ -49,7 +49,8 @@ mv crs-setup.conf.example crs-setup.conf
 # get rid of rule that old apache2 doesn't understand
 rm -rf /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/rules/REQUEST-922-MULTIPART-ATTACK.conf
 
-# setting paranoia level to 2 for more security
+
+# setting paranoia level to 1 (default anyway but easy to change)
 printf "SecAction \\
     \"id:900000,\\
     phase:1,\\
@@ -58,7 +59,7 @@ printf "SecAction \\
     nolog,\\
     tag:'OWASP_CRS',\\
     ver:'OWASP_CRS/$CRS_VER',\\
-    setvar:tx.blocking_paranoia_level=2\"" >> /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
+    setvar:tx.blocking_paranoia_level=1\"" >> /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 
 printf "\n\n\n\nRestart apache2 using systemctl, service or by running the following commands\n\n\n"
