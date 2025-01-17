@@ -25,6 +25,7 @@ a2enmod security2
 # insert new directories to config file
 FILE=/etc/apache2/mods-enabled/security2.conf
 
+sed -i "/crs/ s/^/#/" $FILE
 sed -i "$(($(cat $FILE | wc -l) - 1)) i IncludeOptional /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf" $FILE
 sed -i "$(($(cat $FILE | wc -l) - 1)) i IncludeOptional /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/rules/*.conf" $FILE
 
