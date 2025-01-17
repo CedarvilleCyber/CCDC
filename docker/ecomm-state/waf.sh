@@ -33,7 +33,7 @@ sed -i "$(($(cat $FILE | wc -l) - 1)) i IncludeOptional /etc/apache2/modsecurity
 mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 sed -i "s/SecRuleEngine .*/SecRuleEngine On/" /etc/modsecurity/modsecurity.conf
 sed -i "s/SecAuditEngine .*/SecAuditEngine RelevantOnly/" /etc/modsecurity/modsecurity.conf
-sed -i "s/SecAuditLogParts .*/SecAuditLogParts ABIJDEFHZ/" /etc/modsecurity/modsecurity.conf
+sed -i "s/SecAuditLogParts .*/SecAuditLogParts ABHFZ/" /etc/modsecurity/modsecurity.conf
 
 
 # getting owasp CRS

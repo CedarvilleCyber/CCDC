@@ -16,6 +16,9 @@ services:
       - presta_net
     volumes:
       - web_data:/var/www/html
+      - web_cache:/var/www/html/prestashop/cache/
+      - web_crs:/etc/apache2/modesecurity-crs/
+      - web_security:/etc/modsecurity/
       - ./setup-ecomm.sh:/root/setup-ecomm.sh:ro
       - ./waf.sh:/root/waf.sh:ro
     configs:
@@ -62,6 +65,9 @@ networks:
 volumes:
   db_data:
   web_data:
+  web_cache:
+  web_crs:
+  web_security:
 
 configs:
   secure-apache-conf:
