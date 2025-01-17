@@ -37,7 +37,7 @@ sed -i "s/SecAuditLogParts .*/SecAuditLogParts ABCFJKZ/" /etc/modsecurity/modsec
 # getting owasp CRS
 cd /root
 wget https://github.com/coreruleset/coreruleset/archive/v$CRS_VER.tar.gz
-tar xvf v$CRS_VER.tar.gz
+tar xvf v$CRS_VER.tar.gz >/dev/null
 mkdir /etc/apache2/modsecurity-crs/
 mv coreruleset-$CRS_VER/ /etc/apache2/modsecurity-crs/
 

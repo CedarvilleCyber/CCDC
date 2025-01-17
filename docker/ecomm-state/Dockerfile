@@ -5,4 +5,8 @@ RUN echo "deb http://archive.debian.org/debian stretch main contrib non-free" > 
 RUN apt update -y
 RUN apt install vim -y
 
-CMD ["/root/waf.sh"]
+COPY ./waf.sh /root/waf.sh
+
+RUN /root/waf.sh
+
+CMD source /etc/apache2/envvars; apache2 -DFOREGROUND
