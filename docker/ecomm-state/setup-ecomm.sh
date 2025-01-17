@@ -13,6 +13,12 @@ then
     exit 1
 fi
 
+echo "deb http://archive.debian.org/debian stretch main contrib non-free" > /etc/apt/sources.list
+
+apt update -y
+apt install vim -y
+
+
 cd /var/www/html
 
 cd ../
@@ -26,5 +32,7 @@ cp -r ./prestashop ./html/
 chown -R www-data:www-data ./html
 
 echo "Ready to begin installation"
+
+/root/waf.sh
 
 exit 0

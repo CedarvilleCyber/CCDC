@@ -17,6 +17,7 @@ services:
     volumes:
       - web_data:/var/www/html
       - ./setup-ecomm.sh:/root/setup-ecomm.sh:ro
+      - ./waf.sh:/root/waf.sh:ro
     configs:
       - source: secure-apache-conf
         target: /etc/apache2/apache2.conf

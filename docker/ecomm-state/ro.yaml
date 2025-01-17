@@ -17,6 +17,7 @@ services:
     volumes:
       - web_data:/var/www/html:ro
       - ./setup-ecomm.sh:/root/setup-ecomm.sh:ro
+      - ./waf.sh:/root/waf.sh:ro
       - web_tmp:/tmp
       - web_cache:/var/www/html/prestashop/cache
       - web_run:/var/run/apache2
