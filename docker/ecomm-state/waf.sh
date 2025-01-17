@@ -19,7 +19,7 @@ printf "${info}Starting waf script${reset}\n"
 
 CRS_VER=4.10.0
 
-apt install libapache2-mod-security2
+apt install libapache2-mod-security2 -y
 a2enmod security2
 
 # insert new directories to config file
@@ -56,7 +56,7 @@ printf "SecAction \\
     nolog,\\
     tag:'OWASP_CRS',\\
     ver:'OWASP_CRS/$CRS_VER',\\
-    setvar:tx.blocking_paranoia_level=2\"" >> /etc/apache2/modsecurity-crs/coreruleset-4.10.0/crs-setup.conf
+    setvar:tx.blocking_paranoia_level=2\"" >> /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 
 printf "\n\nRestart apache2 using systemctl, service or by running the following commands\n\n"
