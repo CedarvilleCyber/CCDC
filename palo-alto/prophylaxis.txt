@@ -12,8 +12,8 @@ set address priv-10 ip-netmask 10.0.0.0/8
 set address priv-172 ip-netmask 172.16.0.0/12
 set address priv-192 ip-netmask 192.168.0.0/16
 
-set deviceconfig system dns-setting server primary 8.8.8.8
-set deviceconfig system dns-setting server secondary 1.1.1.1
+set deviceconfig system dns-setting servers primary 8.8.8.8
+set deviceconfig system dns-setting servers secondary 1.1.1.1
 
 set profile-group ccdc virus default
 set profile-group ccdc spyware strict
