@@ -21,8 +21,8 @@ services:
       - web_tmp:/tmp
       - web_cache:/var/www/html/prestashop/cache
       - web_run:/var/run/apache2
-      - web_crs:/etc/apache2/modsecurity-crs/
-      - web_security:/etc/modsecurity/
+      - web_crs:/etc/apache2/modsecurity-crs:ro
+      - web_security:/etc/modsecurity:ro
     configs:
       - source: secure-apache-conf
         target: /etc/apache2/apache2.conf
