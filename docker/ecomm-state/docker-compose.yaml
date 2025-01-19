@@ -19,7 +19,7 @@ services:
       - web_cache:/var/www/html/prestashop/cache/
       - web_crs:/etc/apache2/
       - web_log:/var/log/apache2
-      - web_lib:/var/lib/
+      - web_lib:/usr/lib/
       - web_security:/etc/modsecurity/
       - ./setup-ecomm.sh:/root/setup-ecomm.sh:ro
       - ./waf.sh:/root/waf.sh:ro
