@@ -21,7 +21,9 @@ services:
       - web_tmp:/tmp
       - web_cache:/var/www/html/prestashop/cache
       - web_run:/var/run/apache2
-      - web_crs:/etc/apache2/modsecurity-crs:ro
+      - web_crs:/etc/apache2:ro
+      - web_log:/var/log/apache2
+      - web_lib:/var/lib:ro
       - web_security:/etc/modsecurity:ro
     configs:
       - source: secure-apache-conf
@@ -76,6 +78,8 @@ volumes:
   web_run:
   web_crs:
   web_security:
+  web_log:
+  web_lib:
 
 configs:
   secure-apache-conf:

@@ -17,7 +17,9 @@ services:
     volumes:
       - web_data:/var/www/html
       - web_cache:/var/www/html/prestashop/cache/
-      - web_crs:/etc/apache2/modsecurity-crs/
+      - web_crs:/etc/apache2/
+      - web_log:/var/log/apache2
+      - web_lib:/var/lib/
       - web_security:/etc/modsecurity/
       - ./setup-ecomm.sh:/root/setup-ecomm.sh:ro
       - ./waf.sh:/root/waf.sh:ro
@@ -68,6 +70,8 @@ volumes:
   web_cache:
   web_crs:
   web_security:
+  web_log:
+  web_lib:
 
 configs:
   secure-apache-conf:
