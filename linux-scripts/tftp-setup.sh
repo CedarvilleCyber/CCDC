@@ -4,7 +4,7 @@
 # It was written for CCDC, so it outputs information on how to test it
 # at the end of the script. It was designed to be run on Ubuntu.
 # Author: David Moore
-# Date: 1/3/2025
+# Date: 1/21/2025
 #
 # TO DO: add support for different package managers, such as yum.
 # Pansophy has this feature, so use it as an example.
@@ -85,7 +85,7 @@ esac
 
 
 # Create the script's output directory
-if [ ! -d ~/tftp ]
+if [ ! -d "~/tftp" ]
 then
     mkdir ~/tftp
     printf "Created directory ~/tftp \n" | tee ~/tftp/setup.log
@@ -114,21 +114,11 @@ then
     printf "Moved /var/lib/tftpboot to /var/lib/old_tftpboot \n" | tee --append ~/tftp/setup.log
 fi
 
-if [ ! -d /srv/tftp ]
-then
-    mkdir -p /srv/tftp
-    if [ $? -eq 0 ]
-    then
-        printf "Created directory /srv/tftp \n" | tee --append ~/tftp/setup.log
-    else
-        printf "ERROR: Something went wrong while trying to \
-        create /srv/tftp \n" | tee --append ~/tftp/setup.log
-        chmod 777 /srv/tftp
-    fi
-fi
+mkdir -p /srv/tftp
+chmod 777 /srv/tftp
 
 # Setting up the configuration file
-if [ ! -f /etc/default/tftpd-hpa ]
+if [ ! -f "/etc/default/tftpd-hpa" ]
 then
     printf "Configuring /etc/default/tftpd-hpa...\n" | tee --append ~/tftp/setup.log
     touch /etc/default/tftpd-hpa
@@ -260,8 +250,8 @@ printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done
 printf "screenshot and submit the inject.\n\n"
 
 
-printf tftpd-hpa's default directory is "${GREEN}/srv/tftp${RESET}, \
-and it's config file is "${GREEN}/etc/default/tftpd-hpa\n${RESET}"
+printf "tftpd-hpa's default directory is ${GREEN}/srv/tftp${RESET}, \
+and it's config file is ${GREEN}/etc/default/tftpd-hpa \n${RESET}"
 
 printf "It's old default directory is ${RED}/var/lib/tftpboot,${RESET} \
 but if it existed I moved it to \n${RED}/var/lib/old_tftpboot${RESET}\n\n"
