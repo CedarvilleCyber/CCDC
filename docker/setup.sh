@@ -36,6 +36,10 @@ rm -rf ./ports.txt
 cp ./daemon.json /etc/docker/daemon.json
 systemctl restart docker
 
+# start tmux dashboards
+./watchfulwhale.sh
+./worryingwhale.sh
+
 printf "${info}Finished Docker setup script${reset}\n"
 
 exit 0
