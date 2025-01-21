@@ -8,6 +8,11 @@
 #
 # TO DO: add support for different package managers, such as yum.
 # Pansophy has this feature, so use it as an example.
+# 
+# Add flags: -h/--help and -f/--force-overwrite. The force-overwrite
+# flag would forcibly overwrite the configuration file with the 
+# proper settings, which could be useful. It would likely skip
+# the apt update step as well, to speed up the script.
 
 is_running() {
     if [[ $SERVICE_COMMAND == "systemctl" ]] \
