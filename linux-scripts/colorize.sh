@@ -27,6 +27,7 @@ fi
 echo "Reloading shell configurations..."
 source ~/.bashrc
 
-echo "You should be able to use tmux with 256 colors now."
-echo "You must reload tmux for the changes to take effect."
-echo "To reload, do this: tmux kill-server"
+echo "You should be able to use tmux with 256 colors now. You must reload tmux"
+echo "for the changes to take effect. To reload, do this: tmux kill-server"
+echo "To colorize the base terminal (before starting tmux), you must reload"
+echo "the terminal by exiting it and logging in again. (Use the "exit" command)"

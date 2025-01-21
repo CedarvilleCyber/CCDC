@@ -243,7 +243,8 @@ printf "This is a test file.\n" > ~/tftp/test.txt
 printf "We also created a test file called test.txt in ~/tftp.\n"
 printf "Use the client to connect to the server like so:\n\n"
 
-printf "    ${GREEN}tftp 127.0.0.1\n"
+printf "    ${GREEN}cd ~/tftp \n"
+printf "    tftp 127.0.0.1\n"
 printf "    put test.txt\n\n${RESET}"
 
 printf "Then,${GREEN} ls /srv/tftp ${RESET}and if test.txt is there, you're done, so\n"
