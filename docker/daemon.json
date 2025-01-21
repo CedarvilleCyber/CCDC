@@ -2,10 +2,10 @@
     "live-restore": true,
     "log-driver": "splunk",
     "log-opts": {
-        "splunk-token": "",
+        "splunk-token": "update_this",
         "splunk-url": "https://172.20.241.20:8088",
         "splunk-insecureskipverify": true,
         "tag": "{{.ImageName}}/{{.Name}}/{{.ID}}",
-        "labels": "type,location <container>"
+        "labels": "type,location"
     }
 }
