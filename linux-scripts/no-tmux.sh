@@ -30,29 +30,67 @@ else
     UPDATE_PID=$!
 fi
 
+
 # av
-# wait for update to finish
-wait $UPDATE_PID
-if [[ "$PKG_MAN" == "apt-get" ]]
+printf "Do you want to run rkhunter?[y/n]: "
+read input
+
+if [[ "$input" == "Y" ]] || [[ "$input" == "y" ]]
 then
-    apt-get install rkhunter -y --force-yes
-else
-    yum install epel-release -y
-    yum install rkhunter -y
+    # wait for update to finish
+    wait $UPDATE_PID
+    if [[ "$PKG_MAN" == "apt-get" ]]
+    then
+        apt-get install rkhunter -y --force-yes
+    else
+        yum install epel-release -y
+        yum install rkhunter -y
+    fi
+
+    rkhunter --check --sk
+    printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 fi
 
-rkhunter --check --sk
-printf "${info}Scan complete, check /var/log/rkhunter.log for results${reset}\n"
 
-# upgrade
-./osupdater.sh
-# backup again after update
-./backup.sh
+printf "Do you want to check services?[y/n]: "
+read input
 
-# splunk
-cd ./logging
-./install_and_setup_forwarder.sh
-cd ../
+if [[ "$input" == "Y" ]] || [[ "$input" == "y" ]]
+then
+    ./disable-services.sh
+fi
+
+
+printf "Do you want to update packages?[y/n]: "
+read input
+
+if [[ "$input" == "Y" ]] || [[ "$input" == "y" ]]
+then
+    # upgrade
+    ./osupdater.sh
+fi
+
+
+printf "Do you want to take backups (will remove old backups)?[y/n]: "
+read input
+
+if [[ "$input" == "Y" ]] || [[ "$input" == "y" ]]
+then
+    # backup again after update
+    ./backup.sh
+fi
+
+
+printf "Do you want to install the splunk forwarder?[y/n]: "
+read input
+
+if [[ "$input" == "Y" ]] || [[ "$input" == "y" ]]
+then
+    # splunk
+    cd ./logging
+    ./install_and_setup_forwarder.sh
+    cd ../
+fi
 
 exit 0
 
