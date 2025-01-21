@@ -32,13 +32,9 @@ printf "25\nt\n53\nt\n80\nt\n110\nt\n8000\nt\n53\nu" > ./ports.txt
 cat ./ports.txt | ./docker-iptables.sh
 rm -rf ./ports.txt
 
-# allow live restore for containers so we can restart the daemon whenever
-printf "{
-  \"live-restore\": true
-}\n" >> /etc/docker/daemon.json
-
+# update docker daemon with custom configs
+cp ./daemon.json /etc/docker/daemon.json
 systemctl restart docker
-
 
 printf "${info}Finished Docker setup script${reset}\n"
 
