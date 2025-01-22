@@ -231,7 +231,7 @@ then
     printf "${info}Tmux sessions exist.${reset}\n"
     printf "${info}Would you like to delete and remake them? [y/n]: ${reset}"
     read input
-    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    if [[ "$input" == "N" ]] || [[ "$input" == "n" ]]
     then
         # skip the rest of the script where tmux is run
         ./no-tmux.sh
@@ -252,7 +252,7 @@ then
     printf "${warn}Session \"$SESSION_NAME\" already exists!${reset}\n"
     printf "Would you like to delete and remake \"$SESSION_NAME\"? [y/n]: "
     read input
-    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    if [[ "$input" == "N" ]] || [[ "$input" == "n" ]]
     then
         QUIT="true"
     else
@@ -288,7 +288,7 @@ then
     printf "${warn}Session \"$SESSION_NAME\" already exists!${reset}\n"
     printf "Would you like to delete and remake \"$SESSION_NAME\"? [y/n]: "
     read input
-    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    if [[ "$input" == "N" ]] || [[ "$input" == "n" ]]
     then
         QUIT="true"
     else
@@ -350,7 +350,7 @@ then
     printf "${warn}Session \"$SESSION_NAME\" already exists!${reset}\n"
     printf "Would you like to delete and remake \"$SESSION_NAME\"? [y/n]: "
     read input
-    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    if [[ "$input" == "N" ]] || [[ "$input" == "n" ]]
     then
         QUIT="true"
     else
