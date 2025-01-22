@@ -31,6 +31,9 @@ else
 fi
 
 
+# wait for update to finish
+wait $UPDATE_PID
+
 # av
 printf "Do you want to run rkhunter?[y/n]: "
 read input
