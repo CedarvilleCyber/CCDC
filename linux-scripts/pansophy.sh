@@ -116,7 +116,14 @@ mkdir /usr/bak
 mkdir ./data-files
 
 # clear tmp folder
-rm -rf /tmp/*
+# check if pansophy has been completed before
+if [[ -f /var/pansophy ]]
+then
+    # remove everything in tmp but tmux-0 to keep sessions
+    find /tmp ! -path "/tmp" ! -path "*tmux-0*" -exec rm -rf {} +
+else
+    rm -rf /tmp/*
+fi
 
 # firewall automate setup
 if [[ "$MACHINE" == "dns-ntp" ]]
@@ -394,6 +401,7 @@ then
     tmux attach-session -t $SESSION_NAME
 fi
 
+touch /var/pansophy
 
 printf "\n${info}Pansophy complete. Are your eyes open?${reset}\n\n"
 
