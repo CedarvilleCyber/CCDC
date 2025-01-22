@@ -218,12 +218,12 @@ then
 fi
 
 
-SESSIONW="Work"
-SESSIONEXISTSW=$(tmux ls | grep $SESSIONW)
-SESSIONO="Once"
-SESSIONEXISTSO=$(tmux ls | grep $SESSIONO)
-SESSIONB="Background"
-SESSIONEXISTSB=$(tmux ls | grep $SESSIONB)
+SESSION_NAME="Work"
+SESSIONEXISTSW=$(tmux ls | grep $SESSION_NAME)
+SESSION_NAME="Once"
+SESSIONEXISTSO=$(tmux ls | grep $SESSION_NAME)
+SESSION_NAME="Background"
+SESSIONEXISTSB=$(tmux ls | grep $SESSION_NAME)
 
 # See if session exists, then ask if you want to remake sessions
 if [[ "$SESSIONEXISTSW" != "" ]] || [[ "$SESSIONEXISTSO" != "" ]] || [[ "$SESSIONEXISTSB" != "" ]]
@@ -241,29 +241,29 @@ then
 fi
 
 # Name session Background
-SESSIONB="Background"
-SESSIONEXISTS=$(tmux ls | grep $SESSIONB)
+SESSION_NAME="Background"
+SESSIONEXISTS=$(tmux ls | grep $SESSION_NAME)
 
 QUIT="false"
 
 # Make sure session doesn't already exist
 if [[ "$SESSIONEXISTS" != "" ]]
 then
-    printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
-    printf "Would you like to delete and remake \"$SESSIONB\"? [y/n]: "
+    printf "${warn}Session \"$SESSION_NAME\" already exists!${reset}\n"
+    printf "Would you like to delete and remake \"$SESSION_NAME\"? [y/n]: "
     read input
     if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
     then
         QUIT="true"
     else
-        tmux kill-session -t $SESSIONB
+        tmux kill-session -t $SESSION_NAME
     fi
 fi
 
 if [[ "$QUIT" != "true" ]]
 then
     # create a new session
-    tmux new-session -d -s $SESSIONB
+    tmux new-session -d -s $SESSION_NAME
     # Stopping tmux rename so our window names can work
     tmux set-option -g allow-rename off
 
@@ -272,34 +272,34 @@ then
     tmux send-keys -t "Background" "./background.sh" C-m
 
     # Second window for secure-os.sh background loop
-    tmux new-window -t $SESSIONB:1 -n "secure_loop"
+    tmux new-window -t $SESSION_NAME:1 -n "secure_loop"
     tmux send-keys -t "secure_loop" "cmd='./secure-os.sh background'; while (true); do \$cmd; sleep 180; clear -x; sleep 1; done" C-m
 fi
 
 # Name session Once
-SESSIONO="Once"
-SESSIONEXISTS=$(tmux ls | grep $SESSIONO)
+SESSION_NAME="Once"
+SESSIONEXISTS=$(tmux ls | grep $SESSION_NAME)
 
 QUIT="false"
 
 # Make sure session doesn't already exist
 if [[ "$SESSIONEXISTS" != "" ]]
 then
-    printf "${warn}Session \"$SESSIONO\" already exists!${reset}\n"
-    printf "Would you like to delete and remake \"$SESSIONO\"? [y/n]: "
+    printf "${warn}Session \"$SESSION_NAME\" already exists!${reset}\n"
+    printf "Would you like to delete and remake \"$SESSION_NAME\"? [y/n]: "
     read input
     if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
     then
         QUIT="true"
     else
-        tmux kill-session -t $SESSIONO
+        tmux kill-session -t $SESSION_NAME
     fi
 fi
 
 if [[ "$QUIT" != "true" ]]
 then
     # create a new session
-    tmux new-session -d -s $SESSIONO
+    tmux new-session -d -s $SESSION_NAME
     # Stopping tmux rename so our window names can work
     tmux set-option -g allow-rename off
 
@@ -307,61 +307,61 @@ then
     tmux rename-window -t 0 "Bash"
 
     # Reserve second window for ntp later on
-    tmux new-window -t $SESSIONO:1 -n "ntp"
+    tmux new-window -t $SESSION_NAME:1 -n "ntp"
 
     # Reserve third window for nmap later on
-    tmux new-window -t $SESSIONO:2 -n "nmap"
+    tmux new-window -t $SESSION_NAME:2 -n "nmap"
 
     # window for Basic Info
-    tmux new-window -t $SESSIONO:3 -n "info"
+    tmux new-window -t $SESSION_NAME:3 -n "info"
     tmux send-keys -t "info" "./basic-info.sh" C-m
 
     # window for login-banner/ssh
-    tmux new-window -t $SESSIONO:4 -n "banner"
+    tmux new-window -t $SESSION_NAME:4 -n "banner"
     tmux send-keys -t "banner" "./login-banners.sh" C-m
     # ssh to self to get banner
     # skip the host key checking thing
     tmux send-keys -t "banner" "timeout 5 ssh -o StrictHostKeychecking=no `whoami`@127.0.0.1" C-m
 
     # window for checking cron
-    tmux new-window -t $SESSIONO:5 -n "cron"
+    tmux new-window -t $SESSION_NAME:5 -n "cron"
     tmux send-keys -t "cron" "./check-cron.sh" C-m
 
     # window for splunk
-    tmux new-window -t $SESSIONO:6 -n "splunk"
+    tmux new-window -t $SESSION_NAME:6 -n "splunk"
     tmux send-keys -t "splunk" "cd ./logging" C-m
     tmux send-keys -t "splunk" "./install_and_setup_forwarder.sh" C-m
 
     # window for rkhunter results
-    tmux new-window -t $SESSIONO:7 -n "rkhunter"
+    tmux new-window -t $SESSION_NAME:7 -n "rkhunter"
     tmux send-keys -t "rkhunter" "less \`find /var/log -iname \"rkhunter.log\"\`"
 fi
 
 # Name session Work
 # Everything you need right in front of you
-SESSIONW="Work"
-SESSIONEXISTS=$(tmux ls | grep $SESSIONW)
+SESSION_NAME="Work"
+SESSIONEXISTS=$(tmux ls | grep $SESSION_NAME)
 
 QUIT="false"
 
 # Make sure session doesn't already exist
 if [[ "$SESSIONEXISTS" != "" ]]
 then
-    printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
-    printf "Would you like to delete and remake \"$SESSIONW\"? [y/n]: "
+    printf "${warn}Session \"$SESSION_NAME\" already exists!${reset}\n"
+    printf "Would you like to delete and remake \"$SESSION_NAME\"? [y/n]: "
     read input
     if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
     then
         QUIT="true"
     else
-        tmux kill-session -t $SESSIONW
+        tmux kill-session -t $SESSION_NAME
     fi
 fi
 
 if [[ "$QUIT" != "true" ]]
 then
     # create a new session
-    tmux new-session -d -s $SESSIONW
+    tmux new-session -d -s $SESSION_NAME
 
     # First window for a whatever needs to be done (already created)
     tmux rename-window -t 0 "Bash"
@@ -370,30 +370,28 @@ then
     # C-m is <ENTER>
 
     # window for pspy
-    tmux new-window -t $SESSIONW:1 -n "pspy"
+    tmux new-window -t $SESSION_NAME:1 -n "pspy"
     tmux send-keys -t "pspy" "./pspy*" C-m
 
     # window for processes
-    tmux new-window -t $SESSIONW:2 -n "procs"
+    tmux new-window -t $SESSION_NAME:2 -n "procs"
     # the last few commands are refreshed every minute
     tmux send-keys -t "procs" "cmd='ps -fea --forest'; while (true); do \$cmd; sleep 60; clear -x; sleep 0.5; done" C-m
 
     # window for users
-    tmux new-window -t $SESSIONW:3 -n "users"
+    tmux new-window -t $SESSION_NAME:3 -n "users"
     tmux send-keys -t "users" "cmd='./user-sort.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 0.5; done" C-m
 
     # window for services
-    tmux new-window -t $SESSIONW:4 -n "services"
+    tmux new-window -t $SESSION_NAME:4 -n "services"
     tmux send-keys -t "services" "./disable-services.sh" C-m
 
     # window for ports
-    tmux new-window -t $SESSIONW:5 -n "ports"
+    tmux new-window -t $SESSION_NAME:5 -n "ports"
     tmux send-keys -t "ports" "cmd='./connections.sh'; while (true); do \$cmd; sleep 60; clear -x; sleep 0.5; done" C-m
 
     # Attach to the work session
-    tmux attach-session -t $SESSIONW
-else
-    printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
+    tmux attach-session -t $SESSION_NAME
 fi
 
 
