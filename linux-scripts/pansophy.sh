@@ -212,17 +212,55 @@ if [[ $? -ne 0 ]]
 then
     ./no-tmux.sh
     printf "${error}QUITTING! Failed to install tmux${reset}\n"
-    printf "${error}Ran background tasks only.${reset}\n"
-    printf "${error}Please run scripts seperately${reset}\n"
+    printf "${info}Ran background tasks only.${reset}\n"
+    printf "${info}Please run other scripts seperately if necessary${reset}\n"
     exit 1
+fi
+
+
+SESSIONW="Work"
+SESSIONEXISTSW=$(tmux ls | grep $SESSIONW)
+SESSIONO="Once"
+SESSIONEXISTSO=$(tmux ls | grep $SESSIONO)
+SESSIONB="Background"
+SESSIONEXISTSB=$(tmux ls | grep $SESSIONB)
+
+# See if session exists, then ask if you want to remake sessions
+if [[ "$SESSIONEXISTSW" != "" ]] || [[ "$SESSIONEXISTSO" != "" ]] || [[ "$SESSIONEXISTSB" != "" ]]
+then
+    printf "${info}Tmux sessions exist.${reset}\n"
+    printf "${info}Would you like to delete and remake them? [y/n]: ${reset}"
+    read input
+    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    then
+        # skip the rest of the script where tmux is run
+        ./no-tmux.sh
+        printf "\n${info}Pansophy complete. Are your eyes open?${reset}\n\n"
+        exit 0
+    fi
 fi
 
 # Name session Background
 SESSIONB="Background"
 SESSIONEXISTS=$(tmux ls | grep $SESSIONB)
 
+QUIT="false"
+
 # Make sure session doesn't already exist
-if [[ "$SESSIONEXISTS" == "" ]]
+if [[ "$SESSIONEXISTS" != "" ]]
+then
+    printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
+    printf "Would you like to delete and remake \"$SESSIONB\"? [y/n]: "
+    read input
+    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    then
+        QUIT="true"
+    else
+        tmux kill-session -t $SESSIONB
+    fi
+fi
+
+if [[ "$QUIT" != "true" ]]
 then
     # create a new session
     tmux new-session -d -s $SESSIONB
@@ -236,16 +274,29 @@ then
     # Second window for secure-os.sh background loop
     tmux new-window -t $SESSIONB:1 -n "secure_loop"
     tmux send-keys -t "secure_loop" "cmd='./secure-os.sh background'; while (true); do \$cmd; sleep 180; clear -x; sleep 1; done" C-m
-else
-    printf "${warn}Session \"$SESSIONB\" already exists!${reset}\n"
 fi
 
 # Name session Once
 SESSIONO="Once"
 SESSIONEXISTS=$(tmux ls | grep $SESSIONO)
 
+QUIT="false"
+
 # Make sure session doesn't already exist
-if [[ "$SESSIONEXISTS" == "" ]]
+if [[ "$SESSIONEXISTS" != "" ]]
+then
+    printf "${warn}Session \"$SESSIONO\" already exists!${reset}\n"
+    printf "Would you like to delete and remake \"$SESSIONO\"? [y/n]: "
+    read input
+    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    then
+        QUIT="true"
+    else
+        tmux kill-session -t $SESSIONO
+    fi
+fi
+
+if [[ "$QUIT" != "true" ]]
 then
     # create a new session
     tmux new-session -d -s $SESSIONO
@@ -284,8 +335,6 @@ then
     # window for rkhunter results
     tmux new-window -t $SESSIONO:7 -n "rkhunter"
     tmux send-keys -t "rkhunter" "less \`find /var/log -iname \"rkhunter.log\"\`"
-else
-    printf "${warn}Session \"$SESSIONO\" already exists!${reset}\n"
 fi
 
 # Name session Work
@@ -293,8 +342,23 @@ fi
 SESSIONW="Work"
 SESSIONEXISTS=$(tmux ls | grep $SESSIONW)
 
+QUIT="false"
+
 # Make sure session doesn't already exist
-if [[ "$SESSIONEXISTS" == "" ]]
+if [[ "$SESSIONEXISTS" != "" ]]
+then
+    printf "${warn}Session \"$SESSIONW\" already exists!${reset}\n"
+    printf "Would you like to delete and remake \"$SESSIONW\"? [y/n]: "
+    read input
+    if [[ "$input" != "Y" ]] || [[ "$input" != "y" ]]
+    then
+        QUIT="true"
+    else
+        tmux kill-session -t $SESSIONW
+    fi
+fi
+
+if [[ "$QUIT" != "true" ]]
 then
     # create a new session
     tmux new-session -d -s $SESSIONW
