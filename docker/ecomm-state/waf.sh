@@ -50,8 +50,8 @@ mv crs-setup.conf.example crs-setup.conf
 rm -rf /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/rules/REQUEST-922-MULTIPART-ATTACK.conf
 
 # make logs less verbose
-#sed -i "s/SecDefaultAction.*phase:1.*/SecDefaultAction \"phase:1,nolog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
-#sed -i "s/SecDefaultAction.*phase:2.*/SecDefaultAction \"phase:2,nolog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
+sed -i "s/SecDefaultAction.*phase:1.*/SecDefaultAction \"phase:1,nolog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
+sed -i "s/SecDefaultAction.*phase:2.*/SecDefaultAction \"phase:2,nolog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 # setting paranoia level to 2 (blocks install and admin page)
 printf "SecAction \\
