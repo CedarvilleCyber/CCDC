@@ -260,6 +260,19 @@ set rulebase security rules INSIDE2INSIDE log-start no
 set rulebase security rules INSIDE2INSIDE log-end yes
 set rulebase security rules INSIDE2INSIDE log-setting default
 
+set service 8088-tcp-hec protocol tcp port 8088
+set rulebase security rules WKST2SPLUNK profile-setting group ccdc
+set rulebase security rules WKST2SPLUNK application any
+set rulebase security rules WKST2SPLUNK service 8088-tcp-hec
+set rulebase security rules WKST2SPLUNK to Public 
+set rulebase security rules WKST2SPLUNK from User
+set rulebase security rules WKST2SPLUNK source any
+set rulebase security rules WKST2SPLUNK destination any
+set rulebase security rules WKST2SPLUNK action allow
+set rulebase security rules WKST2SPLUNK log-start no
+set rulebase security rules WKST2SPLUNK log-end yes
+set rulebase security rules WKST2SPLUNK log-setting default
+
 set service 8000-tcp protocol tcp port 8000
 set rulebase nat rules splunk-to-wkst to External
 set rulebase nat rules splunk-to-wkst from External
