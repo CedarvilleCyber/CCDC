@@ -4,8 +4,8 @@ cp ./main.cf /etc/postfix/main.cf
 
 cp -R ./dovecot /etc/
 
-sed -ie "s/SUB_DOMAIN/$SUB_DOMAIN/" /etc/postfix/main.cf
-sed -ie "s/DOMAIN_NAME/$DOMAIN_NAME/" /etc/postfix/main.cf
+sed -i "s/SUB_DOMAIN/$SUB_DOMAIN/" /etc/postfix/main.cf
+sed -i "s/DOMAIN_NAME/$DOMAIN_NAME/" /etc/postfix/main.cf
 
 
 # set up users

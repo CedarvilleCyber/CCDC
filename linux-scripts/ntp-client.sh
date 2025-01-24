@@ -21,12 +21,12 @@ read ip
 which ntpq > /dev/null
 if [[ $? -eq 0 ]]
 then
-    sed -ie '/^server/ s/^/#/' /etc/ntp.conf
-    sed -ie '/^pool/ s/^/#/' /etc/ntp.conf
+    sed -i '/^server/ s/^/#/' /etc/ntp.conf
+    sed -i '/^pool/ s/^/#/' /etc/ntp.conf
     echo "server $ip prefer iburst" >> /etc/ntp.conf
 else
-    sed -ie '/^server/ s/^/#/' /etc/chrony.conf
-    sed -ie '/^pool/ s/^/#/' /etc/chrony.conf
+    sed -i '/^server/ s/^/#/' /etc/chrony.conf
+    sed -i '/^pool/ s/^/#/' /etc/chrony.conf
     echo "server $ip prefer iburst" >> /etc/chrony.conf
 fi
 
