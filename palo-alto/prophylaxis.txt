@@ -165,7 +165,7 @@ set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
 set rulebase security rules KILL_INSIDE2PRIVATE application any
 set rulebase security rules KILL_INSIDE2PRIVATE service application-default
 set rulebase security rules KILL_INSIDE2PRIVATE to External
-set rulebase security rules KILL_INSIDE2PRIVATE from [ Internal Public User ]
+set rulebase security rules KILL_INSIDE2PRIVATE from [ External Internal Public User ]
 set rulebase security rules KILL_INSIDE2PRIVATE source any
 set rulebase security rules KILL_INSIDE2PRIVATE destination [ priv-10 priv-172 priv-192 ]
 set rulebase security rules KILL_INSIDE2PRIVATE action deny
