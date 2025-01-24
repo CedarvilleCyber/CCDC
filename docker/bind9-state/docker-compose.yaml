@@ -10,7 +10,7 @@ services:
     image: bind9_image
     container_name: bind9
     environment:
-      - TZ=America/New_York
+      - TZ=America/Chicago
     ports:
       - "53:53/tcp"
       - "53:53/udp"
