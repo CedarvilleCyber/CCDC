@@ -4,11 +4,13 @@ name: bind9-state
 
 services:
   bind9:
-    image: ubuntu/bind9
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bind9_image
     container_name: bind9
     environment:
       - TZ=America/New_York
-      - BIND9_USER=root
     ports:
       - "53:53/tcp"
       - "53:53/udp"
@@ -16,4 +18,5 @@ services:
       - ./config:/etc/bind
       - ./cache:/var/cache/bind
       - ./records:/var/lib/bind
+      - ./logs:/var/log/bind9
     restart: unless-stopped
