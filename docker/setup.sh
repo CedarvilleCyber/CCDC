@@ -15,7 +15,7 @@ fi
 
 printf "${info}Starting Docker setup script${reset}\n"
 
-printf "WARNING: DO NOT RUN this in a tmux session\n"
+printf "\nWARNING: DO NOT RUN this in a tmux session\n"
 printf "Run this detatched in a normal terminal\n"
 printf "Continue? [y/n]: "
 read input
