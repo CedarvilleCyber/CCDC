@@ -38,7 +38,7 @@ cat ./ports.txt | ../linux-scripts/firewall.sh
 rm -rf ./ports.txt
 
 # allow docker service ports
-printf "25\nt\n53\nt\n80\nt\n110\nt\n8000\nt\n53\nu" > ./ports.txt
+printf "25\nt\n53\nt\n80\nt\n110\nt\n8000\nt\n8088\nt\n53\nu" > ./ports.txt
 cat ./ports.txt | ./docker-iptables.sh
 rm -rf ./ports.txt
 
