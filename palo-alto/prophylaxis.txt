@@ -297,16 +297,27 @@ set rulebase nat rules ecomm-to-wkst disabled yes
 set rulebase nat rules ecomm-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules ecomm-to-wkst top
 
-set rulebase nat rules dns-to-wkst to External
-set rulebase nat rules dns-to-wkst from External
-set rulebase nat rules dns-to-wkst source any
-set rulebase nat rules dns-to-wkst destination [ public-debian public-windows-server ]
-set rulebase nat rules dns-to-wkst service any
-set rulebase nat rules dns-to-wkst destination-translation translated-address priv-ubuntu-wkst
-set rulebase nat rules dns-to-wkst destination-translation translated-port 53
-set rulebase nat rules dns-to-wkst disabled yes
-set rulebase nat rules dns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
-move rulebase nat rules dns-to-wkst top
+set rulebase nat rules bind-to-wkst to External
+set rulebase nat rules bind-to-wkst from External
+set rulebase nat rules bind-to-wkst source any
+set rulebase nat rules bind-to-wkst destination public-debian
+set rulebase nat rules bind-to-wkst service any
+set rulebase nat rules bind-to-wkst destination-translation translated-address priv-ubuntu-wkst
+set rulebase nat rules bind-to-wkst destination-translation translated-port 53
+set rulebase nat rules bind-to-wkst disabled yes
+set rulebase nat rules bind-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules bind-to-wkst top
+
+set rulebase nat rules addns-to-wkst to External
+set rulebase nat rules addns-to-wkst from External
+set rulebase nat rules addns-to-wkst source any
+set rulebase nat rules addns-to-wkst destination public-windows-server
+set rulebase nat rules addns-to-wkst service any
+set rulebase nat rules addns-to-wkst destination-translation translated-address priv-ubuntu-wkst
+set rulebase nat rules addns-to-wkst destination-translation translated-port 53
+set rulebase nat rules addns-to-wkst disabled yes
+set rulebase nat rules addns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules addns-to-wkst top
 
 set service 25-tcp protocol tcp port 25
 set rulebase nat rules smtp-to-wkst to External
