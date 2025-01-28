@@ -123,6 +123,7 @@ echo Logon Banner Set >> output.txt
 :: Patching CVE-2020-1350
 echo Patching CVE-2020-1350
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DNS\Parameters" /v TcpReceivePacketSize /t REG_DWORD /d 65280 /f
+net stop dns && net start dns
 :: Services
 echo Showing you the currently running services...
 echo Showing you the currently running services... >> output.txt
