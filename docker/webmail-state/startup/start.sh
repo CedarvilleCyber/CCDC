@@ -32,9 +32,12 @@ do
 
 done < ./users.txt
 
+touch /var/log/postfix.log
+touch /var/log/dovecot.log
+
 newaliases
 
 /usr/sbin/postfix start
 /usr/sbin/dovecot
 
-tail -f /var/log/lastlog
+tail -f /var/log/postfix.log & tail -f /var/log/dovecot.log

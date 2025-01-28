@@ -749,3 +749,5 @@ meta_directory = /etc/postfix
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
+
+maillog_file = /var/log/postfix.log
