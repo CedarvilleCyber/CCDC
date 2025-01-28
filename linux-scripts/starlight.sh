@@ -9,17 +9,17 @@
 #   - replace httpd.conf and php.ini
 #
 
-# Advise user to reinstall prestashop -----------------------------------------
-printf $'\e[0;31mIt is recommended that you reinstall prestashop and run mysql_secure_installation over using this script.\e[0m\n'
-read -p $'\e[0;31mWould you like to continue? [y/n] \e[0m' CONT
-if [[ "$CONT" != "y" ]]; then
-	exit 0
-fi
-
 # Script must be run as root --------------------------------------------------
 if [ $(id -u) != 0 ]; then
     printf $'\e[0;31mYou must be sudo to run this script!\e[0m\n'
     exit 1
+fi
+
+# Advise user to reinstall prestashop -----------------------------------------
+printf $'\e[0;31mIt is recommended that you reinstall prestashop before continuing\e[0m\n'
+read -p $'\e[0;31mWould you like to continue? [y/n] \e[0m' CONT
+if [[ "$CONT" != "y" ]]; then
+	exit 0
 fi
 
 # Install utilities -----------------------------------------------------------
@@ -41,6 +41,14 @@ mysql_secure_installation
 read -p $'\e[0;36mPress enter to continue\e[0m\n'
 
 printf $'\e[0;32mDatabase secured\e[0m\n'
+
+# Update config files
+printf $'\e[0;36mReplacing config files ...\e[0m\n'
+
+cp ../docker/ecomm-state/php.ini /usr/local/etc/php/php.ini
+cp ../docker/ecomm-state/apache2.conf /etc/apache2/apache2.conf
+
+printf $'\e[0;32mConfig files replaced\e[0m\n'
 
 # Secure Prestashop -----------------------------------------------------------
 printf $'\e[0;36mSecuring prestashop ...\e[0m\n'
@@ -133,5 +141,15 @@ mysqldump -u root --password="$dbnew2" "$db_name" > $BK_DIR/db_clean
 
 printf $'\e[0;32mBackups complete\e[0m\n'
 
-# Script complete! -------------------------------------------------------------
+# Write-protecting key directories --------------------------------------------
+printf $'\e[0;36mWrite-protecting key directories ...\e[0m\n'
+
+printf $'\e[1;31mWARNING: Any malware contained in the prestashop directory will be write-protected!\e[0m\n'
+read -p $'\e[0;31mPress Enter to continue once prestashop directory is clean\e[0m' CONT
+
+# ADD CHATTR HERE
+
+printf $'\e[0;36mWrite-protecting complete\e[0m\n'
+
+# Script complete! ------------------------------------------------------------
 printf "\e[0;32mStarlight complete! Cast the ashes back in their eyes!\e[0m\n"
