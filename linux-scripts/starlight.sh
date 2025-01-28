@@ -4,10 +4,6 @@
 #
 # Author: Logan Miller
 #
-# TODO:
-#   - chattr all but the cache (remove webshells first)
-#   - replace httpd.conf and php.ini
-#
 
 # Script must be run as root --------------------------------------------------
 if [ $(id -u) != 0 ]; then
@@ -46,7 +42,7 @@ printf $'\e[0;32mDatabase secured\e[0m\n'
 printf $'\e[0;36mReplacing config files ...\e[0m\n'
 
 cp ../docker/ecomm-state/php.ini /usr/local/etc/php/php.ini
-cp ../docker/ecomm-state/apache2.conf /etc/apache2/apache2.conf
+cp ../docker/ecomm-state/apache2.conf /etc/httpd/httpd.conf
 
 printf $'\e[0;32mConfig files replaced\e[0m\n'
 
@@ -147,7 +143,8 @@ printf $'\e[0;36mWrite-protecting key directories ...\e[0m\n'
 printf $'\e[1;31mWARNING: Any malware contained in the prestashop directory will be write-protected!\e[0m\n'
 read -p $'\e[0;31mPress Enter to continue once prestashop directory is clean\e[0m' CONT
 
-# ADD CHATTR HERE
+chattr -R +i $presta_install_path
+chattr -R -i $presta_install_path/cache
 
 printf $'\e[0;36mWrite-protecting complete\e[0m\n'
 
