@@ -9,8 +9,8 @@ services:
     ports:
       - "8000:8000/tcp"
     environment:
-      - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_PASSWORD=password
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWD}
     volumes:
       - opt_data:/opt
       - var_tmp_data:/var/tmp
@@ -19,7 +19,7 @@ services:
 
 volumes:
   opt_data:
-  ansible_data:
   var_tmp_data:
+  ansible_data:
 
 # username admin

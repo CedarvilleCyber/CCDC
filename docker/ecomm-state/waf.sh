@@ -53,7 +53,7 @@ rm -rf /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/rules/REQUEST-922-MULTI
 sed -i "s/SecDefaultAction.*phase:1.*/SecDefaultAction \"phase:1,nolog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 sed -i "s/SecDefaultAction.*phase:2.*/SecDefaultAction \"phase:2,nolog,pass\"/" /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
-# setting paranoia level to 1 (default anyway but easy to change)
+# setting paranoia level to 2 (blocks install and admin page)
 printf "SecAction \\
     \"id:900000,\\
     phase:1,\\
@@ -62,7 +62,7 @@ printf "SecAction \\
     nolog,\\
     tag:'OWASP_CRS',\\
     ver:'OWASP_CRS/$CRS_VER',\\
-    setvar:tx.blocking_paranoia_level=1\"" >> /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
+    setvar:tx.blocking_paranoia_level=2\"" >> /etc/apache2/modsecurity-crs/coreruleset-$CRS_VER/crs-setup.conf
 
 
 printf "\n\n\n\nRestart apache2 using systemctl, service or by running the following commands\n\n\n"

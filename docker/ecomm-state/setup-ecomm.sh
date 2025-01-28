@@ -33,6 +33,4 @@ chown -R www-data:www-data ./html
 
 echo "Ready to begin installation"
 
-/root/waf.sh
-
 exit 0

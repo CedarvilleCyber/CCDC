@@ -4,7 +4,7 @@
     "log-opts": {
         "splunk-token": "update_this",
         "splunk-url": "https://172.20.241.20:8088",
-        "splunk-insecureskipverify": true,
+        "splunk-insecureskipverify": "true",
         "tag": "{{.ImageName}}/{{.Name}}/{{.ID}}",
         "labels": "type,location"
     }

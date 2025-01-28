@@ -16,7 +16,7 @@ services:
       - dovecot_data:/run/dovecot
       - lib_data:/var/lib/postfix
       - spool_data:/var/spool/postfix
-      - var_tmp_data:/var/tmp
+      - var_data:/var
     environment:
       - DOMAIN_NAME=frog.com
       - SUB_DOMAIN=mail
@@ -28,4 +28,4 @@ volumes:
   dovecot_data:
   lib_data:
   spool_data:
-  var_tmp_data:
+  var_data:

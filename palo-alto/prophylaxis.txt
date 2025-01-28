@@ -165,7 +165,7 @@ set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
 set rulebase security rules KILL_INSIDE2PRIVATE application any
 set rulebase security rules KILL_INSIDE2PRIVATE service application-default
 set rulebase security rules KILL_INSIDE2PRIVATE to External
-set rulebase security rules KILL_INSIDE2PRIVATE from [ Internal Public User ]
+set rulebase security rules KILL_INSIDE2PRIVATE from [ External Internal Public User ]
 set rulebase security rules KILL_INSIDE2PRIVATE source any
 set rulebase security rules KILL_INSIDE2PRIVATE destination [ priv-10 priv-172 priv-192 ]
 set rulebase security rules KILL_INSIDE2PRIVATE action deny
@@ -260,6 +260,19 @@ set rulebase security rules INSIDE2INSIDE log-start no
 set rulebase security rules INSIDE2INSIDE log-end yes
 set rulebase security rules INSIDE2INSIDE log-setting default
 
+set service 8088-tcp-hec protocol tcp port 8088
+set rulebase security rules INSIDE2SPLUNK profile-setting group ccdc
+set rulebase security rules INSIDE2SPLUNK application any
+set rulebase security rules INSIDE2SPLUNK service [ 8088-tcp-hec service-splunk ]
+set rulebase security rules INSIDE2SPLUNK to Public 
+set rulebase security rules INSIDE2SPLUNK from [ User Public Internal ]
+set rulebase security rules INSIDE2SPLUNK source any
+set rulebase security rules INSIDE2SPLUNK destination any
+set rulebase security rules INSIDE2SPLUNK action allow
+set rulebase security rules INSIDE2SPLUNK log-start no
+set rulebase security rules INSIDE2SPLUNK log-end yes
+set rulebase security rules INSIDE2SPLUNK log-setting default
+
 set service 8000-tcp protocol tcp port 8000
 set rulebase nat rules splunk-to-wkst to External
 set rulebase nat rules splunk-to-wkst from External
@@ -284,16 +297,27 @@ set rulebase nat rules ecomm-to-wkst disabled yes
 set rulebase nat rules ecomm-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules ecomm-to-wkst top
 
-set rulebase nat rules dns-to-wkst to External
-set rulebase nat rules dns-to-wkst from External
-set rulebase nat rules dns-to-wkst source any
-set rulebase nat rules dns-to-wkst destination [ public-debian public-windows-server ]
-set rulebase nat rules dns-to-wkst service any
-set rulebase nat rules dns-to-wkst destination-translation translated-address priv-ubuntu-wkst
-set rulebase nat rules dns-to-wkst destination-translation translated-port 53
-set rulebase nat rules dns-to-wkst disabled yes
-set rulebase nat rules dns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
-move rulebase nat rules dns-to-wkst top
+set rulebase nat rules bind-to-wkst to External
+set rulebase nat rules bind-to-wkst from External
+set rulebase nat rules bind-to-wkst source any
+set rulebase nat rules bind-to-wkst destination public-debian
+set rulebase nat rules bind-to-wkst service any
+set rulebase nat rules bind-to-wkst destination-translation translated-address priv-ubuntu-wkst
+set rulebase nat rules bind-to-wkst destination-translation translated-port 53
+set rulebase nat rules bind-to-wkst disabled yes
+set rulebase nat rules bind-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules bind-to-wkst top
+
+set rulebase nat rules addns-to-wkst to External
+set rulebase nat rules addns-to-wkst from External
+set rulebase nat rules addns-to-wkst source any
+set rulebase nat rules addns-to-wkst destination public-windows-server
+set rulebase nat rules addns-to-wkst service any
+set rulebase nat rules addns-to-wkst destination-translation translated-address priv-ubuntu-wkst
+set rulebase nat rules addns-to-wkst destination-translation translated-port 53
+set rulebase nat rules addns-to-wkst disabled yes
+set rulebase nat rules addns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules addns-to-wkst top
 
 set service 25-tcp protocol tcp port 25
 set rulebase nat rules smtp-to-wkst to External

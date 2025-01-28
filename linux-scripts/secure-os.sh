@@ -171,8 +171,7 @@ done < ./data-files/a_keys-locations.txt
 printf "${info}Checking /etc/sudoers.d/ directory${reset}\n"
 for file in /etc/sudoers.d/*
 do
-    sed -ie '/^[^#].*/ s/^/#/' $file
-    rm -rf "$file"e
+    sed -i '/^[^#].*/ s/^/#/' $file
 done
 
 
@@ -208,9 +207,9 @@ do
 done < ./data-files/php-locations.txt
 
 TEMP=""
-TEMP+=`sed -ie '/^[^#].*rootme/ s/^/#/w /dev/stdout' /etc/httpd/conf/httpd.conf`
-TEMP+=`sed -ie '/^[^#].*rootme/ s/^/#/w /dev/stdout' /etc/apache2/apache2.conf`
-TEMP+=`find /etc/httpd/conf.modules.d/ -type f -exec sed -ie '/^[^#].*rootme/ s/^/#/w /dev/stdout' {} +`
+TEMP+=`sed -i '/^[^#].*rootme/ s/^/#/w /dev/stdout' /etc/httpd/conf/httpd.conf`
+TEMP+=`sed -i '/^[^#].*rootme/ s/^/#/w /dev/stdout' /etc/apache2/apache2.conf`
+TEMP+=`find /etc/httpd/conf.modules.d/ -type f -exec sed -i '/^[^#].*rootme/ s/^/#/w /dev/stdout' {} +`
 a2dismod mod_rootme
 a2dismod rootme
 TEMP+=`apache2ctl -M | grep rootme`
@@ -267,20 +266,20 @@ find /etc/profile.d -type f >> ./data-files/env
 # loop through each found thing and run above sed command
 while IFS="" read -r f || [[ -n "$f" ]]
 do
-    FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' "$f"`
-    FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' "$f"`
-    FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -i '/^export LD_/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -i '/^export http_proxy/ s/^/#/w /dev/stdout' "$f"`
+    FOUND+=`sed -i '/^export https_proxy/ s/^/#/w /dev/stdout' "$f"`
     rm -rf "$f"e
 done < ./data-files/env
 
-FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/profile`
-FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/profile`
-FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -i '/^export LD_/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -i '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/profile`
+FOUND+=`sed -i '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/profile`
 rm -rf /etc/profilee
 
-FOUND+=`sed -ie '/^export LD_/ s/^/#/w /dev/stdout' /etc/environment`
-FOUND+=`sed -ie '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/environment`
-FOUND+=`sed -ie '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -i '/^export LD_/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -i '/^export http_proxy/ s/^/#/w /dev/stdout' /etc/environment`
+FOUND+=`sed -i '/^export https_proxy/ s/^/#/w /dev/stdout' /etc/environment`
 rm -rf /etc/environmente
 
 # remove temp files

@@ -28,10 +28,9 @@ for cron in `ls $CRON_DIR`
 do
     # essentially comment out all cronjobs until further review
     crontab -l -u $cron > ./data-files/$cron-cron
-    sed -ie '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
+    sed -i '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
     crontab -u $cron ./data-files/$cron-cron
     found="yes"
-    rm -rf ./data-files/$cron-crone
 done
 
 # there are also crontabs stored here sometimes
@@ -42,15 +41,13 @@ do
     then
         # essentially comment out all cronjobs until further review
         crontab -l -u $cron > ./data-files/$cron-cron
-        sed -ie '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
+        sed -i '/^[^#].*/ s/^/#/' ./data-files/$cron-cron
         crontab -u $cron ./data-files/$cron-cron
         found="yes"
-        rm -rf ./data-files/$cron-crone
     fi
 done
 
-sed -ie '/^[^#].*/ s/^/#/' /etc/crontab
-rm -rf /etc/crontabe
+sed -i '/^[^#].*/ s/^/#/' /etc/crontab
 
 # just get rid of all crontabs defaults included
 #find /etc -type f -iname "*cron*" -exec sed -i '/^[^#].*/ s/^/#/' {} +
