@@ -1,9 +1,9 @@
 #!/bin/bash
-
+# 
 # Bash script to harden Centos 7 Ecomm
 #
 # Author: Logan Miller
-#
+# 
 
 # Script must be run as root --------------------------------------------------
 if [ $(id -u) != 0 ]; then
@@ -41,8 +41,10 @@ printf $'\e[0;32mDatabase secured\e[0m\n'
 # Update config files
 printf $'\e[0;36mReplacing config files ...\e[0m\n'
 
-cp ../docker/ecomm-state/php.ini /usr/local/etc/php/php.ini
-cp ../docker/ecomm-state/apache2.conf /etc/httpd/httpd.conf
+INI=$(php --ini | grep "Loaded Configuration File:" | tr -s " " | cut -d " " -f 4)
+
+cp ../docker/ecomm-state/php.ini $INI
+cp ../docker/ecomm-state/apache2.conf /etc/httpd/conf/httpd.conf
 
 printf $'\e[0;32mConfig files replaced\e[0m\n'
 
