@@ -34,8 +34,6 @@ printf $'\e[0;36mSecuring database ...\e[0m\n'
 printf $'\e[0;36mUpdate all passwords and enter yes to all prompts\e[0m\n'
 mysql_secure_installation
 
-read -p $'\e[0;36mPress enter to continue\e[0m\n'
-
 printf $'\e[0;32mDatabase secured\e[0m\n'
 
 # Update config files
@@ -53,13 +51,8 @@ printf $'\e[0;36mSecuring prestashop ...\e[0m\n'
 
 # Get Prestashop install path and version
 read -p $'\e[36mEnter Prestashop install location (likely /var/www/html/prestashop): \e[0m' presta_install_path
-read -p $'\e[36mIs Prestashop <= 1.6? [y/n] \e[0m' presta_1_6_install
 
-if [[ "$presta_1_6_install" = "n" ]]; then
-	config_file="$presta_install_path/app/config/parameters.php"
-else
-	config_file="$presta_install_path/config/settings.inc.php"
-fi
+config_file="$presta_install_path/config/settings.inc.php"
 
 # Update admin page url
 read -p $'\e[0;36mPlease provide a new name for the admin page: \e[0m' ADMIN
@@ -91,7 +84,7 @@ rm temp
 db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
 db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
 
-echo $'\e[1;33mListing TABLE ps_employees from DATABASE $db_name\e[0m'
+echo $'\e[1;36mListing TABLE ps_employees from DATABASE $db_name\e[0m'
 mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT id_employee as id,firstname,lastname,email from ${db_prefix}employee;"
 
 read -p $'\e[36mEnter the admin id: \e[0m' admin_id
@@ -121,7 +114,7 @@ printf $'\e[0;32mPrestashop secured\e[0m\n'
 
 # Perform backups -------------------------------------------------------------
 printf $'\e[0;36mCreating backups ...\e[0m\n'
-read -p $'\e[0;36mWhere would you like backups placed? (ex: /usr/opt) \e[0m' BK_DIR
+read -p $'\e[0;36mWhere would you like backups placed? (ex: /opt/bak) \e[0m' BK_DIR
 
 cp -a $presta_install_path $BK_DIR/prestashop_dirty
 mysqldump -u root --password="$dbnew2" "$db_name" > $BK_DIR/db_dirty
