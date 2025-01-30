@@ -3,6 +3,8 @@
 # Bash script to harden Centos 7 Ecomm
 #
 # Author: Logan Miller
+#
+# TODO: make sure creds are actually changed
 # 
 
 # Script must be run as root --------------------------------------------------
