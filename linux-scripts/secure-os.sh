@@ -118,6 +118,10 @@ then
     ./kill-all.sh dnbt move
     ./kill-all.sh cpud move
 
+    # remove php sessions
+    rm -rf /var/lib/php/sessions/sess_*
+    rm -rf /var/lib/php/session/sess_*
+  
 fi
 
 # check cronjobs and other timer related things
