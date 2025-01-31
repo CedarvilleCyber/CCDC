@@ -134,7 +134,7 @@ then
     printf "80\nt" > ./data-files/ports.txt
 elif [[ "$MACHINE" == "splunk" ]]
 then
-    printf "514\nu\n8000\nt\n8065\nt\n8089\nt\n8191\nt\n9997\nt" > ./data-files/ports.txt
+    printf "514\nu\n8000\nt\n8065\nt\n8088\nt\n8089\nt\n8191\nt\n9997\nt" > ./data-files/ports.txt
 elif [[ "$MACHINE" == "web" ]]
 then
     printf "\n" > ./data-files/ports.txt
