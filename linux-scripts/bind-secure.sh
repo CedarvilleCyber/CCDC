@@ -19,7 +19,7 @@ printf "${info}Starting bind secure script${reset}\n"
 
 case "$ID" in
     "debian"|"ubuntu"|"linuxmint")
-      config_files=( /etc/bind/named.conf.options /etc/bind/named.conf.local )
+      config_files=( /etc/bind/named.conf.options /etc/bind/named.conf.local /etc/bind/named.conf )
       ;;
     "centos"|"rhel"|"fedora"|"ol")
       config_files=( /etc/named.conf /etc/named.rfc1912.zones )

@@ -18,5 +18,11 @@ services:
       - ./config:/etc/bind
       - ./cache:/var/cache/bind
       - ./records:/var/lib/bind
-      - ./logs:/var/log/bind9
+      - bind_run:/run
+      - bind_tmp:/tmp
     restart: unless-stopped
+    read_only: true
+
+volumes:
+  bind_run:
+  bind_tmp:
