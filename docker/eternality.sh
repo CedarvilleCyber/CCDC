@@ -1,6 +1,6 @@
 #!/bin/bash
 # 
-# setup.sh
+# eternality.sh
 # 
 # Automates setting up the docker environment as much as possible
 # 

@@ -2,7 +2,7 @@
 # 
 # background.sh
 # 
-# With the lack of a better idea, this is part2 of pansophy.
+# With the lack of a better idea, this is part2 of soveriegnty.
 # Basically, this runs background tasks so things that 
 # require user interaction can be done faster
 # 
