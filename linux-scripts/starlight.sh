@@ -5,6 +5,7 @@
 # Author: Logan Miller
 #
 # TODO: make sure creds are actually changed
+# TODO: what on earth is the prestashop mysql password for?
 # 
 
 # Script must be run as root --------------------------------------------------
