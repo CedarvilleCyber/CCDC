@@ -61,24 +61,8 @@ read -p $'\e[0;36mPlease provide a new name for the admin page: \e[0m' ADMIN
 find $presta_install_path -maxdepth 1 -name 'admin*' -exec mv {} $presta_install_path/$ADMIN \;
 
 # Change prestashop database password
-printf $'\e[36mEnter the new database root passwd: \e[0m'
-read -s dbnew1
-echo
-printf $'\e[36mRetype new password: \e[0m'
+printf $'\e[36mEnter the new root passwd you set when securing mysql: \e[0m'
 read -s dbnew2
-echo
-
-# Check for matching new password
-while [[ "$dbnew1" != "$dbnew2" ]]
-do
-	printf $'\e[31mPasswords do not match!\e[0m'
-	printf $'\e[36mEnter new password: \e[0m'
-	read -s dbnew1
-	echo
-	printf $'\e[36mRetype new password: \e[0m'
-	read -s dbnew2
-	echo
-done
 
 cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > temp && cat temp > $config_file
 rm temp
