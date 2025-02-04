@@ -1,0 +1,5 @@
+Get-ADGroup -Filter * | ForEach-Object { 
+    Write-Host "Group: " $_.Name -ForegroundColor Cyan
+    Get-ADGroupMember $_.Name | Select-Object Name
+    Write-Host ""
+}
