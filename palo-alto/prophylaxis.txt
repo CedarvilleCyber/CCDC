@@ -314,7 +314,7 @@ set rulebase nat rules addns-to-wkst source any
 set rulebase nat rules addns-to-wkst destination public-windows-server
 set rulebase nat rules addns-to-wkst service any
 set rulebase nat rules addns-to-wkst destination-translation translated-address priv-ubuntu-wkst
-set rulebase nat rules addns-to-wkst destination-translation translated-port 53
+set rulebase nat rules addns-to-wkst destination-translation translated-port 5353
 set rulebase nat rules addns-to-wkst disabled yes
 set rulebase nat rules addns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules addns-to-wkst top
