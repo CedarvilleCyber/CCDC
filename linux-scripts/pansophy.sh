@@ -197,6 +197,9 @@ fi
 # fix old mirror links for apt/yum
 ./eol-mirrors.sh
 
+# kill unattended updates because it's annoying
+./unattended-kill.sh
+
 # start tmux
 which tmux >/dev/null
 if [[ $? -ne 0 ]]
