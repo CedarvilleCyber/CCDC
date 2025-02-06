@@ -35,7 +35,7 @@ printf $'\e[0;36mReplacing config files ...\e[0m\n'
 INI=$(php --ini | grep "Loaded Configuration File:" | tr -s " " | cut -d " " -f 4)
 
 cp ./conf/php.ini $INI
-cp ./conf/httpd.conf /etc/httpd/conf/httpd.conf # FIXME
+cp ./conf/httpd.conf /etc/httpd/conf/httpd.conf
 
 printf $'\e[0;32mConfig files replaced\e[0m\n'
 
@@ -43,9 +43,13 @@ printf $'\e[0;32mConfig files replaced\e[0m\n'
 printf $'\e[0;36mSecuring prestashop ...\e[0m\n'
 
 # Get user input and set vars
-read -p $'\e[36mEnter Prestashop install location (likely /var/www/html/prestashop): \e[0m' presta_install_path
+read -p $'\e[36mEnter Prestashop install location (press Enter if it is /var/www/html/prestashop): \e[0m' presta_install_path
 read -p $'\e[36mEnter the new root passwd you set when securing mysql: \e[0m' dbnew2
 read -p $'\e[0;36mPlease provide a new name for the admin page: \e[0m' ADMIN
+
+if [[ "$presta_install_path" == ""]]; then
+    presta_install_path="/var/www/html/prestashop"
+fi
 
 config_file="$presta_install_path/config/settings.inc.php"
 db_name=$(cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/")
@@ -90,7 +94,7 @@ printf $'\e[0;32mPrestashop secured\e[0m\n'
 
 # Perform backups -------------------------------------------------------------
 printf $'\e[0;36mCreating backups ...\e[0m\n'
-read -p $'\e[0;36mWhere would you like backups placed? (ex: /opt/bak) \e[0m' BK_DIR
+read -p $'\e[0;36mWhere would you like backups placed? (ex: /usr/bak) \e[0m' BK_DIR
 
 cp -a $presta_install_path $BK_DIR/prestashop_dirty
 mysqldump -u root --password="$dbnew2" "$db_name" > $BK_DIR/db_dirty
