@@ -34,8 +34,8 @@ printf $'\e[0;36mReplacing config files ...\e[0m\n'
 
 INI=$(php --ini | grep "Loaded Configuration File:" | tr -s " " | cut -d " " -f 4)
 
-cp ../docker/ecomm-state/php.ini $INI
-cp ../docker/ecomm-state/apache2.conf /etc/httpd/conf/httpd.conf # FIXME
+cp ./conf/php.ini $INI
+cp ./conf/httpd.conf /etc/httpd/conf/httpd.conf # FIXME
 
 printf $'\e[0;32mConfig files replaced\e[0m\n'
 
