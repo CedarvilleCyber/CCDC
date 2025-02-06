@@ -198,31 +198,18 @@ set rulebase security rules ALLOW_DNS log-start no
 set rulebase security rules ALLOW_DNS log-end yes
 set rulebase security rules ALLOW_DNS log-setting default
 
-set rulebase security rules KILL_APPS profile-setting group ccdc
-set rulebase security rules KILL_APPS application [ dns icmp ping ssl web-browsing ntp-base ]
-set rulebase security rules KILL_APPS service application-default
-set rulebase security rules KILL_APPS to External
-set rulebase security rules KILL_APPS from [ Internal Public User ]
-set rulebase security rules KILL_APPS source any
-set rulebase security rules KILL_APPS destination any
-set rulebase security rules KILL_APPS action drop
-set rulebase security rules KILL_APPS disabled yes
-set rulebase security rules KILL_APPS log-start no
-set rulebase security rules KILL_APPS log-end yes
-set rulebase security rules KILL_APPS log-setting default
-
-set rulebase security rules KILL_WEB profile-setting group ccdc
-set rulebase security rules KILL_WEB application any
-set rulebase security rules KILL_WEB service [ service-http service-https ]
-set rulebase security rules KILL_WEB to External
-set rulebase security rules KILL_WEB from [ Internal Public User ]
-set rulebase security rules KILL_WEB source any
-set rulebase security rules KILL_WEB destination any
-set rulebase security rules KILL_WEB action drop
-set rulebase security rules KILL_WEB disabled yes
-set rulebase security rules KILL_WEB log-start no
-set rulebase security rules KILL_WEB log-end yes
-set rulebase security rules KILL_WEB log-setting default
+set rulebase security rules KILL2EXTERNAL profile-setting group ccdc
+set rulebase security rules KILL2EXTERNAL application any
+set rulebase security rules KILL2EXTERNAL service any
+set rulebase security rules KILL2EXTERNAL to External
+set rulebase security rules KILL2EXTERNAL from [ Internal Public User ]
+set rulebase security rules KILL2EXTERNAL source any
+set rulebase security rules KILL2EXTERNAL destination any
+set rulebase security rules KILL2EXTERNAL action drop
+set rulebase security rules KILL2EXTERNAL disabled yes
+set rulebase security rules KILL2EXTERNAL log-start no
+set rulebase security rules KILL2EXTERNAL log-end yes
+set rulebase security rules KILL2EXTERNAL log-setting default
 
 set rulebase security rules INSIDE2EVERYWHERE_http_https profile-setting group ccdc
 set rulebase security rules INSIDE2EVERYWHERE_http_https application any
