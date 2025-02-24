@@ -21,12 +21,12 @@ printf "${info}Starting eol-mirrors fix script${reset}\n"
 # check for CentOS 7
 if [[ "$ID" == "centos" && $VERSION_ID -le 7 ]]
 then
-    # mirrors file
-    # /etc/yum.repos.d/CentOS-Base.repo
-
-    sed -i '/mirrorlist=http/ s/^/#/' /etc/yum.repos.d/CentOS-Base.repo
-    sed -i '/#baseurl/ s/^#//' /etc/yum.repos.d/CentOS-Base.repo
-    sed -i '/baseurl/ s/mirror.centos.org/vault.centos.org/' /etc/yum.repos.d/CentOS-Base.repo
+    # mirrors files
+    # /etc/yum.repos.d/*
+    find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/mirror/ s/^/#/' {} +
+    find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/#baseurl/ s/^#//' {} +
+    find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/baseurl/ s/mirror.centos.org/vault.centos.org/' {} +
+    find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/baseurl/ s/download.fedoraproject.org\/pub/archives.fedoraproject.org\/pub\/archive/' {} +
 fi
 
 exit 0

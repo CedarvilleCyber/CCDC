@@ -3,21 +3,12 @@
 # Bash script to harden Centos 7 Ecomm
 #
 # Author: Logan Miller
-#
-# TODO: make sure creds are actually changed
 # 
 
 # Script must be run as root --------------------------------------------------
 if [ $(id -u) != 0 ]; then
     printf $'\e[0;31mYou must be sudo to run this script!\e[0m\n'
     exit 1
-fi
-
-# Advise user to reinstall prestashop -----------------------------------------
-printf $'\e[0;31mIt is recommended that you reinstall prestashop before continuing\e[0m\n'
-read -p $'\e[0;31mWould you like to continue? [y/n] \e[0m' CONT
-if [[ "$CONT" != "y" ]]; then
-	exit 0
 fi
 
 # Install utilities -----------------------------------------------------------
@@ -43,49 +34,37 @@ printf $'\e[0;36mReplacing config files ...\e[0m\n'
 
 INI=$(php --ini | grep "Loaded Configuration File:" | tr -s " " | cut -d " " -f 4)
 
-cp ../docker/ecomm-state/php.ini $INI
-cp ../docker/ecomm-state/apache2.conf /etc/httpd/conf/httpd.conf
+cp ./conf/php.ini $INI
+cp ./conf/httpd.conf /etc/httpd/conf/httpd.conf
 
 printf $'\e[0;32mConfig files replaced\e[0m\n'
 
 # Secure Prestashop -----------------------------------------------------------
 printf $'\e[0;36mSecuring prestashop ...\e[0m\n'
 
-# Get Prestashop install path and version
-read -p $'\e[36mEnter Prestashop install location (likely /var/www/html/prestashop): \e[0m' presta_install_path
+# Get user input and set vars
+read -p $'\e[36mEnter Prestashop install location (press Enter if it is /var/www/html/prestashop): \e[0m' presta_install_path
+read -p $'\e[36mEnter the new root passwd you set when securing mysql: \e[0m' dbnew2
+read -p $'\e[0;36mPlease provide a new name for the admin page: \e[0m' ADMIN
+
+if [[ "$presta_install_path" == ""]]; then
+    presta_install_path="/var/www/html/prestashop"
+fi
 
 config_file="$presta_install_path/config/settings.inc.php"
+db_name=$(cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/")
+db_prefix=$(cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/")
 
 # Update admin page url
-read -p $'\e[0;36mPlease provide a new name for the admin page: \e[0m' ADMIN
 find $presta_install_path -maxdepth 1 -name 'admin*' -exec mv {} $presta_install_path/$ADMIN \;
 
-# Change prestashop database password
-printf $'\e[36mEnter the new database root passwd: \e[0m'
-read -s dbnew1
-echo
-printf $'\e[36mRetype new password: \e[0m'
-read -s dbnew2
-echo
+# Update database password field (user is root)
+sed -i -e "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" $config_file
 
-# Check for matching new password
-while [[ "$dbnew1" != "$dbnew2" ]]
-do
-	printf $'\e[31mPasswords do not match!\e[0m'
-	printf $'\e[36mEnter new password: \e[0m'
-	read -s dbnew1
-	echo
-	printf $'\e[36mRetype new password: \e[0m'
-	read -s dbnew2
-	echo
-done
+# Update database host to be 127.0.0.1 instead of localhost (doesn't work otherwise)
+sed -i -e "s/localhost/127\.0\.0\.1/g" $config_file
 
-cat $config_file | sed "s/\(_DB_PASSWD_', '\).*\(');\)/\1$dbnew2\2/" > temp && cat temp > $config_file
-rm temp
-
-db_name=`cat $config_file | grep "_DB_NAME_" | sed "s/define('_DB_NAME_', '\(.*\)');/\1/"`
-db_prefix=`cat $config_file | grep "_DB_PREFIX_" | sed "s/define('_DB_PREFIX_', '\(.*\)');/\1/"`
-
+# Update prestashop admin password
 echo $'\e[1;36mListing TABLE ps_employees from DATABASE $db_name\e[0m'
 mysql -u root --password="$dbnew2" "$db_name" --execute="SELECT id_employee as id,firstname,lastname,email from ${db_prefix}employee;"
 
@@ -98,7 +77,6 @@ printf $'\e[36mRetype new password: \e[0m'
 read -s admnew2
 echo
 
-# Validate that passwords match
 while [[ "$admnew1" != "$admnew2" ]]; do
 printf $'\e[31mPasswords do not match!\e[0m'
 printf $'\e[36mEnter new password: \e[0m'
@@ -109,14 +87,14 @@ read -s admnew2
 echo
 done
 
-db_cookie=`cat $config_file | grep "_COOKIE_KEY_" | sed "s/define('_COOKIE_KEY_', '\(.*\)');/\1/"`
+db_cookie=$(cat $config_file | grep "_COOKIE_KEY_" | sed "s/define('_COOKIE_KEY_', '\(.*\)');/\1/")
 mysql -u root --password="$dbnew2" "$db_name" --execute="UPDATE ${db_prefix}employee SET passwd=MD5('${db_cookie}${admnew2}') WHERE id_employee='$admin_id';"
 
 printf $'\e[0;32mPrestashop secured\e[0m\n'
 
 # Perform backups -------------------------------------------------------------
 printf $'\e[0;36mCreating backups ...\e[0m\n'
-read -p $'\e[0;36mWhere would you like backups placed? (ex: /opt/bak) \e[0m' BK_DIR
+read -p $'\e[0;36mWhere would you like backups placed? (ex: /usr/bak) \e[0m' BK_DIR
 
 cp -a $presta_install_path $BK_DIR/prestashop_dirty
 mysqldump -u root --password="$dbnew2" "$db_name" > $BK_DIR/db_dirty

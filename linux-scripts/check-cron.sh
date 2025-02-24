@@ -58,8 +58,11 @@ if [[ $? -eq 0 ]]
 then
     systemctl disable cron
     systemctl stop cron
+    systemctl disable crond
+    systemctl stop crond
 else
     service cron stop
+    service crond stop
 fi
 
 if [[ "$found" == "yes" ]]

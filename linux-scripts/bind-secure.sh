@@ -49,7 +49,7 @@ do
         
         # check if forwarder setting exists at all (multi-line)
         # if it is, then create a new file and replace the old one
-        elif grep -q 'forwarders\s*{' "$file"
+        elif grep -q 'forwarders' "$file"
         then
             replace=0
             newfile=$(basename $file)
@@ -57,7 +57,7 @@ do
             touch ./$newfile
             while IFS="" read -r line || [ -n "$line" ]
             do
-                START=$(echo $line | grep "forwarders\s*{")
+                START=$(echo $line | grep "forwarders")
                 END=$(echo $line | grep "}")
                 if [[ ! -z "$START" ]]
                 then
@@ -84,6 +84,7 @@ do
             mv $file $(dirname $file)/old-$(basename $file)
             mv ./$newfile $(dirname $file)/$newfile
 
+            echo "Updated forwarder setting in $file"
             ((found++))
         fi
     fi
@@ -96,12 +97,12 @@ do
         then
             # Update forwarder setting
             sed -i "s/allow-transfer\s*{.*};*/allow-transfer { localhost; };/" "$file"
-            echo "Updated forwarder setting in $file"
+            echo "Updated transfer setting in $file"
             ((found++))
         
         # check if forwarder setting exists at all (multi-line)
         # if it is, then create a new file and replace the old one
-        elif grep -q 'allow-transfer\s*{' "$file"
+        elif grep -q 'allow-transfer' "$file"
         then
             replace=0
             newfile=$(basename $file)
@@ -109,7 +110,7 @@ do
             touch ./$newfile
             while IFS="" read -r line || [ -n "$line" ]
             do
-                START=$(echo $line | grep "allow-transfer\s*{")
+                START=$(echo $line | grep "allow-transfer")
                 END=$(echo $line | grep "}")
                 if [[ ! -z "$START" ]]
                 then
@@ -136,6 +137,7 @@ do
             mv $file $(dirname $file)/old-$(basename $file)
             mv ./$newfile $(dirname $file)/$newfile
 
+            echo "Updated transfer setting in $file"
             ((found++))
         fi
     fi

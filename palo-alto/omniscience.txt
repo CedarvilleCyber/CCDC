@@ -198,31 +198,18 @@ set rulebase security rules ALLOW_DNS log-start no
 set rulebase security rules ALLOW_DNS log-end yes
 set rulebase security rules ALLOW_DNS log-setting default
 
-set rulebase security rules KILL_APPS profile-setting group ccdc
-set rulebase security rules KILL_APPS application [ dns icmp ping ssl web-browsing ntp-base ]
-set rulebase security rules KILL_APPS service application-default
-set rulebase security rules KILL_APPS to External
-set rulebase security rules KILL_APPS from [ Internal Public User ]
-set rulebase security rules KILL_APPS source any
-set rulebase security rules KILL_APPS destination any
-set rulebase security rules KILL_APPS action drop
-set rulebase security rules KILL_APPS disabled yes
-set rulebase security rules KILL_APPS log-start no
-set rulebase security rules KILL_APPS log-end yes
-set rulebase security rules KILL_APPS log-setting default
-
-set rulebase security rules KILL_WEB profile-setting group ccdc
-set rulebase security rules KILL_WEB application any
-set rulebase security rules KILL_WEB service [ service-http service-https ]
-set rulebase security rules KILL_WEB to External
-set rulebase security rules KILL_WEB from [ Internal Public User ]
-set rulebase security rules KILL_WEB source any
-set rulebase security rules KILL_WEB destination any
-set rulebase security rules KILL_WEB action drop
-set rulebase security rules KILL_WEB disabled yes
-set rulebase security rules KILL_WEB log-start no
-set rulebase security rules KILL_WEB log-end yes
-set rulebase security rules KILL_WEB log-setting default
+set rulebase security rules KILL2EXTERNAL profile-setting group ccdc
+set rulebase security rules KILL2EXTERNAL application any
+set rulebase security rules KILL2EXTERNAL service any
+set rulebase security rules KILL2EXTERNAL to External
+set rulebase security rules KILL2EXTERNAL from [ Internal Public User ]
+set rulebase security rules KILL2EXTERNAL source any
+set rulebase security rules KILL2EXTERNAL destination any
+set rulebase security rules KILL2EXTERNAL action drop
+set rulebase security rules KILL2EXTERNAL disabled yes
+set rulebase security rules KILL2EXTERNAL log-start no
+set rulebase security rules KILL2EXTERNAL log-end yes
+set rulebase security rules KILL2EXTERNAL log-setting default
 
 set rulebase security rules INSIDE2EVERYWHERE_http_https profile-setting group ccdc
 set rulebase security rules INSIDE2EVERYWHERE_http_https application any
@@ -289,7 +276,7 @@ set service 80-tcp protocol tcp port 80
 set rulebase nat rules ecomm-to-wkst to External
 set rulebase nat rules ecomm-to-wkst from External
 set rulebase nat rules ecomm-to-wkst source any
-set rulebase nat rules ecomm-to-wkst destination public-ecomm
+set rulebase nat rules ecomm-to-wkst destination public-centos
 set rulebase nat rules ecomm-to-wkst service 80-tcp
 set rulebase nat rules ecomm-to-wkst destination-translation translated-address priv-ubuntu-wkst
 set rulebase nat rules ecomm-to-wkst destination-translation translated-port 80
@@ -314,7 +301,7 @@ set rulebase nat rules addns-to-wkst source any
 set rulebase nat rules addns-to-wkst destination public-windows-server
 set rulebase nat rules addns-to-wkst service any
 set rulebase nat rules addns-to-wkst destination-translation translated-address priv-ubuntu-wkst
-set rulebase nat rules addns-to-wkst destination-translation translated-port 53
+set rulebase nat rules addns-to-wkst destination-translation translated-port 5353
 set rulebase nat rules addns-to-wkst disabled yes
 set rulebase nat rules addns-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
 move rulebase nat rules addns-to-wkst top
