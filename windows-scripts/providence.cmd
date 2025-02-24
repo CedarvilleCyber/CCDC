@@ -1,6 +1,9 @@
 @echo off
 title = "Cedarville Windows Script - 'Providence' "
 :: Author - Aaron Campbell for the Cedarville Cyber Team
+::
+:: Providence - The protective care of God
+::
 :: Credits:
 ::      Mackwage - https://gist.github.com/mackwage/08604751462126599d7e52f233490efe
 ::      Mike Bailey - https://github.com/mike-bailey/CCDC-Scripts

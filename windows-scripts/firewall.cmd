@@ -1,8 +1,8 @@
 @echo off
-title = "Cedarville Windows Firewall Script"
+title = "Windows Firewall Script"
 
-echo Welcome to the Cedarville Firewall Script. Please ensure that you know what you are doing before using this script.
-echo Welcome to the Cedarville Firewall Script. Please ensure that you know what you are doing before using this script. >> output.txt
+echo Welcome to the Firewall Script. Please ensure that you know what you are doing before using this script.
+echo Welcome to the Firewall Script. Please ensure that you know what you are doing before using this script. >> output.txt
 
 echo Administrative permissions required. Detecting permissions...
 echo Administrative permissions required. Detecting permissions... >> output.txt

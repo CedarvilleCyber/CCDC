@@ -2,7 +2,7 @@
 # 
 # preexistent.sh
 # 
-# Stage 1 of 2?
+# Preexistent - Existence in a former state previous to something else
 # 
 # Kaicheng Ye
 # Feb. 2024

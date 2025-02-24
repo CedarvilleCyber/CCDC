@@ -2,7 +2,7 @@
 # 
 # prophylaxis.sh
 # 
-# Prophylaxis - Measures designed to preserve health and guard against disease.
+# Omniscience - All knowing
 #
 # Palo alto setup script
 # 

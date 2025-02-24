@@ -1,9 +1,10 @@
 #!/bin/bash
 # 
 # sovereignty.sh
-# sovereignty - Universal wisdom/knowledge
+#
+# Sovereignty - Supreme power or authority over everything
 # 
-# The ultimate Linux sysadmin hardening script. Your eyes will be opened...
+# The ultimate Linux sysadmin hardening script. It's all under control.
 # 
 # Kaicheng Ye
 # Dec. 2023

@@ -1,10 +1,13 @@
 @echo off
-title = "Cedarville Windows Script - 'Providence' "
-:: Author - Aaron Campbell for the Cedarville Cyber Team
+title = "Windows Script - 'Providence' "
+:: Author - Aaron Campbell for the Cyber Team
+::
+:: Providence - The protective care of God
+::
 :: Credits:
 ::      Mackwage - https://gist.github.com/mackwage/08604751462126599d7e52f233490efe
 ::      Mike Bailey - https://github.com/mike-bailey/CCDC-Scripts
-::      Cedarville's version of Baldwin Wallace's old script - https://github.com/CedarvilleCyber/CCDC/blob/main/CCDC-Collection/Windows/windowsBW.cmd
+::      Our version of Baldwin Wallace's old script
 :: Line 172 "CVE-2020-1350" added 2/16/2024 by Stephen Pearson
 :: Firewall default block all added 8/15/2024 by Kaicheng Ye
 :: The following was added on 1/2/2025 by Stephen Pearson:

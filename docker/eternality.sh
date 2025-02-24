@@ -1,7 +1,9 @@
 #!/bin/bash
 # 
 # eternality.sh
-# 
+#
+# Eternality - The quality or state of being eternal/everlasting 
+#
 # Automates setting up the docker environment as much as possible
 # 
 # Kaicheng Ye
