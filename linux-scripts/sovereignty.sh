@@ -1,7 +1,7 @@
 #!/bin/bash
 # 
-# pansophy.sh
-# Pansophy - Universal wisdom/knowledge
+# sovereignty.sh
+# sovereignty - Universal wisdom/knowledge
 # 
 # The ultimate Linux sysadmin hardening script. Your eyes will be opened...
 # 
@@ -116,8 +116,8 @@ mkdir /usr/bak
 mkdir ./data-files
 
 # clear tmp folder
-# check if pansophy has been completed before
-if [[ -f /var/pansophy ]]
+# check if sovereignty has been completed before
+if [[ -f /var/sovereignty ]]
 then
     # remove everything in tmp but tmux-0 to keep sessions
     find /tmp ! -path "/tmp" ! -path "*tmux-0*" -exec rm -rf {} +
@@ -245,7 +245,7 @@ then
     then
         # skip the rest of the script where tmux is run
         ./no-tmux.sh
-        printf "\n${info}Pansophy complete. Are your eyes open?${reset}\n\n"
+        printf "\n${info}sovereignty complete. Are your eyes open?${reset}\n\n"
         exit 0
     fi
 fi
@@ -404,9 +404,9 @@ then
     tmux attach-session -t $SESSION_NAME
 fi
 
-touch /var/pansophy
+touch /var/sovereignty
 
-printf "\n${info}Pansophy complete. Are your eyes open?${reset}\n\n"
+printf "\n${info}Sovereignty complete. It is all under control.${reset}\n\n"
 
 exit 0
 
