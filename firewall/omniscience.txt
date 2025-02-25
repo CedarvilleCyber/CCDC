@@ -14,6 +14,17 @@ set address priv-192 ip-netmask 192.168.0.0/16
 
 set deviceconfig system dns-setting servers primary 8.8.8.8
 set deviceconfig system dns-setting servers secondary 1.1.1.1
+set deviceconfig system timezone US/Central
+set deviceconfig system update-server updates.paloaltonetworks.com
+
+set deviceconfig system update-schedule statistics-service threat-prevention-pcap no
+set deviceconfig system update-schedule statistics-service application-reports no
+set deviceconfig system update-schedule statistics-service threat-prevention-reports no
+set deviceconfig system update-schedule statistics-service threat-prevention-information no
+set deviceconfig system update-schedule statistics-service passive-dns-monitoring no
+set deviceconfig system update-schedule statistics-service url-reports no
+set deviceconfig system update-schedule statistics-service health-performance-reports no
+set deviceconfig system update-schedule statistics-service file-identification-reports no
 
 set profile-group ccdc virus default
 set profile-group ccdc spyware strict
@@ -22,10 +33,47 @@ set profile-group ccdc wildfire-analysis default
 set profile-group ccdc url-filtering default
 
 set deviceconfig system service disable-telnet yes
-set deviceconfig system service disable-http no
+set deviceconfig system service disable-http yes
 set deviceconfig system service disable-snmp yes
 set deviceconfig system login-banner "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
 set deviceconfig system ack-login-banner yes
+
+set network profiles interface-management-profile Base http no
+set network profiles interface-management-profile Base https no
+set network profiles interface-management-profile Base http-ocsp no
+set network profiles interface-management-profile Base ssh no
+set network profiles interface-management-profile Base snmp no
+set network profiles interface-management-profile Base userid-service no
+set network profiles interface-management-profile Base ping no
+set network profiles interface-management-profile Base response-pages no
+set network profiles interface-management-profile Base telnet no
+
+set network interface ethernet ethernet1/1 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/1 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/1 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/1 layer3 lldp enable no
+
+set network interface ethernet ethernet1/2 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/2 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/2 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/2 layer3 lldp enable no
+
+set network interface ethernet ethernet1/3 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/3 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/3 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/3 layer3 lldp enable no
+
+set network interface ethernet ethernet1/4 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/4 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/4 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/4 layer3 lldp enable no
+
+delete rulebase nat rules PA
+delete rulebase nat rules Router
+delete threats vulnerability 41111
+delete shared admin-role Honeypot
+delete shared admin-role "Configuration Admins"
+delete shared admin-role "Policy Admins"
 
 set network profiles zone-protection-profile Default discard-overlapping-tcp-segment-mismatch yes
 set network profiles zone-protection-profile Default discard-unknown-option yes
@@ -40,15 +88,29 @@ set network profiles zone-protection-profile Default flood other-ip enable yes
 set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
 set network profiles zone-protection-profile Default flood icmpv6 enable yes
 set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood scan 8001 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default flood scan 8001 interval 2
+set network profiles zone-protection-profile Default flood scan 8001 threshold 100
+set network profiles zone-protection-profile Default flood scan 8002 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default flood scan 8002 interval 10
+set network profiles zone-protection-profile Default flood scan 8002 threshold 100
+set network profiles zone-protection-profile Default flood scan 8003 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default flood scan 8003 interval 2
+set network profiles zone-protection-profile Default flood scan 8003 threshold 100
+
+set zone External network zone-protection-profile Default
+set zone Internal network zone-protection-profile Default
+set zone Public network zone-protection-profile Default
+set zone User network zone-protection-profile Default
 
 set shared log-settings syslog Splunk server "Splunk" transport UDP
 set shared log-settings syslog Splunk server "Splunk" port 514
-set shared log-settings syslog Splunk server "Splunk" format BSD
+set shared log-settings syslog Splunk server "Splunk" format IETF
 set shared log-settings syslog Splunk server "Splunk" server 172.20.241.20
 set shared log-settings syslog Splunk server "Splunk" facility LOG_USER
 set shared log-settings profiles default match-list traffic send-syslog Splunk
 set shared log-settings profiles default match-list traffic log-type traffic
-set shared log-settings profiles default match-list traffic filter "(action eq allow)"
+set shared log-settings profiles default match-list traffic filter "All Logs"
 set shared log-settings profiles default match-list traffic send-to-panorama no
 set shared log-settings profiles default match-list traffic quarantine no
 set shared log-settings profiles default match-list auth send-syslog Splunk
@@ -56,6 +118,48 @@ set shared log-settings profiles default match-list auth log-type auth
 set shared log-settings profiles default match-list auth filter "All Logs"
 set shared log-settings profiles default match-list auth send-to-panorama no
 set shared log-settings profiles default match-list auth quarantine no
+set shared log-settings profiles default match-list data send-syslog Splunk
+set shared log-settings profiles default match-list data log-type data
+set shared log-settings profiles default match-list data filter "All Logs"
+set shared log-settings profiles default match-list data send-to-panorama no
+set shared log-settings profiles default match-list data quarantine no
+set shared log-settings profiles default match-list gtp send-syslog Splunk
+set shared log-settings profiles default match-list gtp log-type gtp
+set shared log-settings profiles default match-list gtp filter "All Logs"
+set shared log-settings profiles default match-list gtp send-to-panorama no
+set shared log-settings profiles default match-list gtp quarantine no
+set shared log-settings profiles default match-list threat send-syslog Splunk
+set shared log-settings profiles default match-list threat log-type threat
+set shared log-settings profiles default match-list threat filter "All Logs"
+set shared log-settings profiles default match-list threat send-to-panorama no
+set shared log-settings profiles default match-list threat quarantine no
+set shared log-settings profiles default match-list tunnel send-syslog Splunk
+set shared log-settings profiles default match-list tunnel log-type tunnel
+set shared log-settings profiles default match-list tunnel filter "All Logs"
+set shared log-settings profiles default match-list tunnel send-to-panorama no
+set shared log-settings profiles default match-list tunnel quarantine no
+set shared log-settings profiles default match-list url send-syslog Splunk
+set shared log-settings profiles default match-list url log-type url
+set shared log-settings profiles default match-list url filter "All Logs"
+set shared log-settings profiles default match-list url send-to-panorama no
+set shared log-settings profiles default match-list url quarantine no
+set shared log-settings profiles default match-list wildfire send-syslog Splunk
+set shared log-settings profiles default match-list wildfire log-type wildfire
+set shared log-settings profiles default match-list wildfire filter "All Logs"
+set shared log-settings profiles default match-list wildfire send-to-panorama no
+set shared log-settings profiles default match-list wildfire quarantine no
+set shared log-settings system match-list Splunk send-syslog Splunk
+set shared log-settings system match-list Splunk filter "All Logs"
+set shared log-settings config match-list Splunk send-syslog Splunk
+set shared log-settings config match-list Splunk filter "All Logs"
+set shared log-settings userid match-list Splunk send-syslog Splunk
+set shared log-settings userid match-list Splunk filter "All Logs"
+set shared log-settings hipmatch match-list Splunk send-syslog Splunk
+set shared log-settings hipmatch match-list Splunk filter "All Logs"
+set shared log-settings globalprotect match-list Splunk send-syslog Splunk
+set shared log-settings globalprotect match-list Splunk filter "All Logs"
+set shared log-settings iptag match-list Splunk send-syslog Splunk
+set shared log-settings iptag match-list Splunk filter "All Logs"
 
 set service http protocol tcp port 80
 set service http protocol tcp override no 
@@ -67,7 +171,7 @@ set service syslog protocol udp override no
 set rulebase security rules EXTERNAL2SELF_DROP profile-setting group ccdc
 set rulebase security rules EXTERNAL2SELF_DROP application any
 set rulebase security rules EXTERNAL2SELF_DROP service application-default
-set rulebase security rules EXTERNAL2SELF_DROP to External
+set rulebase security rules EXTERNAL2SELF_DROP to any
 set rulebase security rules EXTERNAL2SELF_DROP from External
 set rulebase security rules EXTERNAL2SELF_DROP source any
 set rulebase security rules EXTERNAL2SELF_DROP destination [ this-fw this-fw2 ]
@@ -160,6 +264,7 @@ set rulebase security rules WIN102SPLUNK_splunk action allow
 set rulebase security rules WIN102SPLUNK_splunk log-start no
 set rulebase security rules WIN102SPLUNK_splunk log-end yes
 set rulebase security rules WIN102SPLUNK_splunk log-setting default
+set rulebase security rules WIN102SPLUNK_splunk disabled yes
 
 set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
 set rulebase security rules KILL_INSIDE2PRIVATE application any
@@ -342,3 +447,5 @@ move rulebase security rules any2any bottom
 set rulebase application-override
 set rulebase default-security-rules rules interzone-default action deny
 set rulebase default-security-rules rules interzone-default log-end yes
+set rulebase default-security-rules rules intrazone-default action deny
+set rulebase default-security-rules rules intrazone-default log-end yes
