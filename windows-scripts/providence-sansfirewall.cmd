@@ -85,6 +85,24 @@ REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTFRS\Parameters" /v "RPC TCP/IP
 echo Running AD Specific firewall rules
 echo Running AD Specific firewall rules >> output.txt
 
+:: Blocks unnecessary AD ports, such as kerberos, RPC, and LDAP
+
+netsh advfirewall firewall add rule name="Block Kerberos TCP 88" protocol=TCP dir=in localport=88 action=block
+netsh advfirewall firewall add rule name="Block HTTP TCP 80" protocol=TCP dir=in localport=80 action=block
+netsh advfirewall firewall add rule name="Block msrpc TCP 135" protocol=TCP dir=in localport=135 action=block
+netsh advfirewall firewall add rule name="Block netbios-ssn TCP 139" protocol=TCP dir=in localport=139 action=block
+netsh advfirewall firewall add rule name="Block LDAP TCP 389" protocol=TCP dir=in localport=389 action=block
+netsh advfirewall firewall add rule name="Block microsoft-ds TCP 445" protocol=TCP dir=in localport=445 action=block
+netsh advfirewall firewall add rule name="Block kpasswd5 TCP 464" protocol=TCP dir=in localport=464 action=block
+netsh advfirewall firewall add rule name="Block http-rpc-epmap TCP 593" protocol=TCP dir=in localport=593 action=block
+netsh advfirewall firewall add rule name="Block ldapssl TCP 636" protocol=TCP dir=in localport=636 action=block
+netsh advfirewall firewall add rule name="Block globalcatLDAP TCP 3268" protocol=TCP dir=in localport=3268 action=block
+netsh advfirewall firewall add rule name="Block globalcatLDAPssl TCP 3269" protocol=TCP dir=in localport=3269 action=block
+netsh advfirewall firewall add rule name="Block kerberos-sec UDP 88" protocol=UDP dir=in localport=88 action=block
+netsh advfirewall firewall add rule name="Block ntp UDP 123" protocol=UDP dir=in localport=123 action=block
+netsh advfirewall firewall add rule name="Block LDAP UDP 389" protocol=UDP dir=in localport=389 action=block
+netsh advfirewall firewall add rule name="Block netbios-ns UDP 137" protocol=UDP dir=in localport=137 action=block
+
 :: Splunk
 netsh advfirewall firewall add rule name="Splunk OUT" dir=out action=allow enable=yes profile=any remoteip=%Splunk% remoteport=8000,8089,9997 protocol=tcp
 
