@@ -1,8 +1,8 @@
 #!/bin/bash
 # 
-# preexistent.sh
-# 
-# Preexistent - Existence in a former state previous to something else
+# stage1.sh
+#
+# First stage of linux scripts
 # 
 # Kaicheng Ye
 # Feb. 2024
@@ -37,8 +37,8 @@ done
 
 printf "Initiating stage 1\n"
 
-preexistent=1
-export preexistent
+stage1=1
+export stage1
 
 mkdir work
 cd work
@@ -140,7 +140,7 @@ then
     	    # check cron now!
     	    ./check-cron.sh
 
-    	    #./sovereignty.sh "$MACHINE" "preexistent"
+    	    #./sovereignty.sh "$MACHINE" "stage1"
     	    git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
     	    printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
@@ -190,7 +190,7 @@ and run soveriegnty.sh like normal\n\n\n"
         	# check cron now!
         	./check-cron.sh
 
-        	#./sovereignty.sh "$MACHINE" "preexistent"
+        	#./sovereignty.sh "$MACHINE" "stage1"
             git config --global http.sslVerify False
         	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
@@ -249,7 +249,7 @@ else
     	    # check cron now!
     	    ./check-cron.sh
 
-    	    #./sovereignty.sh "$MACHINE" "preexistent"
+    	    #./sovereignty.sh "$MACHINE" "stage1"
     	    git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
     	    printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
@@ -299,7 +299,7 @@ and run sovereignty.sh like normal\n\n\n"
         	# check cron now!
         	./check-cron.sh
 
-        	#./sovereignty.sh "$MACHINE" "preexistent"
+        	#./sovereignty.sh "$MACHINE" "stage1"
             git config --global http.sslVerify False
         	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
