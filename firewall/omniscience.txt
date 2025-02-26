@@ -97,6 +97,14 @@ set network profiles zone-protection-profile Default scan 8002 threshold 100
 set network profiles zone-protection-profile Default scan 8003 action block-ip track-by source duration 3600
 set network profiles zone-protection-profile Default scan 8003 interval 2
 set network profiles zone-protection-profile Default scan 8003 threshold 100
+set network profiles zone-protection-profile Default discard-ip-frag yes
+set network profiles zone-protection-profile Default discard-malformed-option yes
+set network profiles zone-protection-profile Default non-ip-protocol list-type exclude
+set network profiles zone-protection-profile Default discard-strict-source-routing yes
+set network profiles zone-protection-profile Default discard-loose-source-routing yes
+set network profiles zone-protection-profile Default discard-tcp-split-handshake yes
+set network profiles zone-protection-profile Default remove-tcp-timestamp yes
+set network profiles zone-protection-profile Default discard-icmp-large-packet yes
 
 set zone External network zone-protection-profile Default
 set zone Internal network zone-protection-profile Default
