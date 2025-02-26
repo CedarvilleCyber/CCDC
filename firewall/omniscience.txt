@@ -88,15 +88,15 @@ set network profiles zone-protection-profile Default flood other-ip enable yes
 set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
 set network profiles zone-protection-profile Default flood icmpv6 enable yes
 set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
-set network profiles zone-protection-profile Default flood scan 8001 action block-ip track-by source duration 3600
-set network profiles zone-protection-profile Default flood scan 8001 interval 2
-set network profiles zone-protection-profile Default flood scan 8001 threshold 100
-set network profiles zone-protection-profile Default flood scan 8002 action block-ip track-by source duration 3600
-set network profiles zone-protection-profile Default flood scan 8002 interval 10
-set network profiles zone-protection-profile Default flood scan 8002 threshold 100
-set network profiles zone-protection-profile Default flood scan 8003 action block-ip track-by source duration 3600
-set network profiles zone-protection-profile Default flood scan 8003 interval 2
-set network profiles zone-protection-profile Default flood scan 8003 threshold 100
+set network profiles zone-protection-profile Default scan 8001 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8001 interval 2
+set network profiles zone-protection-profile Default scan 8001 threshold 100
+set network profiles zone-protection-profile Default scan 8002 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8002 interval 10
+set network profiles zone-protection-profile Default scan 8002 threshold 100
+set network profiles zone-protection-profile Default scan 8003 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8003 interval 2
+set network profiles zone-protection-profile Default scan 8003 threshold 100
 
 set zone External network zone-protection-profile Default
 set zone Internal network zone-protection-profile Default
