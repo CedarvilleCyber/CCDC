@@ -1,0 +1,88 @@
+name: ecomm-state
+
+services:
+  prestashop:
+    container_name: prestashop
+    image: prestashop/prestashop:1.5.6.3
+    environment:
+      DB_SERVER: mysql
+      DB_NAME: prestashop
+      DB_USER: prestashop
+      DB_PASSWD: ${PRESTA_DB_PASSWD}
+    restart: unless-stopped
+    ports:
+      - '${PRESTA_PORT}:80'
+    networks:
+      - presta_net
+    volumes:
+      - web_data:/var/www/html:ro
+      - ./setup-ecomm.sh:/root/setup-ecomm.sh:ro
+      - ./waf.sh:/root/waf.sh:ro
+      - web_tmp:/tmp
+      - web_cache:/var/www/html/prestashop/cache
+      - web_run:/var/run/apache2
+      - web_crs:/etc/apache2:ro
+      - web_log:/var/log/apache2
+      - web_lib:/usr/lib:ro
+      - web_security:/etc/modsecurity:ro
+    configs:
+      - source: secure-apache-conf
+        target: /etc/apache2/apache2.conf
+      - source: secure-php-conf
+        target: /usr/local/etc/php/php.ini
+    depends_on:
+      - mysql
+    read_only: true
+  
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin:latest
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    restart: unless-stopped
+    ports:
+      - '${PHPMYADMIN_PORT}:80'
+    networks:
+      - pma_net
+    depends_on:
+      - mysql
+  
+  mysql:
+    container_name: presta_db
+    image: mysql:5.5
+    environment:
+      MYSQL_DATABASE: prestashop
+      MYSQL_USER: prestashop
+      MYSQL_PASSWORD: ${PRESTA_DB_PASSWD}
+      MYSQL_ROOT_PASSWORD: ${ROOT_DB_PASSWD}
+    restart: unless-stopped
+    networks:
+      - presta_net
+      - pma_net
+    volumes:
+      - db_data:/var/lib/mysql
+      - db_tmp:/tmp
+    read_only: true
+
+networks:
+  presta_net:
+  pma_net:
+
+volumes:
+  db_data:
+  db_tmp:
+  web_data:
+  web_tmp:
+  web_cache:
+  web_run:
+  web_crs:
+  web_security:
+  web_log:
+  web_lib:
+
+configs:
+  secure-apache-conf:
+    file: ./apache2.conf
+  secure-php-conf:
+    file: ./php.ini
