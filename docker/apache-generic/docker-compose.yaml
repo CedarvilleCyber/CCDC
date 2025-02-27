@@ -40,13 +40,13 @@ services:
       - mysql
   
   mysql:
-    container_name: presta_db
+    container_name: apache_db
     image: mysql:5.5
     environment:
-      MYSQL_DATABASE: prestashop
-      MYSQL_USER: prestashop
-      MYSQL_PASSWORD: ${PRESTA_DB_PASSWD}
-      MYSQL_ROOT_PASSWORD: ${ROOT_DB_PASSWD}
+      MYSQL_DATABASE: apache
+      MYSQL_USER: apache
+      MYSQL_PASSWORD: ${APACHE_DB_PASSWD}
+      MYSQL_ROOT_PASSWORD: ${APACHE_ROOT_DB_PASSWD}
     restart: unless-stopped
     networks:
       - apache_net
