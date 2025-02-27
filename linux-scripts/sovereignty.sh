@@ -361,6 +361,10 @@ then
     # window for rkhunter results
     tmux new-window -t $SESSION_NAME:7 -n "rkhunter"
     tmux send-keys -t "rkhunter" "less \`find /var/log -iname \"rkhunter.log\"\`"
+
+    # window for running linpeas
+    tmux new-window -t $SESSION_NAME:8 -n "linpeas"
+    tmux send-keys -t "linpeas" "./do-linpeas.sh"
 fi
 
 # Name session Work
