@@ -18,6 +18,7 @@ title = "Windows Script - 'Providence' "
 ::      Line 162: Removed "net stop dns && net start dns" due to outdated command
 ::      Line 572: Checked for the DNSNTP IP address for General Windows Hardening
 ::      Moved the logon banner to the general Windows hardening portion
+::	Fixed Removed Scheduled Task command to actually remove EVERYTHING
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
@@ -528,7 +529,7 @@ echo Minimum password age of 10
 echo Unique password threshold set to 3 (default is 5)
 
 :: Delete system tasks
-schtasks /Delete /TN *
+Get-ScheduledTask | ForEach-Object { Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false }
 
 
 ::___________________________________________### Section for general firewall configs ###____________________________________________
