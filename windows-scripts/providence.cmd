@@ -8,17 +8,17 @@ title = "Windows Script - 'Providence' "
 ::      Mackwage - https://gist.github.com/mackwage/08604751462126599d7e52f233490efe
 ::      Mike Bailey - https://github.com/mike-bailey/CCDC-Scripts
 ::      Our version of Baldwin Wallace's old script
-:: Line 172 "CVE-2020-1350" added 2/16/2024 by Stephen Pearson
+:: "CVE-2020-1350" added 2/16/2024 by Stephen Pearson
 :: Firewall default block all added 8/15/2024 by Kaicheng Ye
 :: The following was added on 1/2/2025 by Stephen Pearson:
-::      Line 292: Changed SmartScreen level to "Warn" from "Block"
-::      Line 429: Stopped and disabled the print spooler
-::      Line 596: Removed "blockoutbound" to restore Internet access
-::      Line 600: Enabled web traffic requests in and out via "Web" firewall rules
-::      Line 162: Removed "net stop dns && net start dns" due to outdated command
-::      Line 572: Checked for the DNSNTP IP address for General Windows Hardening
+::      Changed SmartScreen level to "Warn" from "Block"
+::      Stopped and disabled the print spooler
+::      Removed "blockoutbound" to restore Internet access
+::      Enabled web traffic requests in and out via "Web" firewall rules
+::      Removed "net stop dns && net start dns" due to outdated command
+::      Checked for the DNSNTP IP address for General Windows Hardening
 ::      Moved the logon banner to the general Windows hardening portion
-::	Fixed Removed Scheduled Task command to actually remove EVERYTHING
+:: Added 2/27/2025 by Stephen Reid: Fixed Removed Scheduled Task command to actually remove EVERYTHING
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
