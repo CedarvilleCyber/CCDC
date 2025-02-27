@@ -1,6 +1,6 @@
 #!/bin/bash
 # 
-# prophylaxis.sh
+# omniscience.sh
 # 
 # Omniscience - All knowing
 #
@@ -9,7 +9,7 @@
 # Kaicheng Ye
 # Mar. 2024
 
-printf "Starting prophylaxis script\n"
+printf "Starting omniscience script\n"
 
 # get team ip
 printf "Enter team IP number should be between (21-40): "
@@ -29,15 +29,15 @@ echo "set address public-ubuntu-wkst ip-netmask 172.25.$team.111" >> temp.txt
 echo "set address this-fw ip-netmask 172.31.$team.2" >> temp.txt
 echo "set address this-fw2 ip-netmask 172.25.$team.150" >> temp.txt
 
-cat ./prophylaxis.txt >> temp.txt
-cp ./prophylaxis.txt ./backup-prophylaxis.txt
-mv temp.txt prophylaxis.txt
-echo "commit" >> prophylaxis.txt
+cat ./omniscience.txt >> temp.txt
+cp ./omniscience.txt ./backup-omniscience.txt
+mv temp.txt omniscience.txt
+echo "commit" >> omniscience.txt
 
 
-ssh -T admin@172.20.242.150 < ./prophylaxis.txt
+ssh -T admin@172.20.242.150 < ./omniscience.txt
 
-cp ./prophylaxis.txt ./ran.txt
-mv ./backup-prophylaxis.txt ./prophylaxis.txt
+cp ./omniscience.txt ./ran.txt
+mv ./backup-omniscience.txt ./omniscience.txt
 
 exit 0
