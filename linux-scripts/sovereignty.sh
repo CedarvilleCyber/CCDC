@@ -37,7 +37,22 @@ then
     exit 1
 fi
 
-MACHINE="$1"
+MACHINE=""
+
+print_usage() {
+    printf "    ${info}-m <machine> to run sovereignty with preconfigred firewall rules${reset}\n\n"
+}
+
+while getopts 'm:h' flag; do
+    case "${flag}" in
+        m) MACHINE="${OPTARG}" ;;
+        h) print_usage
+       exit 0 ;;
+        *) print_usage
+       exit 1 ;;
+    esac
+done
+
 
 case $MACHINE in
     "dns-ntp")     ;;
@@ -126,7 +141,7 @@ else
     rm -rf /tmp/*
 fi
 
-# firewall automate setup
+# Machine Specific
 if [[ "$MACHINE" == "dns-ntp" ]]
 then
     printf "53\nt\n53\nu\n123\nu" > ./data-files/ports.txt
