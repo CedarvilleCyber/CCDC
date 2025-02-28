@@ -33,6 +33,7 @@ cat ./omniscience.txt >> temp.txt
 cp ./omniscience.txt ./backup-omniscience.txt
 mv temp.txt omniscience.txt
 echo "commit" >> omniscience.txt
+echo "exit" >> omniscience.txt
 
 
 ssh -T admin@172.20.242.150 < ./omniscience.txt
