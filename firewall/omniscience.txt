@@ -35,6 +35,10 @@ set profile-group ccdc url-filtering default
 set deviceconfig system service disable-telnet yes
 set deviceconfig system service disable-http yes
 set deviceconfig system service disable-snmp yes
+set deviceconfig system service disable-http-ocsp yes
+set deviceconfig system service disable-userid-syslog-listener-udp yes
+set deviceconfig system service disable-userid-service yes
+set deviceconfig system service disable-userid-syslog-listener-ssl yes
 set deviceconfig system login-banner "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
 set deviceconfig system ack-login-banner yes
 
