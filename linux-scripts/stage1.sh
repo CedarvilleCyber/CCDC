@@ -118,7 +118,7 @@ then
     	    wget https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -O main.tar.gz
     	    tar -zxvf ./main.tar.gz
     	    cd ./CCDC-main/linux-scripts
-    	    ./sovereignty.sh "$MACHINE"
+    	    ./sovereignty.sh -m "$MACHINE"
         else
     	    wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/sovereignty.sh -O sovereignty.sh
     	    wget --no-cache https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -O backup.sh
@@ -277,7 +277,7 @@ and run sovereignty.sh like normal\n\n\n"
     	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://github.com/CedarvilleCyber/CCDC/archive/main.tar.gz -o main.tar.gz
     	    tar -zxvf ./main.tar.gz
     	    cd ./CCDC-main/linux-scripts
-	        ./sovereignty.sh "$MACHINE"
+	        ./sovereignty.sh -m "$MACHINE"
         else
     	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/sovereignty.sh -o sovereignty.sh
     	    curl -H 'Cache-Control: no-cache, no-store' -k -L https://raw.githubusercontent.com/CedarvilleCyber/CCDC/main/linux-scripts/backup.sh -o backup.sh
