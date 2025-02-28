@@ -1,0 +1,262 @@
+set address google-dns ip-netmask 8.8.8.8
+set address cloudflare-dns ip-netmask 1.1.1.1
+set address priv-10 ip-netmask 10.0.0.0/8
+set address priv-172 ip-netmask 172.16.0.0/12
+set address priv-192 ip-netmask 192.168.0.0/16
+
+set deviceconfig system dns-setting servers primary 8.8.8.8
+set deviceconfig system dns-setting servers secondary 1.1.1.1
+set deviceconfig system timezone US/Central
+set deviceconfig system update-server updates.paloaltonetworks.com
+
+set deviceconfig system update-schedule statistics-service threat-prevention-pcap no
+set deviceconfig system update-schedule statistics-service application-reports no
+set deviceconfig system update-schedule statistics-service threat-prevention-reports no
+set deviceconfig system update-schedule statistics-service threat-prevention-information no
+set deviceconfig system update-schedule statistics-service passive-dns-monitoring no
+set deviceconfig system update-schedule statistics-service url-reports no
+set deviceconfig system update-schedule statistics-service health-performance-reports no
+set deviceconfig system update-schedule statistics-service file-identification-reports no
+
+set profile-group ccdc virus default
+set profile-group ccdc spyware strict
+set profile-group ccdc vulnerability strict
+set profile-group ccdc wildfire-analysis default
+set profile-group ccdc url-filtering default
+
+set deviceconfig system service disable-telnet yes
+set deviceconfig system service disable-http yes
+set deviceconfig system service disable-snmp yes
+set deviceconfig system login-banner "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
+set deviceconfig system ack-login-banner yes
+
+set network profiles interface-management-profile Base http no
+set network profiles interface-management-profile Base https no
+set network profiles interface-management-profile Base http-ocsp no
+set network profiles interface-management-profile Base ssh no
+set network profiles interface-management-profile Base snmp no
+set network profiles interface-management-profile Base userid-service no
+set network profiles interface-management-profile Base ping no
+set network profiles interface-management-profile Base response-pages no
+set network profiles interface-management-profile Base telnet no
+
+set network interface ethernet ethernet1/1 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/1 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/1 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/1 layer3 lldp enable no
+
+set network interface ethernet ethernet1/2 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/2 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/2 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/2 layer3 lldp enable no
+
+set network interface ethernet ethernet1/3 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/3 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/3 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/3 layer3 lldp enable no
+
+set network interface ethernet ethernet1/4 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/4 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/4 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/4 layer3 lldp enable no
+
+delete rulebase nat rules PA
+delete rulebase nat rules Router
+delete threats vulnerability 41111
+delete shared admin-role Honeypot
+delete shared admin-role "Configuration Admins"
+delete shared admin-role "Policy Admins"
+
+set network profiles zone-protection-profile Default discard-overlapping-tcp-segment-mismatch yes
+set network profiles zone-protection-profile Default discard-unknown-option yes
+set network profiles zone-protection-profile Default tcp-reject-non-syn yes
+set network profiles zone-protection-profile Default flood tcp-syn enable yes
+set network profiles zone-protection-profile Default flood tcp-syn syn-cookies maximal-rate 40000 activate-rate 10000 alarm-rate 10000
+set network profiles zone-protection-profile Default flood icmp enable yes
+set network profiles zone-protection-profile Default flood icmp red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood udp enable yes
+set network profiles zone-protection-profile Default flood udp red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood other-ip enable yes
+set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood icmpv6 enable yes
+set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default scan 8001 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8001 interval 2
+set network profiles zone-protection-profile Default scan 8001 threshold 100
+set network profiles zone-protection-profile Default scan 8002 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8002 interval 10
+set network profiles zone-protection-profile Default scan 8002 threshold 100
+set network profiles zone-protection-profile Default scan 8003 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8003 interval 2
+set network profiles zone-protection-profile Default scan 8003 threshold 100
+set network profiles zone-protection-profile Default discard-ip-frag yes
+set network profiles zone-protection-profile Default discard-malformed-option yes
+set network profiles zone-protection-profile Default non-ip-protocol list-type exclude
+set network profiles zone-protection-profile Default discard-strict-source-routing yes
+set network profiles zone-protection-profile Default discard-loose-source-routing yes
+set network profiles zone-protection-profile Default discard-tcp-split-handshake yes
+set network profiles zone-protection-profile Default remove-tcp-timestamp yes
+set network profiles zone-protection-profile Default discard-icmp-large-packet yes
+
+set zone External network zone-protection-profile Default
+set zone Internal network zone-protection-profile Default
+set zone Public network zone-protection-profile Default
+set zone User network zone-protection-profile Default
+
+set service http protocol tcp port 80
+set service http protocol tcp override no 
+set service service-splunk protocol tcp port 8000
+set service service-splunk protocol tcp override no 
+set service syslog protocol udp port 514
+set service syslog protocol udp override no 
+
+set rulebase security rules EXTERNAL2SELF_DROP profile-setting group ccdc
+set rulebase security rules EXTERNAL2SELF_DROP application any
+set rulebase security rules EXTERNAL2SELF_DROP service application-default
+set rulebase security rules EXTERNAL2SELF_DROP to any
+set rulebase security rules EXTERNAL2SELF_DROP from External
+set rulebase security rules EXTERNAL2SELF_DROP source any
+set rulebase security rules EXTERNAL2SELF_DROP destination this-fw
+set rulebase security rules EXTERNAL2SELF_DROP action drop
+set rulebase security rules EXTERNAL2SELF_DROP log-start no
+set rulebase security rules EXTERNAL2SELF_DROP log-end yes
+set rulebase security rules EXTERNAL2SELF_DROP log-setting default
+
+set rulebase security rules EXTERNAL_PRIV profile-setting group ccdc
+set rulebase security rules EXTERNAL_PRIV application any
+set rulebase security rules EXTERNAL_PRIV service application-default
+set rulebase security rules EXTERNAL_PRIV to any
+set rulebase security rules EXTERNAL_PRIV from any
+set rulebase security rules EXTERNAL_PRIV source [ priv-10 priv-172 priv-192 ]
+set rulebase security rules EXTERNAL_PRIV destination any
+set rulebase security rules EXTERNAL_PRIV action drop
+set rulebase security rules EXTERNAL_PRIV negate-source yes
+set rulebase security rules EXTERNAL_PRIV log-start no
+set rulebase security rules EXTERNAL_PRIV log-end yes
+set rulebase security rules EXTERNAL_PRIV log-setting default
+
+set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
+set rulebase security rules KILL_INSIDE2PRIVATE application any
+set rulebase security rules KILL_INSIDE2PRIVATE service application-default
+set rulebase security rules KILL_INSIDE2PRIVATE to External
+set rulebase security rules KILL_INSIDE2PRIVATE from [ External Internal Public User ]
+set rulebase security rules KILL_INSIDE2PRIVATE source any
+set rulebase security rules KILL_INSIDE2PRIVATE destination [ priv-10 priv-172 priv-192 ]
+set rulebase security rules KILL_INSIDE2PRIVATE action deny
+set rulebase security rules KILL_INSIDE2PRIVATE log-start no
+set rulebase security rules KILL_INSIDE2PRIVATE log-end yes
+set rulebase security rules KILL_INSIDE2PRIVATE log-setting default
+
+set rulebase security rules QUICK_ALLOW_WEB profile-setting group ccdc
+set rulebase security rules QUICK_ALLOW_WEB application any
+set rulebase security rules QUICK_ALLOW_WEB service [ http service-https ]
+set rulebase security rules QUICK_ALLOW_WEB to External
+set rulebase security rules QUICK_ALLOW_WEB from [ Internal Public User ]
+set rulebase security rules QUICK_ALLOW_WEB source any
+set rulebase security rules QUICK_ALLOW_WEB destination any
+set rulebase security rules QUICK_ALLOW_WEB action allow
+set rulebase security rules QUICK_ALLOW_WEB disabled yes
+set rulebase security rules QUICK_ALLOW_WEB log-start no
+set rulebase security rules QUICK_ALLOW_WEB log-end yes
+set rulebase security rules QUICK_ALLOW_WEB log-setting default
+
+set rulebase security rules ALLOW_DNS profile-setting group ccdc
+set rulebase security rules ALLOW_DNS application dns
+set rulebase security rules ALLOW_DNS service application-default
+set rulebase security rules ALLOW_DNS to External
+set rulebase security rules ALLOW_DNS from [ Internal Public User ]
+set rulebase security rules ALLOW_DNS source any
+set rulebase security rules ALLOW_DNS destination [ cloudflare-dns google-dns ]
+set rulebase security rules ALLOW_DNS action allow
+set rulebase security rules ALLOW_DNS log-start no
+set rulebase security rules ALLOW_DNS log-end yes
+set rulebase security rules ALLOW_DNS log-setting default
+
+set rulebase security rules KILL2EXTERNAL profile-setting group ccdc
+set rulebase security rules KILL2EXTERNAL application any
+set rulebase security rules KILL2EXTERNAL service any
+set rulebase security rules KILL2EXTERNAL to External
+set rulebase security rules KILL2EXTERNAL from [ Internal Public User ]
+set rulebase security rules KILL2EXTERNAL source any
+set rulebase security rules KILL2EXTERNAL destination any
+set rulebase security rules KILL2EXTERNAL action drop
+set rulebase security rules KILL2EXTERNAL disabled yes
+set rulebase security rules KILL2EXTERNAL log-start no
+set rulebase security rules KILL2EXTERNAL log-end yes
+set rulebase security rules KILL2EXTERNAL log-setting default
+
+set rulebase security rules INSIDE2EVERYWHERE_http_https profile-setting group ccdc
+set rulebase security rules INSIDE2EVERYWHERE_http_https application any
+set rulebase security rules INSIDE2EVERYWHERE_http_https service [ service-http service-https ]
+set rulebase security rules INSIDE2EVERYWHERE_http_https to [ External Internal Public User ]
+set rulebase security rules INSIDE2EVERYWHERE_http_https from [ Internal Public User ]
+set rulebase security rules INSIDE2EVERYWHERE_http_https source any
+set rulebase security rules INSIDE2EVERYWHERE_http_https destination any
+set rulebase security rules INSIDE2EVERYWHERE_http_https action allow
+set rulebase security rules INSIDE2EVERYWHERE_http_https log-start no
+set rulebase security rules INSIDE2EVERYWHERE_http_https log-end yes
+set rulebase security rules INSIDE2EVERYWHERE_http_https log-setting default
+
+set rulebase security rules INSIDE2EXTERNAL profile-setting group ccdc
+set rulebase security rules INSIDE2EXTERNAL application [ icmp ping ssl web-browsing ntp-base ]
+set rulebase security rules INSIDE2EXTERNAL service application-default
+set rulebase security rules INSIDE2EXTERNAL to External
+set rulebase security rules INSIDE2EXTERNAL from [ Internal Public User ]
+set rulebase security rules INSIDE2EXTERNAL source any
+set rulebase security rules INSIDE2EXTERNAL destination any
+set rulebase security rules INSIDE2EXTERNAL action allow
+set rulebase security rules INSIDE2EXTERNAL log-start no
+set rulebase security rules INSIDE2EXTERNAL log-end yes
+set rulebase security rules INSIDE2EXTERNAL log-setting default
+
+set rulebase security rules INSIDE2INSIDE profile-setting group ccdc
+set rulebase security rules INSIDE2INSIDE application [ dns splunk syslog ntp ping snmp ssh ]
+set rulebase security rules INSIDE2INSIDE service application-default
+set rulebase security rules INSIDE2INSIDE to [ Internal Public User ]
+set rulebase security rules INSIDE2INSIDE from [ Internal Public User ]
+set rulebase security rules INSIDE2INSIDE source any
+set rulebase security rules INSIDE2INSIDE destination any
+set rulebase security rules INSIDE2INSIDE action allow
+set rulebase security rules INSIDE2INSIDE log-start no
+set rulebase security rules INSIDE2INSIDE log-end yes
+set rulebase security rules INSIDE2INSIDE log-setting default
+
+set service 8088-tcp-hec protocol tcp port 8088
+set rulebase security rules INSIDE2SPLUNK profile-setting group ccdc
+set rulebase security rules INSIDE2SPLUNK application any
+set rulebase security rules INSIDE2SPLUNK service [ 8088-tcp-hec service-splunk ]
+set rulebase security rules INSIDE2SPLUNK to Public 
+set rulebase security rules INSIDE2SPLUNK from [ User Public Internal ]
+set rulebase security rules INSIDE2SPLUNK source any
+set rulebase security rules INSIDE2SPLUNK destination any
+set rulebase security rules INSIDE2SPLUNK action allow
+set rulebase security rules INSIDE2SPLUNK log-start no
+set rulebase security rules INSIDE2SPLUNK log-end yes
+set rulebase security rules INSIDE2SPLUNK log-setting default
+
+set service 8000-tcp protocol tcp port 8000
+set rulebase nat rules splunk-to-wkst to External
+set rulebase nat rules splunk-to-wkst from External
+set rulebase nat rules splunk-to-wkst source any
+set rulebase nat rules splunk-to-wkst destination public-splunk
+set rulebase nat rules splunk-to-wkst service 8000-tcp
+set rulebase nat rules splunk-to-wkst destination-translation translated-address priv-ubuntu-wkst
+set rulebase nat rules splunk-to-wkst destination-translation translated-port 8000
+set rulebase nat rules splunk-to-wkst disabled yes
+set rulebase nat rules splunk-to-wkst source-translation dynamic-ip-and-port interface-address interface ethernet1/3
+move rulebase nat rules splunk-to-wkst top
+
+set rulebase security rules any2any application any
+set rulebase security rules any2any service application-default
+set rulebase security rules any2any to any
+set rulebase security rules any2any from any
+set rulebase security rules any2any source any
+set rulebase security rules any2any destination any
+set rulebase security rules any2any action allow
+move rulebase security rules any2any bottom
+
+set rulebase application-override
+set rulebase default-security-rules rules interzone-default action deny
+set rulebase default-security-rules rules interzone-default log-end yes
+set rulebase default-security-rules rules intrazone-default action deny
+set rulebase default-security-rules rules intrazone-default log-end yes

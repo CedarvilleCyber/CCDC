@@ -9,6 +9,10 @@
 
 printf "Starting palo-base script\n"
 
-ssh -T admin@172.20.242.150 < ./generic.txt
+printf "What is the IP of the firewall managment?: "
+
+read IP
+
+ssh -T admin@$IP < ./palo-base.txt
 
 exit 0
