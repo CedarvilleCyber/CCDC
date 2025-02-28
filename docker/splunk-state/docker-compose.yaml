@@ -16,6 +16,7 @@ services:
       - var_tmp_data:/var/tmp
       - ansible_data:/home/ansible
     read_only: true
+    restart: unless-stopped
 
 volumes:
   opt_data:

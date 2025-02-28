@@ -21,6 +21,7 @@ services:
       - DOMAIN_NAME=frog.com
       - SUB_DOMAIN=mail
     read_only: true
+    restart: unless-stopped
 
 volumes:
   mail_data:
