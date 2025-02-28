@@ -38,7 +38,7 @@ echo "exit" >> omniscience.txt
 
 ssh -T admin@172.20.242.150 < ./omniscience.txt
 
-cp ./omniscience.txt ./ran.txt
+cp ./omniscience.txt ./run-omniscience.txt
 mv ./backup-omniscience.txt ./omniscience.txt
 
 exit 0
