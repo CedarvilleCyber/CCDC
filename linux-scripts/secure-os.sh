@@ -313,13 +313,13 @@ if [[ "$FOUND" != "" ]]
 then
     printf "\n\n$FOUND\n\n"
     printf "\n\n${warn}WARNING: Found things preset. Please close out of all shells and logout.\n"
-    printf "Then, come back and rerun pansophy like normal.${reset}\n\n"
+    printf "Then, come back and rerun sovereignty like normal.${reset}\n\n"
 fi
 
 if [[ "$RC" == "/etc/rc.local" ]]
 then
     printf "${warn}Discovered rc.local, renaming to /etc/rc.local_EVIL. Check file and restart if needed.${reset}\n"
-    printf "Then, come back and rerun pansophy like normal.${reset}\n\n"
+    printf "Then, come back and rerun sovereignty like normal.${reset}\n\n"
 fi
 
 if [[ "$1" != "background" ]]

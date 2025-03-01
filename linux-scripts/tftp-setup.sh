@@ -7,7 +7,7 @@
 # Date: 1/21/2025
 #
 # TO DO: add support for different package managers, such as yum.
-# Pansophy has this feature, so use it as an example.
+# Sovereignty has this feature, so use it as an example.
 # 
 # Add flags: -h/--help and -f/--force-overwrite. The force-overwrite
 # flag would forcibly overwrite the configuration file with the 
