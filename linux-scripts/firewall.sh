@@ -299,4 +299,14 @@ else
     iptables -L -v -n
 fi
 
+# persist rules based on distro
+if [[ "$ID" == "centos" ]] || \
+   [[ "$ID" == "fedora" ]] || \
+   [[ "$ID" == "rhel" ]]
+then
+    iptables-save > /etc/sysconfig/iptables
+else
+    iptables-save > /etc/iptables/rules.v4
+fi
+
 exit 0
