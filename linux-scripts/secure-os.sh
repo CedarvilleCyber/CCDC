@@ -39,10 +39,14 @@ else
     printf "${error}ERROR: Unsupported OS, assuming apt-get${reset}\n"
 fi
 
-# create ./data-files if it doesn't already exist
+# create folders if they doesn't already exist
 if [[ ! -d ./data-files ]]
 then
     mkdir data-files
+fi
+if [[ ! -d /usr/bak ]]
+then
+    mkdir /usr/bak
 fi
 
 if [[ "$1" != "background" ]]

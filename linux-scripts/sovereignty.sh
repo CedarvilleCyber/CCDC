@@ -128,7 +128,6 @@ fi
 
 
 # Create folders
-mkdir /usr/bak
 mkdir ./data-files
 
 # clear tmp folder
@@ -145,30 +144,35 @@ fi
 if [[ "$MACHINE" == "dns-ntp" ]]
 then
     printf "53\nt\n53\nu\n123\nu" > ./data-files/ports.txt
+    cat ./data-files/ports.txt | ./firewall.sh
 elif [[ "$MACHINE" == "ecomm" ]]
 then
     printf "80\nt" > ./data-files/ports.txt
+    cat ./data-files/ports.txt | ./firewall.sh
 elif [[ "$MACHINE" == "splunk" ]]
 then
     printf "514\nu\n8000\nt\n8065\nt\n8088\nt\n8089\nt\n8191\nt\n9997\nt" > ./data-files/ports.txt
+    cat ./data-files/ports.txt | ./firewall.sh
+    ./splunk.sh
 elif [[ "$MACHINE" == "web" ]]
 then
     printf "\n" > ./data-files/ports.txt
+    cat ./data-files/ports.txt | ./firewall.sh
 elif [[ "$MACHINE" == "webmail" ]]
 then
     printf "25\nt\n110\nt" > ./data-files/ports.txt
+    cat ./data-files/ports.txt | ./firewall.sh
 elif [[ "$MACHINE" == "workstation" ]]
 then
     printf "\n" > ./data-files/ports.txt
+    cat ./data-files/ports.txt | ./firewall.sh
 fi
 
 
-# firewall
+# firewall (if not already run)
 if [[ "$MACHINE" == "" ]]
 then
     ./firewall.sh
-else
-    cat ./data-files/ports.txt | ./firewall.sh
 fi
 
 # secure os

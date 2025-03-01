@@ -52,7 +52,10 @@ then
 fi
 
 printf "${info}Copying files${reset}\n"
-mkdir /usr/bak
+if [[ ! -d /usr/bak ]]
+then
+    mkdir /usr/bak
+fi
 
 cp -rp /etc /usr/bak/
 cp -rp /var /usr/bak/

@@ -22,6 +22,12 @@ printf "${info}Starting firewall script${reset}\n"
 # get some version information
 . /etc/os-release
 
+# create /usr/bak if it doesn't already exist
+if [[ ! -d /usr/bak ]]
+then
+    mkdir /usr/bak
+fi
+
 # Checking for either iptables or firewalld
 if [[ "$ID" == "centos" && $VERSION_ID -gt 6 ]] || \
    [[ "$ID" == "fedora" && $VERSION_ID -gt 17 ]] || \
