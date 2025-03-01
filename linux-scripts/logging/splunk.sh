@@ -20,13 +20,13 @@ fi
 
 
 # Get Splunk path
-printf "Enter Splunk installation path (default: /opt/splunk):\n"
+printf "${info}Enter Splunk installation path (default: /opt/splunk):${reset}\n"
 read -r SPLUNK_HOME
 
 # Set default path if none is provided
 if [[ -z "$SPLUNK_HOME" ]]; then
     SPLUNK_HOME="/opt/splunk"
-    printf "No path specified. Using /opt/splunk\n"
+    printf "${info}No path specified. Using /opt/splunk${reset}\n"
 fi
 
 # Add Splunk binary to script path and save to bash PATH
@@ -48,19 +48,20 @@ splunk version
 
 
 # Prompt for Splunk admin credentials
-read -p "Enter Splunk admin username: " ADMIN_USER
-read -s -p "Enter password for $ADMIN_USER: " ADMIN_PASS
+read -p "${info}Enter Splunk admin username: ${reset}" ADMIN_USER
+read -s -p "${info}Enter password for $ADMIN_USER: ${reset}" ADMIN_PASS
+printf "\n"
 AUTH_CREDENTIALS="$ADMIN_USER:$ADMIN_PASS"
 
 # Extract usernames to an array
-printf "Splunk users found:\n"
+printf "${info}Splunk users found:${reset}\n"
 mapfile -t users < <(splunk list user | grep '^username:' | awk '{print $2}')
 for i in "${!users[@]}"; do
-    printf "$((i+1)). ${users[i]}\n"
+    printf "${info} $((i+1)). ${users[i]}${reset}\n"
 done
 
 # Delete specified users
-printf "Delete users by entering respective numbers separated by spaces: "
+printf "${info}Delete users by entering respective numbers separated by spaces: ${reset}"
 read -r input
 
 for num in $input; do
@@ -69,18 +70,18 @@ for num in $input; do
         if [[ "$user_to_delete" == "admin" ]]; then
             continue
         fi
-        printf "Deleting user: $user_to_delete\n"
+        printf "${info}Deleting user: $user_to_delete${reset}\n"
         splunk remove user "$user_to_delete" -auth "$AUTH_CREDENTIALS"
     else
-        printf "Invalid selection: $num\n"
+        printf "${warn}Invalid selection: $num${reset}\n"
     fi
 done
 
 # List remaining users
-printf "Splunk users remaining:\n"
+printf "${info}Splunk users remaining:${reset}\n"
 mapfile -t remaining < <(splunk list user | grep '^username:' | awk '{print $2}')
 for i in "${!remaining[@]}"; do
-    printf "$((i+1)). ${remaining[i]}\n"
+    printf " ${info}$((i+1)). ${remaining[i]}${reset}\n"
 done
 
 # Change passwords for remaining users, with admin last
@@ -88,39 +89,39 @@ for user in "${remaining[@]}"; do
     if [[ "$user" == "admin" ]]; then
         continue
     fi
-    printf "Changing password for user $user.\n"
+    printf "${info}Changing password for user $user.${reset}\n"
     while true; do
-        read -s -p "New password: " PASS1
+        read -s -p "${info}New password: ${reset}" PASS1
         printf "\n"
-        read -s -p "Retype new password: " PASS2
+        read -s -p "${info}Retype new password: ${reset}" PASS2
         if [[ "$PASS1" == "$PASS2" && -n "$PASS1" ]]; then
             splunk edit user "$user" -password "$PASS1" -auth "$AUTH_CREDENTIALS"
             if [[ $? -eq 0 ]]; then
-                printf "Password updated successfully for $user.\n"
+                printf "${info}Password updated successfully for $user.${reset}\n"
                 break
             else
-                printf "Failed to update password for $user.\n"
+                printf "${warn}Failed to update password for $user.${reset}\n"
             fi
         else
-            printf "Passwords do not match or are empty. Please try again.\n"
+            printf "${warn}Passwords do not match or are empty. Please try again.${reset}\n"
         fi
     done
 done
-printf "Changing password for user admin.\n"
+printf "${info}Changing password for user admin.${reset}\n"
 while true; do
-    read -s -p "New password: " PASS1
+    read -s -p "${info}New password: ${reset}" PASS1
     printf "\n"
-    read -s -p "Retype new password: " PASS2
+    read -s -p "${info}Retype new password: ${reset}" PASS2
     if [[ "$PASS1" == "$PASS2" && -n "$PASS1" ]]; then
         splunk edit user admin -password "$PASS1" -auth "$AUTH_CREDENTIALS"
         if [[ $? -eq 0 ]]; then
-            printf "Password updated successfully for admin.\n"
+            printf "${info}Password updated successfully for admin.${reset}\n"
             break
         else
-            printf "Failed to update password for admin.\n"
+            printf "${warn}Failed to update password for admin.${reset}\n"
         fi
     else
-        printf "Passwords do not match or are empty. Please try again.\n"
+        printf "${warn}Passwords do not match or are empty. Please try again.${reset}\n"
     fi
 done
 
