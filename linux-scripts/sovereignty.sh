@@ -153,7 +153,7 @@ elif [[ "$MACHINE" == "splunk" ]]
 then
     printf "514\nu\n8000\nt\n8065\nt\n8088\nt\n8089\nt\n8191\nt\n9997\nt" > ./data-files/ports.txt
     cat ./data-files/ports.txt | ./firewall.sh
-    ./splunk.sh
+    ./logging/splunk.sh
 elif [[ "$MACHINE" == "web" ]]
 then
     printf "\n" > ./data-files/ports.txt
