@@ -51,6 +51,19 @@ fi
 
 if [[ "$1" != "background" ]]
 then
+    # set PROMPT_COMMAND to remove malicious as well as get history
+    find / -type f -name ".bashrc" -o -name ".profile" -o -name ".bash_login" -o -name ".bash_profile" 2>/dev/null > ./data-files/login-scripts.txt
+    printf "/etc/profile\n" >> ./data-files/login-scripts.txt
+    printf "/etc/bash.bashrc\n" >> ./data-files/login-scripts.txt
+
+    # loop though each found file and append PROMPT_COMMAND
+    # it will set the HISTFILE if changed and then append history
+    while IFS="" read -r line || [ -n "$line" ]
+    do
+        printf "export PROMPT_COMMAND=\"HISTFILE=\\\$HOME/.bash_history;HISTSIZE=2000;HISTFILESIZE=2000;history -a\"" >> $line
+    done < ./data-files/login-scripts.txt
+
+
     # change file permissions
     # executable only for .sh extensions.
     # user only permissions except for on directories.
