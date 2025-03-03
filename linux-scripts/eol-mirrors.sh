@@ -24,7 +24,7 @@ then
     # mirrors files
     # /etc/yum.repos.d/*
     find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/mirror/ s/^/#/' {} +
-    find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/#baseurl/ s/^#//' {} +
+    find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/#baseurl/ s/^#*//' {} +
     find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/baseurl/ s/mirror.centos.org/vault.centos.org/' {} +
     find /etc/yum.repos.d/ -type f -name "*" -exec sed -i '/baseurl/ s/download.fedoraproject.org\/pub/archives.fedoraproject.org\/pub\/archive/' {} +
 fi
