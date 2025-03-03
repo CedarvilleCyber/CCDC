@@ -13,6 +13,7 @@ wget https://github.com/peass-ng/PEASS-ng/releases/latest/download/linpeas.sh
 chmod 700 ./linpeas.sh
 
 ./linpeas.sh > lin-output.txt
+chmod 0000 ./linpeas.sh
 
 printf "\n\n\n"
 
