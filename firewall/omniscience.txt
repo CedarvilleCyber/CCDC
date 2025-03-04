@@ -115,63 +115,63 @@ set zone Internal network zone-protection-profile Default
 set zone Public network zone-protection-profile Default
 set zone User network zone-protection-profile Default
 
-set shared log-settings syslog Splunk server "Splunk" transport UDP
-set shared log-settings syslog Splunk server "Splunk" port 514
-set shared log-settings syslog Splunk server "Splunk" format IETF
-set shared log-settings syslog Splunk server "Splunk" server 172.20.241.20
-set shared log-settings syslog Splunk server "Splunk" facility LOG_USER
-set shared log-settings profiles default match-list traffic send-syslog Splunk
+set shared log-settings syslog Syslog server "Syslog" transport UDP
+set shared log-settings syslog Syslog server "Syslog" port 514
+set shared log-settings syslog Syslog server "Syslog" format IETF
+set shared log-settings syslog Syslog server "Syslog" server 172.20.241.20
+set shared log-settings syslog Syslog server "Syslog" facility LOG_USER
+set shared log-settings profiles default match-list traffic send-syslog Syslog
 set shared log-settings profiles default match-list traffic log-type traffic
 set shared log-settings profiles default match-list traffic filter "All Logs"
 set shared log-settings profiles default match-list traffic send-to-panorama no
 set shared log-settings profiles default match-list traffic quarantine no
-set shared log-settings profiles default match-list auth send-syslog Splunk
+set shared log-settings profiles default match-list auth send-syslog Syslog
 set shared log-settings profiles default match-list auth log-type auth
 set shared log-settings profiles default match-list auth filter "All Logs"
 set shared log-settings profiles default match-list auth send-to-panorama no
 set shared log-settings profiles default match-list auth quarantine no
-set shared log-settings profiles default match-list data send-syslog Splunk
+set shared log-settings profiles default match-list data send-syslog Syslog
 set shared log-settings profiles default match-list data log-type data
 set shared log-settings profiles default match-list data filter "All Logs"
 set shared log-settings profiles default match-list data send-to-panorama no
 set shared log-settings profiles default match-list data quarantine no
-set shared log-settings profiles default match-list gtp send-syslog Splunk
+set shared log-settings profiles default match-list gtp send-syslog Syslog
 set shared log-settings profiles default match-list gtp log-type gtp
 set shared log-settings profiles default match-list gtp filter "All Logs"
 set shared log-settings profiles default match-list gtp send-to-panorama no
 set shared log-settings profiles default match-list gtp quarantine no
-set shared log-settings profiles default match-list threat send-syslog Splunk
+set shared log-settings profiles default match-list threat send-syslog Syslog
 set shared log-settings profiles default match-list threat log-type threat
 set shared log-settings profiles default match-list threat filter "All Logs"
 set shared log-settings profiles default match-list threat send-to-panorama no
 set shared log-settings profiles default match-list threat quarantine no
-set shared log-settings profiles default match-list tunnel send-syslog Splunk
+set shared log-settings profiles default match-list tunnel send-syslog Syslog
 set shared log-settings profiles default match-list tunnel log-type tunnel
 set shared log-settings profiles default match-list tunnel filter "All Logs"
 set shared log-settings profiles default match-list tunnel send-to-panorama no
 set shared log-settings profiles default match-list tunnel quarantine no
-set shared log-settings profiles default match-list url send-syslog Splunk
+set shared log-settings profiles default match-list url send-syslog Syslog
 set shared log-settings profiles default match-list url log-type url
 set shared log-settings profiles default match-list url filter "All Logs"
 set shared log-settings profiles default match-list url send-to-panorama no
 set shared log-settings profiles default match-list url quarantine no
-set shared log-settings profiles default match-list wildfire send-syslog Splunk
+set shared log-settings profiles default match-list wildfire send-syslog Syslog
 set shared log-settings profiles default match-list wildfire log-type wildfire
 set shared log-settings profiles default match-list wildfire filter "All Logs"
 set shared log-settings profiles default match-list wildfire send-to-panorama no
 set shared log-settings profiles default match-list wildfire quarantine no
-set shared log-settings system match-list Splunk send-syslog Splunk
-set shared log-settings system match-list Splunk filter "All Logs"
-set shared log-settings config match-list Splunk send-syslog Splunk
-set shared log-settings config match-list Splunk filter "All Logs"
-set shared log-settings userid match-list Splunk send-syslog Splunk
-set shared log-settings userid match-list Splunk filter "All Logs"
-set shared log-settings hipmatch match-list Splunk send-syslog Splunk
-set shared log-settings hipmatch match-list Splunk filter "All Logs"
-set shared log-settings globalprotect match-list Splunk send-syslog Splunk
-set shared log-settings globalprotect match-list Splunk filter "All Logs"
-set shared log-settings iptag match-list Splunk send-syslog Splunk
-set shared log-settings iptag match-list Splunk filter "All Logs"
+set shared log-settings system match-list Syslog send-syslog Syslog
+set shared log-settings system match-list Syslog filter "All Logs"
+set shared log-settings config match-list Syslog send-syslog Syslog
+set shared log-settings config match-list Syslog filter "All Logs"
+set shared log-settings userid match-list Syslog send-syslog Syslog
+set shared log-settings userid match-list Syslog filter "All Logs"
+set shared log-settings hipmatch match-list Syslog send-syslog Syslog
+set shared log-settings hipmatch match-list Syslog filter "All Logs"
+set shared log-settings globalprotect match-list Syslog send-syslog Syslog
+set shared log-settings globalprotect match-list Syslog filter "All Logs"
+set shared log-settings iptag match-list Syslog send-syslog Syslog
+set shared log-settings iptag match-list Syslog filter "All Logs"
 
 set service http protocol tcp port 80
 set service http protocol tcp override no 
