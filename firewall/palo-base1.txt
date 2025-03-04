@@ -102,11 +102,6 @@ set network profiles zone-protection-profile Default discard-tcp-split-handshake
 set network profiles zone-protection-profile Default remove-tcp-timestamp yes
 set network profiles zone-protection-profile Default discard-icmp-large-packet yes
 
-set zone External network zone-protection-profile Default
-set zone Internal network zone-protection-profile Default
-set zone Public network zone-protection-profile Default
-set zone User network zone-protection-profile Default
-
 set shared log-settings syslog Syslog server "Syslog" transport UDP
 set shared log-settings syslog Syslog server "Syslog" port 514
 set shared log-settings syslog Syslog server "Syslog" format IETF
@@ -176,7 +171,7 @@ set rulebase security rules EXTERNAL2SELF_DROP profile-setting group ccdc
 set rulebase security rules EXTERNAL2SELF_DROP application any
 set rulebase security rules EXTERNAL2SELF_DROP service application-default
 set rulebase security rules EXTERNAL2SELF_DROP to any
-set rulebase security rules EXTERNAL2SELF_DROP from External
+set rulebase security rules EXTERNAL2SELF_DROP from EXT_ZONE
 set rulebase security rules EXTERNAL2SELF_DROP source any
 set rulebase security rules EXTERNAL2SELF_DROP destination this-fw
 set rulebase security rules EXTERNAL2SELF_DROP action drop

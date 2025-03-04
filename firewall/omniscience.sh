@@ -31,6 +31,17 @@ if [[ "$gen" == "y" || "$gen" == "Y" ]]; then
         syslog="127.0.0.1"
     fi
 
+    # get zone info
+    printf "List all the zones (CAPITALIZATION Matters): "
+    read ZONES
+    export ZONES
+
+    printf "Which one is externally facing? [$ZONES]: "
+    read EXT_ZONE
+
+    printf "Which ones are internally facing? [$ZONES]: "
+    read INT_ZONES
+
     # generate the rest of the rules
     ./palo-gen.sh
 
@@ -43,6 +54,18 @@ if [[ "$gen" == "y" || "$gen" == "Y" ]]; then
     cat ./palo-gen.txt >> ./run-omniscience.txt
 
     cat ./palo-base2.txt >> ./run-omniscience.txt
+
+    # replace zone names from palo-base2
+    sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-omniscience.txt
+
+    if echo "$INT_ZONES" | grep -q " "; then
+        # multiple (grep found a space)
+        sed -i "s/INT_ZONES/[ $INT_ZONES ]/" ./run-omniscience.txt
+    else
+        # single
+        sed -i "s/INT_ZONES/$INT_ZONES/" ./run-omniscience.txt
+    fi
+
 
     echo "commit" >> ./run-omniscience.txt
     echo "exit" >> ./run-omniscience.txt

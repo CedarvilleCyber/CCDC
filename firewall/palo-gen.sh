@@ -33,7 +33,6 @@ fi
 # $2 is the list of strings
 contains () {
     contain="false"
-    temp_multiple="false"
     if echo "$1" | grep -q " "; then
         # multiple (grep found a space)
         for inp in $1; do
@@ -44,13 +43,10 @@ contains () {
                 fi
                 contain="false"
             done
-            #if [[ "$contain" == "true" ]]; then
-            #    # run until all zones are found to be true
-            #    contain="false"
-            #else
-            #    # one already failed, so just quit
-            #    break
-            #fi
+            # if one is missing at all then quit immediately
+            if [[ "$contain" == "false" ]]; then
+                break
+            fi
         done
     else
         # single
@@ -69,10 +65,14 @@ contains () {
 rm -rf ./palo-gen.txt
 
 # zone names (find on web console after password change)
-printf "${info}Enter zone names found on web console. CAPITALIZATION MATTERS!${reset}\n"
-printf "Separate each one by a single space: "
-
-read -e ZONES
+if [[ "$ZONES" == "" ]]; then
+    printf "${info}Enter zone names found on web console. CAPITALIZATION MATTERS!${reset}\n"
+    printf "Separate each one by a single space: "
+    read ZONES
+else
+    printf "${info}Zone names already aquired${reset}\n"
+    echo $ZONES
+fi
 
 
 # objects
