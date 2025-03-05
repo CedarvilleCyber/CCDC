@@ -74,7 +74,7 @@ d_ports=""
 name=`make_json "$d_ports"`
 action="DENY"
 log="LOG_NONE"
-curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
+curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
 
 
 printf "${info}Finished fire-base1 script${reset}\n"
