@@ -59,19 +59,19 @@ rm -rf ./fire-temp.txt
 name="DENY2SELF"
 name=`make_json "$name"`
 s_zone="EXT_ZONE securityzone"
-name=`make_json "$s_zone"`
+s_zone=`make_json "$s_zone"`
 s_addr=""
-name=`make_json "$s_addr"`
+s_addr=`make_json "$s_addr"`
 d_zone=""
-name=`make_json "$d_zone"`
+d_zone=`make_json "$d_zone"`
 d_addr="this-fw networkobject"
-name=`make_json "$d_addr"`
+d_addr=`make_json "$d_addr"`
 app=""
-name=`make_json "$app"`
+app=`make_json "$app"`
 s_ports=""
-name=`make_json "$s_ports"`
+s_ports=`make_json "$s_ports"`
 d_ports=""
-name=`make_json "$d_ports"`
+d_ports=`make_json "$d_ports"`
 action="DENY"
 log="LOG_NONE"
 curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
