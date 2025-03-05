@@ -52,9 +52,11 @@ export pass
 printf "#!/bin/bash\n" > ./run-immanence.sh
 cat ./fire-base1.sh >> ./run-immanence.sh
 
-sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-omniscience.txt
+sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-immanence.sh
 # FIXME TODO json format for INT_ZONES
 
-#ssh -T admin@$IP < ./run-palo-secure.txt
+chmod 700 ./run-immanence.sh
+
+./run-immanence.sh
 
 exit 0
