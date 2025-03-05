@@ -14,13 +14,14 @@ make_json() {
         # odd means type corresponding to the name
         if [[ $((count % 2)) -eq 0 ]]; then
             # name
-            json+="{\\\"name\\\": \\\"$item\\\","
+            json+="{\"name\": \"$item\","
         else
             # type
-            json+="\\\"type\\\": \\\"$item\\\"},"
+            json+="\"type\": \"$item\"},"
         fi
         count=$((count+1))
     done
+    # remove trailing comma
     json=`echo $json | sed 's/.$//'`
     echo $json
     return 0
