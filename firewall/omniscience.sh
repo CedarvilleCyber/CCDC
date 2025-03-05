@@ -20,8 +20,13 @@ if [[ "$gen" == "y" || "$gen" == "Y" ]]; then
     printf "What is the IP of the firewall managment?: "
     read IP
 
-    printf "What is the IP of the external firewall interface?: "
+    printf "What is the IP of the external firewall interface? (Blank if unknown): "
     read this_fw
+
+    if [[ "$this_fw" == "" ]]; then
+        # Just throw in localhost as filler
+        this_fw="127.0.0.1"
+    fi
 
     printf "What is the IP of the Syslog Server? (Blank if unknown): "
     read syslog
@@ -55,7 +60,7 @@ if [[ "$gen" == "y" || "$gen" == "Y" ]]; then
 
     cat ./palo-base2.txt >> ./run-omniscience.txt
 
-    # replace zone names from palo-base2
+    # replace zone names from palo-bases
     sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-omniscience.txt
 
     if echo "$INT_ZONES" | grep -q " "; then

@@ -1,18 +1,30 @@
-#!/bin/bash
-# 
 # fire-base1.sh
 # 
 # First part of generic firepower secure
-# 
-# Kaicheng Ye
-# Mar. 2025
+# not meant to be executed by itself
 
 printf "${info}Starting fire-base1 script${reset}\n"
 
-#echo "$IP"
-#echo "$this_fw"
-#echo "$syslog"
-#echo "$pass"
+# $1 pairs of name and type
+make_json() {
+    count=0
+    json=""
+    for item in $1; do
+        # even means name
+        # odd means type corresponding to the name
+        if [[ $((count % 2)) -eq 0 ]]; then
+            # name
+            json+="{\\\"name\\\": \\\"$item\\\","
+        else
+            # type
+            json+="\\\"type\\\": \\\"$item\\\"},"
+        fi
+        count=$((count+1))
+    done
+    json=`echo $json | sed 's/.$//'`
+    echo $json
+    return 0
+}
 
 curl -k -X POST -H 'Content-Type: application/json' -H 'Accept: application/json' -d "{\"grant_type\": \"password\", \"username\": \"admin\", \"password\": \"$pass\"}" "https://$IP/api/fdm/latest/fdm/token" > ./fire-temp.txt
 
@@ -31,6 +43,7 @@ rm -rf ./fire-temp.txt
 # Network Objects (Single Address)
 curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "google-dns", "description": "", "subType": "HOST", "value": "8.8.8.8", "isSystemDefined": false, "dnsResolution": "IPV4_ONLY", "type": "networkobject"}' "https://$IP/api/fdm/latest/object/networks"
 curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "cloudflare-dns", "description": "", "subType": "HOST", "value": "1.1.1.1", "isSystemDefined": false, "dnsResolution": "IPV4_ONLY", "type": "networkobject"}' "https://$IP/api/fdm/latest/object/networks"
+curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"this-fw\", \"description\": \"\", \"subType\": \"HOST\", \"value\": \"$this_fw\", \"isSystemDefined\": false, \"dnsResolution\": \"IPV4_ONLY\", \"type\": \"networkobject\"}" "https://$IP/api/fdm/latest/object/networks"
 
 # Network Objects (CIDR)
 curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "priv-10", "description": "test", "subType": "NETWORK", "value": "10.0.0.0/8", "isSystemDefined": false, "dnsResolution": "IPV4_ONLY", "type": "networkobject"}' "https://$IP/api/fdm/latest/object/networks"
@@ -43,8 +56,25 @@ P_ID=`cat ./fire-temp.txt | grep identityPolicySetting -B 1 | grep \"id\" | cut 
 rm -rf ./fire-temp.txt
 
 # Start making rules
+name="DENY2SELF"
+name=`make_json "$name"`
+s_zone="$EXT_ZONE securityzone"
+name=`make_json "$s_zone"`
+s_addr=""
+name=`make_json "$s_addr"`
+d_zone=""
+name=`make_json "$d_zone"`
+d_addr="this-fw networkobject"
+name=`make_json "$d_addr"`
+app=""
+name=`make_json "$app"`
+s_ports=""
+name=`make_json "$s_ports"`
+d_ports=""
+name=`make_json "$d_ports"`
+action="DENY"
+log="LOG_NONE"
+curl -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
 
 
 printf "${info}Finished fire-base1 script${reset}\n"
-
-exit 0

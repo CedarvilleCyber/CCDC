@@ -12,8 +12,13 @@ printf "Starting palo-secure script\n"
 printf "What is the IP of the firewall managment?: "
 read IP
 
-printf "What is the IP of the external firewall interface?: "
+printf "What is the IP of the external firewall interface? (Blank if unknown): "
 read this_fw
+
+if [[ "$this_fw" == "" ]]; then
+    # Just throw in localhost as filler
+    this_fw="127.0.0.1"
+fi
 
 printf "What is the IP of the Syslog Server? (Blank if unknown): "
 read syslog

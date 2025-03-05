@@ -13,8 +13,14 @@ printf "What is the IP of the firewall managment?: "
 read IP
 export IP
 
-printf "What is the IP of the external firewall interface?: "
+printf "What is the IP of the external firewall interface? (Blank if unknown): "
 read this_fw
+
+if [[ "$this_fw" == "" ]]; then
+    # Just throw in localhost as filler
+    this_fw="127.0.0.1"
+fi
+
 export this_fw
 
 printf "What is the IP of the Syslog Server? (Blank if unknown): "
@@ -27,11 +33,27 @@ fi
 export syslog
 
 
+# get zone info
+printf "List all the zones (CAPITALIZATION Matters): "
+read ZONES
+export ZONES
+
+printf "Which one is externally facing? [$ZONES]: "
+read EXT_ZONE
+
+printf "Which ones are internally facing? [$ZONES]: "
+read INT_ZONES
+
+
 printf "What is the Management Password? (Secure Prompt): "
 read -s pass
 export pass
 
-./fire-base1.sh
+cat "#!/bin/bash" > ./run-fire-secure.sh
+cat ./fire-base1.sh >> ./run-fire-secure.sh
+
+sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-omniscience.txt
+# FIXME TODO json format for INT_ZONES
 
 #ssh -T admin@$IP < ./run-palo-secure.txt
 
