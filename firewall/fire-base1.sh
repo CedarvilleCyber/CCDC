@@ -58,7 +58,7 @@ rm -rf ./fire-temp.txt
 # Start making rules
 name="DENY2SELF"
 name=`make_json "$name"`
-s_zone="$EXT_ZONE securityzone"
+s_zone="EXT_ZONE securityzone"
 name=`make_json "$s_zone"`
 s_addr=""
 name=`make_json "$s_addr"`
