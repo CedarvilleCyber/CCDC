@@ -1,13 +1,13 @@
 #!/bin/bash
 # 
-# fire-secure.sh
+# immanence.sh
 # 
 # Basic security on the cisco firepower
 # 
 # Kaicheng Ye
 # Mar. 2025
 
-printf "Starting fire-secure script\n"
+printf "Starting immanence script\n"
 
 printf "What is the IP of the firewall managment?: "
 read IP
@@ -49,8 +49,8 @@ printf "What is the Management Password? (Secure Prompt): "
 read -s pass
 export pass
 
-cat "#!/bin/bash" > ./run-fire-secure.sh
-cat ./fire-base1.sh >> ./run-fire-secure.sh
+printf "#!/bin/bash\n" > ./run-immanence.sh
+cat ./fire-base1.sh >> ./run-immanence.sh
 
 sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-omniscience.txt
 # FIXME TODO json format for INT_ZONES
