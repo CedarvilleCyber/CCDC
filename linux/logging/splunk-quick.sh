@@ -38,9 +38,9 @@ splunk version
 # Remove all users except admin
 USER_FILE="$SPLUNK_HOME/etc/passwd"
 LOG_FILE="/var/log/splunk_deleted_users.log"
-USERS_TO_DELETE=$(awk -F: '$1 != "admin" {print $1}' "$USER_FILE")
+USERS_TO_DELETE=$(awk -F: '$2 != "admin" {print $2}' "$USER_FILE")
 
-for user in $USERS_TO_DELETE; do
+for user in "$USERS_TO_DELETE"; do
     splunk remove user "$user" --accept-license --answer-yes
     if [[ $? -eq 0 ]]; then
         echo "$(date): Deleted user $user" | tee -a "$LOG_FILE"
@@ -55,8 +55,8 @@ done
 splunk remove app splunk_secure_gateway -f
 
 # Install apps - this will handle .tgz files
-splunk install app /root/work/CCDC/linux-scripts/logging/Splunk_TA_nix
-splunk install app /root/work/CCDC/linux-scripts/logging/Splunk_TA_win
+splunk install app /root/work/CCDC/linux/logging/Splunk_TA_nix.tgz
+splunk install app /root/work/CCDC/linux/logging/Splunk_TA_win.tgz
 # add Splunk_TA_paloalto_networks/
 # add CISCO
 
