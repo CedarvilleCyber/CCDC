@@ -164,7 +164,7 @@ do
     protocol=""
 
     # Get name of object
-    printf "Name of Port: "
+    printf "Name of Port (CAPITAL LETTERS ONLY): "
     read input
 
     # move on if empty
