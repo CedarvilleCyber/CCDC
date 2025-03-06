@@ -60,7 +60,6 @@ temp=""
 for zone in $INT_ZONES; do
     temp+="$zone securityzone "
 done
-temp=`echo $temp | sed 's/.$//'`
 INT_ZONES=$temp
 sed -i "s/INT_ZONES/$INT_ZONES/" ./run-immanence.sh
 

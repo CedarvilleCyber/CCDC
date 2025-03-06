@@ -32,7 +32,7 @@ s_ports=""
 s_ports=`make_json "$s_ports"`
 d_ports="DNS-UDP udpportobject DNS-TCP tcpportobject"
 d_ports=`make_json "$d_ports"`
-action="ALLOW"
+action="PERMIT"
 log="LOG_FLOW_END"
 
 if [[ "$app" != "" ]]; then
@@ -60,7 +60,7 @@ s_ports=""
 s_ports=`make_json "$s_ports"`
 d_ports="HTTP tcpportobject HTTPS tcpportobject NTP-UDP udpportobject"
 d_ports=`make_json "$d_ports"`
-action="ALLOW"
+action="PERMIT"
 log="LOG_FLOW_END"
 
 if [[ "$app" != "" ]]; then
@@ -88,7 +88,7 @@ s_ports=""
 s_ports=`make_json "$s_ports"`
 d_ports="DNS-UDP udpportobject DNS-TCP tcpportobject SYSLOG udpportobject ICMP-REPLY icmpv4portobject ICMP-REQUEST icmpv4portobject SNMP udpportobject HTTP tcpportobject HTTPS tcpportobject NTP-UDP udpportobject"
 d_ports=`make_json "$d_ports"`
-action="ALLOW"
+action="PERMIT"
 log="LOG_FLOW_END"
 
 if [[ "$app" != "" ]]; then
@@ -116,7 +116,7 @@ s_ports=""
 s_ports=`make_json "$s_ports"`
 d_ports=""
 d_ports=`make_json "$d_ports"`
-action="ALLOW"
+action="PERMIT"
 log="LOG_FLOW_END"
 
 if [[ "$app" != "" ]]; then
