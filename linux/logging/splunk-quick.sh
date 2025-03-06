@@ -46,14 +46,21 @@ USER_FILE="$SPLUNK_HOME/etc/passwd"
 LOG_FILE="/var/log/splunk_deleted_users.log"
 USERS_TO_DELETE=$(awk -F: '$2 != "admin" {print $2}' "$USER_FILE")
 
-for user in "$USERS_TO_DELETE"; do
-    splunk remove user "$user" --accept-license --answer-yes
-    if [[ $? -eq 0 ]]; then
-        echo "$(date): Deleted user $user" | tee -a "$LOG_FILE"
-    else
-        echo "$(date): Failed to delete user $user" | tee -a "$LOG_FILE" >&2
-    fi
-done
+if [ -z "$USERS_TO_DELETE" ]; then
+    printf "${info}No users found to delete${reset}\n"
+    echo "$(date): No users found to delete" | tee -a "$LOG_FILE"
+else
+    for user in $USERS_TO_DELETE; do
+        splunk remove user "$user" --accept-license --answer-yes
+        if [[ $? -eq 0 ]]; then
+            printf "${info}Deleted user $user${reset}\n"
+            echo "$(date): Deleted user $user" | tee -a "$LOG_FILE"
+        else
+            printf "${warn}Failed to delete user $user${reset}\n"
+            echo "$(date): Failed to delete user $user" | tee -a "$LOG_FILE" >&2
+        fi
+    done
+fi
 
 
 
