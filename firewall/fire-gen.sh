@@ -1,14 +1,14 @@
 #!/bin/bash
 # 
-# palo-gen.sh
+# fire-gen.sh
 # 
-# Generate palo commands based on input
+# Generate firepower api calls based on input
 # run by main script. Not meant for stand-alone
 # 
 # Kaicheng Ye
 # Mar. 2025
 
-printf "${info}Starting palo-gen script${reset}\n"
+printf "${info}Starting fire-gen script${reset}\n"
 
 # Use colors, but only if connected to a terminal
 # and if the terminal supports colors
@@ -61,8 +61,31 @@ contains () {
     return 0
 }
 
-# clear old palo-gen.txt file
-rm -rf ./palo-gen.txt
+# duplicate from fire-base1.sh
+# $1 pairs of name and type
+make_json() {
+    count=0
+    json=""
+    for item in $1; do
+        # even means name
+        # odd means type corresponding to the name
+        if [[ $((count % 2)) -eq 0 ]]; then
+            # name
+            json+="{\"name\": \"$item\","
+        else
+            # type
+            json+="\"type\": \"$item\"},"
+        fi
+        count=$((count+1))
+    done
+    # remove trailing comma
+    json=`echo $json | sed 's/.$//'`
+    echo $json
+    return 0
+}
+
+# clear old fire-gen.txt file
+rm -rf ./fire-gen.txt
 
 # zone names (find on web console after password change)
 if [[ "$ZONES" == "" ]]; then
@@ -98,7 +121,7 @@ do
     name=$input
 
     # Get IP address
-    printf "IP/CIDR: "
+    printf "(CIDR not supported) IP: "
     read input
 
     if [[ "$input" == "" ]]
@@ -126,13 +149,13 @@ do
 
 
     # add command
-    printf "set address $name ip-netmask $ip\n" >> ./palo-gen.txt
+    printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\", \"description\": \"\", \"subType\": \"HOST\", \"value\": \"$IP\", \"isSystemDefined\": false, \"dnsResolution\": \"IPV4_ONLY\", \"type\": \"networkobject\"}' \"https://\$IP/api/fdm/latest/object/networks\"\n" >> ./fire-gen.txt
     printf "${info}Added: $name:$ip${reset}\n\n"
 done
 
 # service (port)
 # Loop until finished
-printf "\n${info}Create Service Objects${reset}\n"
+printf "\n${info}Create Port Objects${reset}\n"
 input="placeholder"
 while [[ "$input" != "" ]]
 do
@@ -208,8 +231,12 @@ do
 
 
     # add command
-    printf "set service $name protocol $protocol port $port\n" >> ./palo-gen.txt
-    printf "set service $name protocol $protocol override no\n" >> ./palo-gen.txt
+    # different based on tcp or udp
+    if [[ "$protocol" == "tcp" ]]; then
+        printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer $TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\",\"description\": null,\"isSystemDefined\": false,\"port\": \"$port\",\"type\": \"tcpportobject\"}' \"https://$IP/api/fdm/latest/object/tcpports\"\n" >> ./fire-gen.txt
+    else
+        printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\",\"description\": null,\"isSystemDefined\": false,\"port\": \"$port\",\"type\": \"udpportobject\"}' \"https://\$IP/api/fdm/latest/object/udpports\"\n" >> ./fire-gen.txt
+    fi
     printf "${info}Added: $name:$port:$protocol${reset}\n\n"
 done
 
@@ -226,7 +253,8 @@ do
     d_zone=""
     d_addr=""
     app=""
-    service=""
+    s_ports=""
+    d_ports=""
     action=""
 
     # Get name of rule
@@ -260,12 +288,14 @@ do
         continue
     fi
 
-
-    s_zone=$input
-
+    if [[ "$input" == "any" ]]; then
+        s_zone=""
+    else
+        s_zone=$input
+    fi
 
     # source address
-    printf "Source Address [Name or IP/CIDR]: "
+    printf "Source Address: "
     read input
 
     # short for any
@@ -281,7 +311,11 @@ do
         continue
     fi
 
-    s_addr=$input
+    if [[ "$input" == "any" ]]; then
+        s_addr=""
+    else
+        s_addr=$input
+    fi
 
 
     # destination zone
@@ -305,11 +339,15 @@ do
         continue
     fi
 
-    d_zone=$input
+    if [[ "$input" == "any" ]]; then
+        d_zone=""
+    else
+        d_zone=$input
+    fi
 
 
     # destination address
-    printf "Destination Address [Name or IP/CIDR]: "
+    printf "Destination Address: "
     read input
 
     # short for any
@@ -325,7 +363,11 @@ do
         continue
     fi
 
-    d_addr=$input
+    if [[ "$input" == "any" ]]; then
+        d_addr=""
+    else
+        d_addr=$input
+    fi
 
 
     # application
@@ -345,16 +387,21 @@ do
         continue
     fi
 
-    app=$input
+    if [[ "$input" == "any" ]]; then
+        app=""
+    else
+        app=$input
+    fi
 
 
-    # service
-    printf "Service: "
+    # destination ports 
+    printf "Format: NAME t NAME u   (for tcp and udp)\n"
+    printf "Destination Ports: "
     read input
 
     # short for application-default
-    if [[ "$input" == "a" ]]; then
-        input="application-default"
+    if [[ "$input" == "a" || "$input" == "any" ]]; then
+        input="any"
 
     # normal check
     elif [[ "$input" == "" ]]
@@ -365,15 +412,30 @@ do
         continue
     fi
 
-    service=$input
+    d_ports=$input
+    if [[ "$input" == "any" ]]; then
+        app=""
+    else
+        app=$input
+    fi
 
 
     # action
-    printf "Action [allow deny drop]: "
+    printf "Action [PERMIT DENY]: "
     read input
 
+    # short for PERMIT
+    if [[ "$input" == "P" || "$input" == "p" ]]; then
+        input="PERMIT"
+    fi
+
+    # short for DENY
+    if [[ "$input" == "D" || "$input" == "d" ]]; then
+        input="DENY"
+    fi
+
     # check for allow deny or drop
-    if [[ "$input" != "allow" && "$input" != "deny" && "$input" != "drop" ]]; then
+    if [[ "$input" != "PERMIT" && "$input" != "DENY" ]]; then
         # invalidate the name entered and try again
         input="placeholder" # set input so we don't quit this loop
         printf "${warn}Invalid Action. Invalidated $name${reset}\n\n"
@@ -391,7 +453,7 @@ do
     printf "${info}Destination Zone:${reset} $d_zone\n"
     printf "${info}Destination Addr:${reset} $d_addr\n"
     printf "${info}     Application:${reset} $app\n"
-    printf "${info}         Service:${reset} $service\n"
+    printf "${info}Destination Port:${reset} $d_ports\n"
     printf "${info}          Action:${reset} $action\n"
     printf "${info}================================================================${reset}\n"
     printf "Add rule?[y/n]: "
@@ -403,68 +465,71 @@ do
         continue
     fi
 
-
-    # add commands
-    printf "set rulebase security rules $name profile-setting group ccdc\n" >> ./palo-gen.txt
-    
-    # check for multiple items in each option
-    if echo "$s_zone" | grep -q " "; then
-        # multiple (grep found a space)
-        printf "set rulebase security rules $name from [ $s_zone ]\n" >> ./palo-gen.txt
+    # set LOG based on action
+    if [[ "$action" == "PERMIT" ]]; then
+        log="LOG_FLOW_END"
     else
-        # single
-        printf "set rulebase security rules $name from $s_zone\n" >> ./palo-gen.txt
+        log="LOG_NONE"
     fi
 
-    if echo "$s_addr" | grep -q " "; then
-        # multiple (grep found a space)
-        printf "set rulebase security rules $name source [ $s_addr ]\n" >> ./palo-gen.txt
-    else
-        # single
-        printf "set rulebase security rules $name source $s_addr\n" >> ./palo-gen.txt
+    # format input
+    temp=""
+    for generic in $s_zone; do
+        temp+="$generic securityzone "
+    done
+    s_zone=$temp
+
+    temp=""
+    for generic in $s_addr; do
+        temp+="$generic networkobject"
+    done
+    s_addr=$temp
+
+    temp=""
+    for generic in $d_zone; do
+        temp+="$generic securityzone "
+    done
+    d_zone=$temp
+
+    temp=""
+    for generic in $d_addr; do
+        temp+="$generic networkobject"
+    done
+    d_addr=$temp
+
+    temp=""
+    for generic in $app; do
+        temp+="$generic application"
+    done
+    app=$temp
+
+    s_ports=`echo $s_ports | sed 's/t/tcpportobject/g'`
+    s_ports=`echo $s_ports | sed 's/u/udpportobject/g'`
+
+    d_ports=`echo $d_ports | sed 's/t/tcpportobject/g'`
+    d_ports=`echo $d_ports | sed 's/u/udpportobject/g'`
+
+
+    # add command
+    s_zone=`make_json "$s_zone"`
+    s_addr=`make_json "$s_addr"`
+    d_zone=`make_json "$d_zone"`
+    d_addr=`make_json "$d_addr"`
+    if [[ "$app" != "" ]]; then
+        app=`make_json "$app"`
     fi
+    s_ports=`make_json "$s_ports"`
+    d_ports=`make_json "$d_ports"`
 
-    if echo "$d_zone" | grep -q " "; then
-        # multiple (grep found a space)
-        printf "set rulebase security rules $name to [ $d_zone ]\n" >> ./palo-gen.txt
+    if [[ "$app" != "" ]]; then
+        printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' -d \"{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}\" \"https://\$IP/api/fdm/latest/policy/accesspolicies/\$P_ID/accessrules\"\n" >> ./fire-gen.txt
     else
-        # single
-        printf "set rulebase security rules $name to $d_zone\n" >> ./palo-gen.txt
+        printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": null,\"type\": \"accessrule\"}' \"https://\$IP/api/fdm/latest/policy/accesspolicies/\$P_ID/accessrules\"\n" >> ./fire-gen/txt
     fi
-
-    if echo "$d_addr" | grep -q " "; then
-        # multiple (grep found a space)
-        printf "set rulebase security rules $name destination [ $d_addr ]\n" >> ./palo-gen.txt
-    else
-        # single
-        printf "set rulebase security rules $name destination $d_addr\n" >> ./palo-gen.txt
-    fi
-
-    if echo "$app" | grep -q " "; then
-        # multiple (grep found a space)
-        printf "set rulebase security rules $name application [ $app ]\n" >> ./palo-gen.txt
-    else
-        # single
-        printf "set rulebase security rules $name application $app\n" >> ./palo-gen.txt
-    fi
-
-    if echo "$service" | grep -q " "; then
-        # multiple (grep found a space)
-        printf "set rulebase security rules $name service [ $service ]\n" >> ./palo-gen.txt
-    else
-        # single
-        printf "set rulebase security rules $name service $service\n" >> ./palo-gen.txt
-    fi
-
-    printf "set rulebase security rules $name action $action\n" >> ./palo-gen.txt
-    printf "set rulebase security rules $name log-start no\n" >> ./palo-gen.txt
-    printf "set rulebase security rules $name log-end yes\n" >> ./palo-gen.txt
-    printf "set rulebase security rules $name log-setting default\n" >> ./palo-gen.txt
-
 
     printf "${info}Added: $name:$action${reset}\n\n"
 done
 
-printf "${info}Finished palo-gen script${reset}\n"
+printf "${info}Finished fire-gen script${reset}\n"
 
 exit 0
