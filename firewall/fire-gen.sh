@@ -233,7 +233,7 @@ do
     # add command
     # different based on tcp or udp
     if [[ "$protocol" == "tcp" ]]; then
-        printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer $TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\",\"description\": null,\"isSystemDefined\": false,\"port\": \"$port\",\"type\": \"tcpportobject\"}' \"https://$IP/api/fdm/latest/object/tcpports\"\n" >> ./fire-gen.txt
+        printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\",\"description\": null,\"isSystemDefined\": false,\"port\": \"$port\",\"type\": \"tcpportobject\"}' \"https://\$IP/api/fdm/latest/object/tcpports\"\n" >> ./fire-gen.txt
     else
         printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' -d '{\"name\": \"$name\",\"description\": null,\"isSystemDefined\": false,\"port\": \"$port\",\"type\": \"udpportobject\"}' \"https://\$IP/api/fdm/latest/object/udpports\"\n" >> ./fire-gen.txt
     fi
