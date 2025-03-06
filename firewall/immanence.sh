@@ -44,12 +44,12 @@ read EXT_ZONE
 printf "Which ones are internally facing? [$ZONES]: "
 read INT_ZONES
 
+./fire-gen.sh
 
 printf "What is the Management Password? (Secure Prompt): "
 read -s pass
 export pass
 
-./fire-gen.sh
 
 printf "#!/bin/bash\n" > ./run-immanence.sh
 cat ./fire-base1.sh >> ./run-immanence.sh
