@@ -49,8 +49,11 @@ printf "What is the Management Password? (Secure Prompt): "
 read -s pass
 export pass
 
+./fire-gen.sh
+
 printf "#!/bin/bash\n" > ./run-immanence.sh
 cat ./fire-base1.sh >> ./run-immanence.sh
+cat ./fire-gen.txt >> ./run-immanence.sh
 cat ./fire-base2.sh >> ./run-immanence.sh
 
 sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-immanence.sh
