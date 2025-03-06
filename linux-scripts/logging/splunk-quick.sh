@@ -66,6 +66,7 @@ splunk add index win
 splunk add index pan
 splunk add index cisco
 splunk add index docker
+splunk add index splunk
 
 # Enable log collection
 # 9997 - universal forwarders
