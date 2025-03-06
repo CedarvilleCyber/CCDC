@@ -33,7 +33,7 @@ s_ports=`make_json "$s_ports"`
 d_ports="DNS-UDP udpportobject DNS-TCP tcpportobject"
 d_ports=`make_json "$d_ports"`
 action="PERMIT"
-log="LOG_FLOW_END"
+log="LOG_BOTH"
 
 if [[ "$app" != "" ]]; then
     curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
@@ -61,7 +61,7 @@ s_ports=`make_json "$s_ports"`
 d_ports="HTTP tcpportobject HTTPS tcpportobject NTP-UDP udpportobject"
 d_ports=`make_json "$d_ports"`
 action="PERMIT"
-log="LOG_FLOW_END"
+log="LOG_BOTH"
 
 if [[ "$app" != "" ]]; then
     curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
@@ -89,7 +89,7 @@ s_ports=`make_json "$s_ports"`
 d_ports="DNS-UDP udpportobject DNS-TCP tcpportobject SYSLOG udpportobject ICMP-REPLY icmpv4portobject ICMP-REQUEST icmpv4portobject SNMP udpportobject HTTP tcpportobject HTTPS tcpportobject NTP-UDP udpportobject"
 d_ports=`make_json "$d_ports"`
 action="PERMIT"
-log="LOG_FLOW_END"
+log="LOG_BOTH"
 
 if [[ "$app" != "" ]]; then
     curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"
@@ -117,7 +117,7 @@ s_ports=`make_json "$s_ports"`
 d_ports=""
 d_ports=`make_json "$d_ports"`
 action="PERMIT"
-log="LOG_FLOW_END"
+log="LOG_BOTH"
 
 if [[ "$app" != "" ]]; then
     curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d "{\"name\": \"$name\",\"sourceZones\": [$s_zone],\"destinationZones\": [$d_zone],\"sourceNetworks\": [$s_addr],\"destinationNetworks\": [$d_addr],\"sourcePorts\": [$s_ports],\"destinationPorts\": [$d_ports],\"ruleAction\": \"$action\",\"eventLogAction\": \"$log\",\"embeddedAppFilter\": {\"applications\": [$app],\"type\": \"embeddedappfilter\"},\"type\": \"accessrule\"}" "https://$IP/api/fdm/latest/policy/accesspolicies/$P_ID/accessrules"

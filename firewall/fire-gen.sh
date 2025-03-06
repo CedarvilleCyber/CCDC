@@ -465,12 +465,7 @@ do
         continue
     fi
 
-    # set LOG based on action
-    if [[ "$action" == "PERMIT" ]]; then
-        log="LOG_FLOW_END"
-    else
-        log="LOG_NONE"
-    fi
+    log="LOG_BOTH"
 
     # format input
     temp=""
