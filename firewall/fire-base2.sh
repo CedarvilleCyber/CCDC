@@ -10,8 +10,8 @@ curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $T
 curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "DNS-TCP","description": null,"isSystemDefined": false,"port": "53","type": "tcpportobject"}' "https://$IP/api/fdm/latest/object/tcpports"
 
 # Create ICMP stuff
-curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "ICMP-REPLY","isSystemDefined": false,"icmpv4Type": "ECHO_REPLY","type": "icmpv4portobject",}' "https://$IP/api/fdm/latest/object/icmpv4ports"
-curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "ICMP-REQUEST","isSystemDefined": false,"icmpv4Type": "ECHO_REQUEST","type": "icmpv4portobject",}' "https://$IP/api/fdm/latest/object/icmpv4ports"
+curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "ICMP-REPLY","isSystemDefined": false,"icmpv4Type": "ECHO_REPLY","type": "icmpv4portobject"}' "https://$IP/api/fdm/latest/object/icmpv4ports"
+curl -k -X POST -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN" -H 'Accept: application/json' -d '{"name": "ICMP-REQUEST","isSystemDefined": false,"icmpv4Type": "ECHO_REQUEST","type": "icmpv4portobject"}' "https://$IP/api/fdm/latest/object/icmpv4ports"
 
 
 # Make finishing rules
