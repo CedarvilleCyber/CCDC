@@ -56,6 +56,8 @@ cat ./fire-base1.sh >> ./run-immanence.sh
 cat ./fire-gen.txt >> ./run-immanence.sh
 cat ./fire-base2.sh >> ./run-immanence.sh
 
+printf "curl -k -X POST -H 'Content-Type: application/json' -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/json' \"https://\$IP/api/fdm/latest/operational/deploy\"" >> ./run-immanence.sh
+
 sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-immanence.sh
 
 # format INT_ZONES for make_json
