@@ -481,7 +481,7 @@ do
 
     temp=""
     for generic in $s_addr; do
-        temp+="$generic networkobject"
+        temp+="$generic networkobject "
     done
     s_addr=$temp
 
@@ -493,13 +493,13 @@ do
 
     temp=""
     for generic in $d_addr; do
-        temp+="$generic networkobject"
+        temp+="$generic networkobject "
     done
     d_addr=$temp
 
     temp=""
     for generic in $app; do
-        temp+="$generic application"
+        temp+="$generic application "
     done
     app=$temp
 
