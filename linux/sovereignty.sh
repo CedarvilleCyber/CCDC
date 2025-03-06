@@ -195,12 +195,6 @@ fi
 # quick vimrc for root
 printf "set nocompatible\nset backspace=indent,eol,start" > /root/.vimrc
 
-# if run from stage1, then quit now!
-if [[ "$2" == "stage1" ]]
-then
-    exit 0
-fi
-
 
 # download pspy
 # regex for 64 to find out which one to download

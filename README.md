@@ -1,5 +1,5 @@
 *all file/dir names are lowercase and hyphenated.*
-- nix stores unix/linux scripts
+- linux stores linux/unix scripts
 - win stores windows scripts
 - docker stores docker scripts
 - firewall stores firewall scripts

@@ -1,8 +1,8 @@
 #!/bin/bash
 # 
-# stage1.sh
+# stager.sh
 #
-# First stage of linux scripts
+# Stager for rest of linux scripts
 # 
 # Kaicheng Ye
 # Feb. 2024
@@ -35,10 +35,10 @@ while getopts 'fm:h' flag; do
 done
 
 
-printf "Initiating stage 1\n"
+printf "Initiating stager\n"
 
-stage1=1
-export stage1
+stager=1
+export stager
 
 mkdir work
 cd work
@@ -140,7 +140,6 @@ then
     	    # check cron now!
     	    ./check-cron.sh
 
-    	    #./sovereignty.sh "$MACHINE" "stage1"
     	    git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
     	    printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
@@ -190,8 +189,7 @@ and run soveriegnty.sh like normal\n\n\n"
         	# check cron now!
         	./check-cron.sh
 
-        	#./sovereignty.sh "$MACHINE" "stage1"
-            git config --global http.sslVerify False
+                git config --global http.sslVerify False
         	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
         	printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
@@ -249,7 +247,6 @@ else
     	    # check cron now!
     	    ./check-cron.sh
 
-    	    #./sovereignty.sh "$MACHINE" "stage1"
     	    git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
     	    printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
@@ -299,8 +296,7 @@ and run sovereignty.sh like normal\n\n\n"
         	# check cron now!
         	./check-cron.sh
 
-        	#./sovereignty.sh "$MACHINE" "stage1"
-            git config --global http.sslVerify False
+                git config --global http.sslVerify False
         	git clone https://github.com/CedarvilleCyber/CCDC.git --depth 1
 
         	printf "\n\nBasics secured. Now,   cd ./work/CCDC/linux-scripts
