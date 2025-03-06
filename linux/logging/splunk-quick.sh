@@ -3,6 +3,12 @@
 # splunk-quick.sh
 #
 # automated Splunk hardening requiring no user interaction
+#   add splunk CLI shortcut
+#   delete all users except admin which terminates web sessions
+#   remove apps
+#   install apps
+#   setup deployment server
+#   backup at end
 # 
 # David Reid
 # Mar. 2025
