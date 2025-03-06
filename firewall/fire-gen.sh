@@ -164,7 +164,7 @@ do
     protocol=""
 
     # Get name of object
-    printf "Name of Service: "
+    printf "Name of Port: "
     read input
 
     # move on if empty
@@ -395,7 +395,7 @@ do
 
 
     # destination ports 
-    printf "Format: NAME t NAME u   (for tcp and udp)\n"
+    printf "\nFormat for this: NAME t NAME u   (for tcp and udp)\n"
     printf "Destination Ports: "
     read input
 
@@ -414,9 +414,9 @@ do
 
     d_ports=$input
     if [[ "$input" == "any" ]]; then
-        app=""
+        d_ports=""
     else
-        app=$input
+        d_ports=$input
     fi
 
 
