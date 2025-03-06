@@ -51,9 +51,18 @@ export pass
 
 printf "#!/bin/bash\n" > ./run-immanence.sh
 cat ./fire-base1.sh >> ./run-immanence.sh
+cat ./fire-base2.sh >> ./run-immanence.sh
 
 sed -i "s/EXT_ZONE/$EXT_ZONE/" ./run-immanence.sh
-# FIXME TODO json format for INT_ZONES
+
+# format INT_ZONES for make_json
+temp=""
+for zone in $INT_ZONES; do
+    temp+="$zone securityzone "
+done
+temp=`echo $temp | sed 's/.$//'`
+INT_ZONES=$temp
+sed -i "s/INT_ZONES/$INT_ZONES/" ./run-immanence.sh
 
 chmod 700 ./run-immanence.sh
 
