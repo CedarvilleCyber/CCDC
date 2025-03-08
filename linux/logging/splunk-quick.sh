@@ -1,15 +1,9 @@
 #!/bin/bash
 # 
-# splunk-quick.sh
-#
-# automated Splunk hardening requiring no user interaction
-#   add splunk CLI shortcut
-#   delete all users except admin which terminates web sessions
-#   remove apps
-#   install apps
-#   setup deployment server
-#   backup at end
+# set-splunk.sh
 # 
+# set desired Splunk settings
+#
 # David Reid
 # Mar. 2025
 
@@ -68,25 +62,23 @@ fi
 splunk remove app splunk_secure_gateway -f
 
 # Install apps - this will handle .tgz files
-splunk install app /root/work/CCDC/linux/logging/Splunk_TA_nix.tgz
-splunk install app /root/work/CCDC/linux/logging/Splunk_TA_win.tgz
+splunk install app ./logging/Splunk_TA_nix.tgz
+splunk install app ./logging/Splunk_TA_win.tgz
 # add Splunk_TA_paloalto_networks/
-# add CISCO
+# add cisco
 
 # Create indexes
 splunk add index nix
-splunk add index win
-splunk add index pan
-splunk add index cisco
 splunk add index docker
-splunk add index splunk
+splunk add index win
+splunk add index net
 
 # Enable log collection
 # 9997 - universal forwarders
 #  514 - palo alto syslog
 #  HEC - docker logs
 splunk enable listen 9997
-splunk add udp 514 -sourcetype syslog -index pan
+splunk add udp 514 -sourcetype syslog -index net
 splunk http-event-collector enable -uri https://localhost:8089
 splunk http-event-collector create docker_token -uri https://localhost:8089 -disabled 0 -index docker
 
@@ -113,5 +105,4 @@ machineTypes.1 = windows-x86
 EOF
 
 splunk reload deploy-server
-./backup.sh
 splunk list deploy-clients
