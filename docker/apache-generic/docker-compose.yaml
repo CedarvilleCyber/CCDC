@@ -3,7 +3,8 @@ name: apache-generic
 services:
   apache:
     container_name: apache
-    image: php:apache
+    #image: php:apache
+    image: php:7.3.33-apache-buster
     # environment:
     #   - name=value
     restart: unless-stopped
