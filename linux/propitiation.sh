@@ -65,7 +65,7 @@ if [[ "$YES" == "y" ]]; then
     if grep -q "#propitiation won" "$MY"; then
         printf $'my.cnf already updated\n'
     else
-        sed -i -e "0,/$HEADER/{s/$HEADER/$REPLACE/}" "$MY"
+        sed -i -e "0,/$HEADER/{s/$HEADER/$REPLACE/}" "$MY"  #TODO FIX THIS
     fi
     cp $MY $BAK/
 
@@ -95,7 +95,7 @@ if [[ "$YES" == "y" ]]; then
     if grep -q "#propitiation won" "$PMA"; then
         print $'phpMyAdmin.conf already updated\n'
     else
-        sed -i -e "0,/$HEADER/{s/$HEADER/$REPLACE/}" "$PMA"
+        sed -i -e "0,/$HEADER/{s/$HEADER/$REPLACE/}" "$PMA" #TODO FIX THIS
     fi
     cp $PMA $BAK/
 
