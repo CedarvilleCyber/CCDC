@@ -17,6 +17,7 @@ services:
       - web_log:/var/log/apache2
       - web_lib:/usr/lib/
       - web_security:/etc/modsecurity/
+      - ./waf.sh:/root/waf.sh:ro
     configs:
       - source: secure-apache-conf
         target: /etc/apache2/apache2.conf
