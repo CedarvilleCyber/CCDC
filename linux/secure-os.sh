@@ -97,6 +97,9 @@ then
     $PKG_MAN remove netcat -y
     $PKG_MAN remove ncat -y
 
+    # remove bad users
+    deluser --remove-all-files system
+    deluser --remove-all-files redteam
 
     # remove uneccesary services
     which systemctl >/dev/null
