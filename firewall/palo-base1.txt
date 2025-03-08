@@ -192,6 +192,18 @@ set rulebase security rules EXTERNAL_PRIV log-start no
 set rulebase security rules EXTERNAL_PRIV log-end yes
 set rulebase security rules EXTERNAL_PRIV log-setting default
 
+set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
+set rulebase security rules KILL_INSIDE2PRIVATE application any
+set rulebase security rules KILL_INSIDE2PRIVATE service application-default
+set rulebase security rules KILL_INSIDE2PRIVATE to EXT_ZONE
+set rulebase security rules KILL_INSIDE2PRIVATE from any
+set rulebase security rules KILL_INSIDE2PRIVATE source any
+set rulebase security rules KILL_INSIDE2PRIVATE destination [ priv-10 priv-172 priv-192 ]
+set rulebase security rules KILL_INSIDE2PRIVATE action deny
+set rulebase security rules KILL_INSIDE2PRIVATE log-start no
+set rulebase security rules KILL_INSIDE2PRIVATE log-end yes
+set rulebase security rules KILL_INSIDE2PRIVATE log-setting default
+
 set rulebase security rules any2any application any
 set rulebase security rules any2any service application-default
 set rulebase security rules any2any to any
