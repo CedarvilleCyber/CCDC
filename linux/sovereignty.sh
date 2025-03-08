@@ -354,7 +354,7 @@ then
     # window for splunk
     tmux new-window -t $SESSION_NAME:6 -n "splunk"
     tmux send-keys -t "splunk" "cd ./logging" C-m
-    tmux send-keys -t "splunk" "./install_and_setup_forwarder.sh" C-m
+    tmux send-keys -t "splunk" "./splunk-forwarder-setup.sh" C-m
 
     # window for rkhunter results
     tmux new-window -t $SESSION_NAME:7 -n "rkhunter"
