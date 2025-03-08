@@ -125,6 +125,9 @@ if [[ "$YES" == "y" ]]; then
     # Update admin page url
     find $PRESTA_INSTALL_PATH -maxdepth 1 -name 'admin*' -exec mv {} $PRESTA_INSTALL_PATH/$ADMIN \;
 
+    # Remove install directory
+    mv $PRESTA_INSTALL_PATH/install $BAK/presta_install
+
     # Update database password field (user is root)
     sed -i -e "s/\(_DB_PASSWD_', '\).*\(');\)/\1$MYSQL_ROOT_PWD\2/" $config_file
 
