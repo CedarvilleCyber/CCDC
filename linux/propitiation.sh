@@ -8,6 +8,7 @@
 # - Prestashop
 #
 # Author: Logan Miller
+# Date: March 2025
 # 
 
 # Script must be run as root --------------------------------------------------
@@ -38,9 +39,11 @@ if [[ "$YES" == "y" ]]; then
     printf $'\e[0;36mSecuring the HTTPD server ...\e[0m\n'
     
     cp ./conf/httpd.conf /etc/httpd/conf/httpd.conf
+    
+    printf $'restarting server ...\n'
     systemctl restart httpd
 
-    printf $'\e[0;36mHTTPD server secured!\e[0m\n'
+    printf $'\e[0;32mHTTPD server secured!\e[0m\n'
 fi
 
 # Secure MySQL database -------------------------------------------------------
@@ -51,9 +54,19 @@ if [[ "$YES" == "y" ]]; then
     printf $'\e[0;36mUpdate all passwords and enter yes to all prompts\e[0m\n'
     mysql_secure_installation
 
-    read -p $'\e[0;31mPlease enter the root mysql password: \e[0m' MYSQL_ROOT_PWD
+    printf $'\e[0;36mPlease enter the root mysql password: \e[0m' 
+    read -s MYSQL_ROOT_PWD
 
-    # Add bind-address = 127.0.0.1 to /etc/my.cnf under [mysqld]
+    HEADER="\[mysqld\]"
+    REPLACE="\[mysqld\]\n#propitiation won\nbind-address = 127.0.0.1"
+    MY="/etc/my.cnf"
+    
+    if grep -q "#propitiation won" "$MY"; then
+        # do nothing
+    else
+        sed -i -e "s/$HEADER/$REPLACE/" "$MY"
+    fi
+    cp $MY $BAK/
 
     mysqldump -u root --password="$MYSQL_ROOT_PWD" --all-databases > $BAK/db_dirty
 
@@ -61,8 +74,6 @@ if [[ "$YES" == "y" ]]; then
     read -p $'\e[0;31mPress Enter to continue once database is clean\e[0m' CONT
 
     mysqldump -u root --password="$MYSQL_ROOT_PWD" --all-databases > $BAK/db_clean
-
-    cp /etc/my.cnf $BAK/
 
     printf $'\e[0;32mMySQL database secured!\e[0m\n'
 fi
@@ -72,12 +83,25 @@ read -p $'\e[36mWould you like to secure PHP? [y/n] \e[0m' YES
 if [[ "$YES" == "y" ]]; then
     printf $'\e[0;36mSecuring PHP ...\e[0m\n'
 
-    # INI=$(php --ini | grep "Loaded Configuration File:" | tr -s " " | cut -d " " -f 4)
+    INI=$(php --ini | grep "Loaded Configuration File:" | tr -s " " | cut -d " " -f 4)
+    PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
 
-    php -c ./conf/php.ini
-    cp ./conf/phpMyAdmin.conf /etc/httpd/conf.d/phpMyAdmin.conf
+    cp ./conf/php.ini $INI
 
-    printf $'\e[0;36mPHP secured!\e[0m\n'
+    HEADER="<Directory \/usr\/share\/phpMyAdmin\/>"
+    REPLACE="<Directory \/usr\/share\/phpMyAdmin\/>\n   #propitiation won\n   Order Allow,Deny\n   Allow from 127.0.0.1"
+    
+    if grep -q "#propitiation won" "$PMA"; then
+        # do nothing
+    else
+        sed -i -e "s/$HEADER/$REPLACE/" "$PMA"
+    fi
+    cp $PMA $BAK/
+
+    printf $'restarting server ...\n'
+    systemctl restart httpd
+
+    printf $'\e[0;32mPHP secured!\e[0m\n'
 fi
 
 # Secure Prestashop -----------------------------------------------------------
