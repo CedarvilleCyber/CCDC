@@ -56,15 +56,16 @@ if [[ "$YES" == "y" ]]; then
 
     printf $'\e[0;36mPlease enter the root mysql password: \e[0m' 
     read -s MYSQL_ROOT_PWD
+    echo
 
     HEADER="\[mysqld\]"
     REPLACE="\[mysqld\]\n#propitiation won\nbind-address = 127.0.0.1"
     MY="/etc/my.cnf"
     
     if grep -q "#propitiation won" "$MY"; then
-        # do nothing
+        printf $'my.cnf already updated\n'
     else
-        sed -i -e "s/$HEADER/$REPLACE/" "$MY"
+        sed -i -e "0,/$HEADER/{s/$HEADER/$REPLACE/}" "$MY"
     fi
     cp $MY $BAK/
 
@@ -92,9 +93,9 @@ if [[ "$YES" == "y" ]]; then
     REPLACE="<Directory \/usr\/share\/phpMyAdmin\/>\n   #propitiation won\n   Order Allow,Deny\n   Allow from 127.0.0.1"
     
     if grep -q "#propitiation won" "$PMA"; then
-        # do nothing
+        print $'phpMyAdmin.conf already updated\n'
     else
-        sed -i -e "s/$HEADER/$REPLACE/" "$PMA"
+        sed -i -e "0,/$HEADER/{s/$HEADER/$REPLACE/}" "$PMA"
     fi
     cp $PMA $BAK/
 
@@ -188,9 +189,10 @@ if [[ "$YES" == "y" ]]; then
         BK_DIR="/usr/bak"
     fi
 
-    cp -a $BAK $BK_DIR/
+    mkdir $BK_DIR/prestashop
+    cp -a $BAK $BK_DIR/prestashop
 
-    rm -rf $BAK
+    # rm -rf $BAK
 
     printf $'\e[0;32mBackups complete!\e[0m\n'
 fi
