@@ -38,10 +38,10 @@ if [ -z "$PKG_MAN"]; then
     printf "${error}Fix by: export PKG_MAN=[apt-get/dpkg|yum/dnf] ${reset}\n"
     exit 1
 elif [[ "$PKG_MAN" == "apt-get" || "$PKG_MAN" == "dpkg" ]]; then
-    wget -O $SPLUNK_FORWARDER/splunkforwarder.deb "https://download.splunk.com/products/universalforwarder/releases/9.0.1/linux/splunkforwarder-9.0.1-82c987350fde-linux-2.6-amd64.deb"
+    wget --no-check-certificate -O $SPLUNK_FORWARDER/splunkforwarder.deb "https://download.splunk.com/products/universalforwarder/releases/9.0.1/linux/splunkforwarder-9.0.1-82c987350fde-linux-2.6-amd64.deb"
     dpkg -i $SPLUNK_FORWARDER/splunkforwarder.deb
 elif [[ "$PKG_MAN" == "yum" || "$PKG_MAN" == "dnf" ]]; then
-    wget -O $SPLUNK_FORWARDER/splunkforwarder.rpm "https://download.splunk.com/products/universalforwarder/releases/9.0.1/linux/splunkforwarder-9.0.1-82c987350fde-linux-2.6-x86_64.rpm"
+    wget --no-check-certificate -O $SPLUNK_FORWARDER/splunkforwarder.rpm "https://download.splunk.com/products/universalforwarder/releases/9.0.1/linux/splunkforwarder-9.0.1-82c987350fde-linux-2.6-x86_64.rpm"
     rpm -i $SPLUNK_FORWARDER/splunkforwarder.rpm
 else
     printf "${error}ERROR: PKG_MAN failed to trigger download. ${reset}\n"
