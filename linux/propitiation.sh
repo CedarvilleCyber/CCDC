@@ -60,15 +60,12 @@ if [[ "$YES" == "y" ]]; then
 
     HEADER="\[mysqld\]"
     REPLACE="\[mysqld\]\n#propitiation won\nbind-address = 127.0.0.1"
-    DUP="propitiation dup"
     MY="/etc/my.cnf"
-
-    sed -i -e "s/$HEADER/$DUP/" "$MY"
     
     if grep -q "#propitiation won" "$MY"; then
         printf $'my.cnf already updated\n'
     else
-        sed -i -e "0,/$DUP/{s/$HEADER/$REPLACE/}" "$MY"
+        sed -i -e "0,/$HEADER/ s/$HEADER/$REPLACE/" "$MY"
     fi
     cp $MY $BAK/
 
@@ -94,14 +91,11 @@ if [[ "$YES" == "y" ]]; then
 
     HEADER="<Directory \/usr\/share\/phpMyAdmin\/>"
     REPLACE="<Directory \/usr\/share\/phpMyAdmin\/>\n   #propitiation won\n   Order Allow,Deny\n   Allow from 127.0.0.1"
-    DUP="propitiation dup"
-
-    sed -i -e "s/$HEADER/$DUP/" "$PMA"
     
     if grep -q "#propitiation won" "$PMA"; then
         print $'phpMyAdmin.conf already updated\n'
     else
-        sed -i -e "0,/$DUP/{s/$HEADER/$REPLACE/}" "$PMA"
+        sed -i -e "0,/$HEADER/ s/$HEADER/$REPLACE/" "$PMA"
     fi
     cp $PMA $BAK/
 
