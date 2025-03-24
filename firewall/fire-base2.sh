@@ -24,13 +24,13 @@ d_zone="EXT_ZONE securityzone"
 d_zone=`make_json "$d_zone"`
 d_addr="google-dns networkobject cloudflare-dns networkobject"
 d_addr=`make_json "$d_addr"`
-app="DNS application"
+app=""
 if [[ "$app" != "" ]]; then
     app=`make_json "$app"`
 fi
 s_ports=""
 s_ports=`make_json "$s_ports"`
-d_ports="DNS-UDP udpportobject DNS-TCP tcpportobject"
+d_ports=""
 d_ports=`make_json "$d_ports"`
 action="PERMIT"
 log="LOG_BOTH"
