@@ -304,8 +304,8 @@ set rulebase security rules QUICK_ALLOW_WEB log-end yes
 set rulebase security rules QUICK_ALLOW_WEB log-setting default
 
 set rulebase security rules ALLOW_DNS profile-setting group ccdc
-set rulebase security rules ALLOW_DNS application dns
-set rulebase security rules ALLOW_DNS service application-default
+set rulebase security rules ALLOW_DNS application any
+set rulebase security rules ALLOW_DNS service any
 set rulebase security rules ALLOW_DNS to External
 set rulebase security rules ALLOW_DNS from [ Internal Public User ]
 set rulebase security rules ALLOW_DNS source any
