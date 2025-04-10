@@ -4,7 +4,7 @@
 # - CentOS 7
 # - HTTPD
 # - MySQL
-# - PHP
+# - PHP / PhpMyAdmin
 # - Prestashop
 #
 # Author: Logan Miller
