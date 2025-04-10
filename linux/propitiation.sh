@@ -10,6 +10,12 @@
 # Author: Logan Miller
 # Date: March 2025
 # 
+# Future Goals
+# - create custom repo files and add to configs folder
+# - need to be better at identifying and fixing rootkits, esp. ldpreload
+# - improve and implement webshell detection
+# - improve error handling, be super thorough
+#
 
 # Script must be run as root --------------------------------------------------
 if [ $(id -u) != 0 ]; then
