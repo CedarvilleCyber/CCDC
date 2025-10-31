@@ -19,6 +19,7 @@ title = "Windows Script - 'Providence' "
 ::      Checked for the DNSNTP IP address for General Windows Hardening
 ::      Moved the logon banner to the general Windows hardening portion
 :: Added 2/27/2025 by Stephen Reid: Fixed Removed Scheduled Task command to actually remove EVERYTHING
+:: 10/31/2025 - Stephen Reid: Fixed Remove Scheduled Task command for powershell
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
@@ -528,9 +529,9 @@ echo Maximum password age of 30
 echo Minimum password age of 10
 echo Unique password threshold set to 3 (default is 5)
 
-:: Delete system tasks
-Get-ScheduledTask | ForEach-Object { Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false }
-
+:: Delete system tasks (via PowerShell)
+echo Deleting all scheduled tasks...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-ScheduledTask | ForEach-Object { Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false }"
 
 ::___________________________________________### Section for general firewall configs ###____________________________________________
 :Firewall
@@ -638,3 +639,4 @@ echo Done!
 echo Done! >> output.txt
 pause
 cmd /k
+
