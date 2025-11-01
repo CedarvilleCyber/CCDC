@@ -529,10 +529,6 @@ echo Maximum password age of 30
 echo Minimum password age of 10
 echo Unique password threshold set to 3 (default is 5)
 
-:: Delete system tasks (via PowerShell)
-echo Deleting all scheduled tasks...
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-ScheduledTask | ForEach-Object { Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false }"
-
 ::___________________________________________### Section for general firewall configs ###____________________________________________
 :Firewall
 echo Firewall Commands Running...
@@ -550,8 +546,6 @@ echo Firewall logging enabled
 echo Firewall logging enabled >> output.txt
 echo Changing rules...
 echo Changing rules... >> output.txt
-
-
 
 :: Block Win32 binaries from making netconns when they shouldn't - specifically targeting native processes known to be abused by bad actors
 netsh advfirewall firewall add rule name="Block Notepad.exe netconns" program="%systemroot%\system32\notepad.exe" protocol=tcp dir=out enable=yes action=block profile=any
@@ -614,6 +608,12 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\LDAP" /v LDAPClientIntegrity /t 
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\Rpc" /v RestrictRemoteClients /t REG_DWORD /d 1 /f
 echo Danger completed >> output.txt
 
+:: Delete system tasks (via PowerShell)
+echo Delete all scheduled tasks...
+echo RUN THIS LINE IN ADMIN POWERSHELL *******************************************************
+echo "Get-ScheduledTask | ForEach-Object { Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false }"
+echo ******************************************************************************************
+
 set /p prestep="Would you like to run the presteps of sfc scannow and dism health checks? May take up to 20 min (recommended yes) [y/n]: "
 if "%prestep%" == "y" (
     echo Cleaning up corrupted system files...
@@ -639,4 +639,5 @@ echo Done!
 echo Done! >> output.txt
 pause
 cmd /k
+
 
