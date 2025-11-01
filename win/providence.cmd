@@ -84,10 +84,9 @@ REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters" /v "TCP/IP Port
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" /v "DCTcpipPort" /t REG_DWORD /d 50244 /f
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTFRS\Parameters" /v "RPC TCP/IP Port Assignment" /t REG_DWORD /d 50245 /f
 
-echo Running AD Specific firewall rules
-echo Running AD Specific firewall rules >> output.txt
-
 :: ********************************************OLD FIREWALL SECTION SAVED FOR BACKUP PURPOSES****************************************
+:: echo Running AD Specific firewall rules
+:: echo Running AD Specific firewall rules >> output.txt
 :: Blocks unnecessary AD ports, such as kerberos, RPC, and LDAP
 
 :: netsh advfirewall firewall add rule name="Block Kerberos TCP 88" protocol=TCP dir=in localport=88 action=block
@@ -218,7 +217,26 @@ echo Logon Banner Set >> output.txt
 :: Patching CVE-2020-1350
 echo Patching CVE-2020-1350
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DNS\Parameters" /v TcpReceivePacketSize /t REG_DWORD /d 65280 /f
-net stop dns && net start dns
+
+:: Stop and restart the appropriate service based on server choice
+if "%choice%"=="1" (
+    echo Stopping and restarting DNS service...
+    echo Stopping and restarting DNS service... >> output.txt
+    net stop dns && net start dns
+)
+
+if "%choice%"=="2" (
+    echo Stopping and restarting Web service...
+    echo Stopping and restarting Web service... >> output.txt
+    net stop w3svc && net start w3svc
+)
+
+if "%choice%"=="3" (
+    echo Stopping and restarting FTP service...
+    echo Stopping and restarting FTP service... >> output.txt
+    net stop ftpsvc && net start ftpsvc
+)
+
 :: Services
 echo Showing you the currently running services...
 echo Showing you the currently running services... >> output.txt
@@ -711,6 +729,7 @@ echo Done!
 echo Done! >> output.txt
 pause
 cmd /k
+
 
 
 
