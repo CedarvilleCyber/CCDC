@@ -20,6 +20,7 @@ title = "Windows Script - 'Providence' "
 ::      Moved the logon banner to the general Windows hardening portion
 :: Added 2/27/2025 by Stephen Reid: Fixed Removed Scheduled Task command to actually remove EVERYTHING
 :: 10/31/2025 - Stephen Reid: Fixed Remove Scheduled Task command for powershell
+:: 1/17/2026 - Stephen Reid: Changed Firewalls to default block all in/out w/ necessary exceptions 
 
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... You may want to increae the powershell buffer size as well.
 echo Welcome fellow yellow jacket, lets do this thing. If you're not from CU and stole this from github, I sure hope you know what it does... >> output.txt
@@ -84,48 +85,8 @@ REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters" /v "TCP/IP Port
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" /v "DCTcpipPort" /t REG_DWORD /d 50244 /f
 REG add "HKLM\SYSTEM\CurrentControlSet\Services\NTFRS\Parameters" /v "RPC TCP/IP Port Assignment" /t REG_DWORD /d 50245 /f
 
-:: ********************************************OLD FIREWALL SECTION SAVED FOR BACKUP PURPOSES****************************************
-:: echo Running AD Specific firewall rules
-:: echo Running AD Specific firewall rules >> output.txt
-:: Blocks unnecessary AD ports, such as kerberos, RPC, and LDAP
-
-:: netsh advfirewall firewall add rule name="Block Kerberos TCP 88" protocol=TCP dir=in localport=88 action=block
-:: netsh advfirewall firewall add rule name="Block HTTP TCP 80" protocol=TCP dir=in localport=80 action=block
-:: netsh advfirewall firewall add rule name="Block msrpc TCP 135" protocol=TCP dir=in localport=135 action=block
-:: netsh advfirewall firewall add rule name="Block netbios-ssn TCP 139" protocol=TCP dir=in localport=139 action=block
-:: netsh advfirewall firewall add rule name="Block LDAP TCP 389" protocol=TCP dir=in localport=389 action=block
-:: netsh advfirewall firewall add rule name="Block microsoft-ds TCP 445" protocol=TCP dir=in localport=445 action=block
-:: netsh advfirewall firewall add rule name="Block kpasswd5 TCP 464" protocol=TCP dir=in localport=464 action=block
-:: netsh advfirewall firewall add rule name="Block http-rpc-epmap TCP 593" protocol=TCP dir=in localport=593 action=block
-:: netsh advfirewall firewall add rule name="Block ldapssl TCP 636" protocol=TCP dir=in localport=636 action=block
-:: netsh advfirewall firewall add rule name="Block globalcatLDAP TCP 3268" protocol=TCP dir=in localport=3268 action=block
-:: netsh advfirewall firewall add rule name="Block globalcatLDAPssl TCP 3269" protocol=TCP dir=in localport=3269 action=block
-:: netsh advfirewall firewall add rule name="Block kerberos-sec UDP 88" protocol=UDP dir=in localport=88 action=block
-:: netsh advfirewall firewall add rule name="Block ntp UDP 123" protocol=UDP dir=in localport=123 action=block
-:: netsh advfirewall firewall add rule name="Block LDAP UDP 389" protocol=UDP dir=in localport=389 action=block
-:: netsh advfirewall firewall add rule name="Block netbios-ns UDP 137" protocol=UDP dir=in localport=137 action=block
-
-:: Splunk
-:: netsh advfirewall firewall add rule name="Splunk OUT" dir=out action=allow enable=yes profile=any remoteip=%Splunk% remoteport=8000,8089,9997 protocol=tcp
-
-:: NTP
-:: netsh advfirewall firewall add rule name="NTP Allow" dir=out action=allow enable=yes profile=any remoteport=123 remoteip=%DNSNTP% protocol=udp
-
-::Enable Web Traffic on ports 443 and 80
-:: netsh advfirewall firewall add rule name="Web in" dir=in action=allow enable=yes profile=any localport=80,443 protocol=tcp
-:: netsh advfirewall firewall add rule name="Web out" dir=out action=allow enable=yes profile=any localport=80,443 protocol=tcp
-
-:: DNS 53
-:: netsh advfirewall firewall add rule name="DNS Out UDP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=udp
-:: netsh advfirewall firewall add rule name="DNS Out TCP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=tcp
-:: netsh advfirewall firewall add rule name="DNS In UDP from ANY" dir=in action=allow enable=yes profile=any localport=53  protocol=udp
-:: netsh advfirewall firewall add rule name="DNS In TCP from ANY" dir=in action=allow enable=yes profile=any localport=53  protocol=tcp
-:: echo DNS changes
-:: echo DNS changes >> output.txt
-
-:: Block everything else
-:: netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
-:: *********************************************************^BACKUP^**********************************************************
+echo Setting DEFAULT DENY (INBOUND + OUTBOUND)...
+netsh advfirewall set allprofiles firewallpolicy blockinbound,blockoutbound
 
 echo Select server type:
 echo 1 - DNS (Port 53)
@@ -133,70 +94,40 @@ echo 2 - Web (Ports 80, 443)
 echo 3 - FTP (Ports 20, 21)
 set /p choice="Enter choice (1-3): "
 
-:: Block all AD/unnecessary ports (applies to ALL server types)
-netsh advfirewall firewall add rule name="Block Kerberos TCP 88" protocol=TCP dir=in localport=88 action=block
-netsh advfirewall firewall add rule name="Block msrpc TCP 135" protocol=TCP dir=in localport=135 action=block
-netsh advfirewall firewall add rule name="Block netbios-ssn TCP 139" protocol=TCP dir=in localport=139 action=block
-netsh advfirewall firewall add rule name="Block LDAP TCP 389" protocol=TCP dir=in localport=389 action=block
-netsh advfirewall firewall add rule name="Block microsoft-ds TCP 445" protocol=TCP dir=in localport=445 action=block
-netsh advfirewall firewall add rule name="Block kpasswd5 TCP 464" protocol=TCP dir=in localport=464 action=block
-netsh advfirewall firewall add rule name="Block http-rpc-epmap TCP 593" protocol=TCP dir=in localport=593 action=block
-netsh advfirewall firewall add rule name="Block ldapssl TCP 636" protocol=TCP dir=in localport=636 action=block
-netsh advfirewall firewall add rule name="Block globalcatLDAP TCP 3268" protocol=TCP dir=in localport=3268 action=block
-netsh advfirewall firewall add rule name="Block globalcatLDAPssl TCP 3269" protocol=TCP dir=in localport=3269 action=block
-netsh advfirewall firewall add rule name="Block kerberos-sec UDP 88" protocol=UDP dir=in localport=88 action=block
-netsh advfirewall firewall add rule name="Block ntp UDP 123" protocol=UDP dir=in localport=123 action=block
-netsh advfirewall firewall add rule name="Block LDAP UDP 389" protocol=UDP dir=in localport=389 action=block
-netsh advfirewall firewall add rule name="Block netbios-ns UDP 137" protocol=UDP dir=in localport=137 action=block
+:: DNS OUT (needed by all servers)
+netsh advfirewall firewall add rule name="DNS OUT UDP" dir=out action=allow protocol=udp remoteport=53
+netsh advfirewall firewall add rule name="DNS OUT TCP" dir=out action=allow protocol=tcp remoteport=53
 
-:: Splunk (applies to ALL server types)
+:: Wazuh Agent OUT
+netsh advfirewall firewall add rule name="Wazuh OUT" dir=out action=allow protocol=tcp remoteport=1514,1515
+
+:: Splunk OUT
 netsh advfirewall firewall add rule name="Splunk OUT" dir=out action=allow enable=yes profile=any remoteip=%Splunk% remoteport=8000,8089,9997 protocol=tcp
 
-:: NTP (applies to ALL server types)
+:: NTP OUT
 netsh advfirewall firewall add rule name="NTP Allow" dir=out action=allow enable=yes profile=any remoteport=123 remoteip=%DNSNTP% protocol=udp
 
 :: Server-specific configuration
 if "%choice%"=="1" (
-    netsh advfirewall firewall add rule name="Block HTTP TCP 80" protocol=TCP dir=in localport=80 action=block
-    netsh advfirewall firewall add rule name="Block HTTPS TCP 443" protocol=TCP dir=in localport=443 action=block
-    netsh advfirewall firewall add rule name="Block FTP TCP 20" protocol=TCP dir=in localport=20 action=block
-    netsh advfirewall firewall add rule name="Block FTP TCP 21" protocol=TCP dir=in localport=21 action=block
-    netsh advfirewall firewall add rule name="DNS In UDP from ANY" dir=in action=allow enable=yes profile=any localport=53 protocol=udp
-    netsh advfirewall firewall add rule name="DNS In TCP from ANY" dir=in action=allow enable=yes profile=any localport=53 protocol=tcp
-    netsh advfirewall firewall add rule name="DNS Out UDP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=udp
-    netsh advfirewall firewall add rule name="DNS Out TCP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=tcp
+    netsh advfirewall firewall add rule name="DNS IN UDP" dir=in action=allow protocol=udp localport=53
+    netsh advfirewall firewall add rule name="DNS IN TCP" dir=in action=allow protocol=tcp localport=53
     echo DNS changes
     echo DNS changes >> output.txt
 )
 
 if "%choice%"=="2" (
-    netsh advfirewall firewall add rule name="Block DNS In TCP 53" protocol=TCP dir=in localport=53 action=block
-    netsh advfirewall firewall add rule name="Block DNS In UDP 53" protocol=UDP dir=in localport=53 action=block
-    netsh advfirewall firewall add rule name="Block FTP TCP 20" protocol=TCP dir=in localport=20 action=block
-    netsh advfirewall firewall add rule name="Block FTP TCP 21" protocol=TCP dir=in localport=21 action=block
     netsh advfirewall firewall add rule name="Web in" dir=in action=allow enable=yes profile=any localport=80,443 protocol=tcp
-    netsh advfirewall firewall add rule name="Web out" dir=out action=allow enable=yes profile=any localport=80,443 protocol=tcp
-    netsh advfirewall firewall add rule name="DNS Out UDP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=udp
-    netsh advfirewall firewall add rule name="DNS Out TCP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=tcp
+    :: netsh advfirewall firewall add rule name="Web out" dir=out action=allow enable=yes profile=any localport=80,443 protocol=tcp
     echo Web changes
     echo Web changes >> output.txt
 )
 
 if "%choice%"=="3" (
-    netsh advfirewall firewall add rule name="Block HTTP TCP 80" protocol=TCP dir=in localport=80 action=block
-    netsh advfirewall firewall add rule name="Block HTTPS TCP 443" protocol=TCP dir=in localport=443 action=block
-    netsh advfirewall firewall add rule name="Block DNS In TCP 53" protocol=TCP dir=in localport=53 action=block
-    netsh advfirewall firewall add rule name="Block DNS In UDP 53" protocol=UDP dir=in localport=53 action=block
     netsh advfirewall firewall add rule name="FTP In" dir=in action=allow enable=yes profile=any localport=20,21 protocol=tcp
-    netsh advfirewall firewall add rule name="FTP Out" dir=out action=allow enable=yes profile=any localport=20,21 protocol=tcp
-    netsh advfirewall firewall add rule name="DNS Out UDP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=udp
-    netsh advfirewall firewall add rule name="DNS Out TCP" dir=out action=allow enable=yes profile=any remoteport=53 protocol=tcp
+    :: netsh advfirewall firewall add rule name="FTP Out" dir=out action=allow enable=yes profile=any localport=20,21 protocol=tcp
     echo FTP changes
     echo FTP changes >> output.txt
 )
-
-:: Block everything else (applies to ALL servers)
-netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 
 ::_____________________________________________### Section for general windows hardening commands ###__________________________________________
 
@@ -703,6 +634,11 @@ echo Delete all scheduled tasks...
 echo RUN THIS LINE IN ADMIN POWERSHELL *******************************************************
 echo "Get-ScheduledTask | ForEach-Object { Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false }"
 echo ******************************************************************************************
+echo WEB OUT is killed by default, to browse web, temporarily add this rule then remove it once done:
+echo "netsh advfirewall firewall add rule name="TEMP WEB OUT" dir=out action=allow protocol=tcp remoteport=80,443"
+echo ******************************************************************************************
+echo "netsh advfirewall firewall delete rule name="TEMP WEB OUT""
+echo ******************************************************************************************
 
 set /p prestep="Would you like to run the presteps of sfc scannow and dism health checks? May take up to 20 min (recommended yes) [y/n]: "
 if "%prestep%" == "y" (
@@ -729,6 +665,7 @@ echo Done!
 echo Done! >> output.txt
 pause
 cmd /k
+
 
 
 
