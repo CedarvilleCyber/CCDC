@@ -74,6 +74,10 @@ else
     echo $ZONES
 fi
 
+# team number
+printf "${info}Enter team number: ${reset}"
+read TEAM_NUMBER
+TEAM_NUMBER=$((TEAM_NUMBER + 20))
 
 # objects
 
@@ -98,8 +102,10 @@ do
     name=$input
 
     # Get IP address
-    printf "IP/CIDR: "
+    printf "IP/CIDR (put [20] wherever team number should be): "
     read input
+
+    input="${input//\[20\]/$TEAM_NUMBER}"
 
     if [[ "$input" == "" ]]
     then
@@ -109,6 +115,7 @@ do
         continue
     fi
     ip=$input
+
 
     # last check before writing the rule down
     printf "${info}================================================================${reset}\n"
