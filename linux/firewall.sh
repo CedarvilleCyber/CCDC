@@ -284,6 +284,12 @@ else
     iptables -A OUTPUT -p udp --dport 67 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
     iptables -A INPUT -p udp --sport 67 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
+    # Allow Wazuh
+    iptables -A OUTPUT -p tcp --dport 1514 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A OUTPUT -p tcp --dport 1515 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+    iptables -A INPUT -p tcp --sport 1514 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+    iptables -A INPUT -p tcp --sport 1515 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
     # Allow local communication
     iptables -A INPUT -i lo -j ACCEPT
     iptables -A OUTPUT -o lo -j ACCEPT
