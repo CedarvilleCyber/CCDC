@@ -18,6 +18,7 @@ fwupd
 gdm
 gdm3
 gdomap
+getty@tty1
 gssproxy
 hwclock
 ifupdown-pre
@@ -54,6 +55,7 @@ systemd-journal-flush
 systemd-journald
 systemd-logind
 systemd-modules-load
+systemd-networkd
 systemd-random-seed
 systemd-remount-fs
 systemd-sysctl
