@@ -416,10 +416,6 @@ reg add "HKLM\SYSTEM\CurrentControlSet\services\Netlogon\Parameters" /v SealSecu
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymous /t REG_DWORD /d 1 /f 
 :: Restrict Anonymous Enumeration #2
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymoussam /t REG_DWORD /d 1 /f 
-:: Require Security Signature - Disabled pursuant to checklist
-reg add "HKLM\SYSTEM\CurrentControlSet\services\LanmanServer\Parameters" /v enablesecuritysignature /t REG_DWORD /d 0 /f 
-:: Enable Security Signature - Disabled pursuant to checklist
-reg add "HKLM\SYSTEM\CurrentControlSet\services\LanmanServer\Parameters" /v requiresecuritysignature /t REG_DWORD /d 0 /f 
 :: Disable Domain Credential Storage
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v disabledomaincreds /t REG_DWORD /d 1 /f 
 :: Don't Give Anons Everyone Permissions
@@ -434,8 +430,6 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg\AllowedE
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\SecurePipeServers\winreg\AllowedPaths" /v Machine /t REG_MULTI_SZ /d "" /f
 :: Restict anonymous access to named pipes and shares
 reg add "HKLM\SYSTEM\CurrentControlSet\services\LanmanServer\Parameters" /v NullSessionShares /t REG_MULTI_SZ /d "" /f
-:: Allow to use Machine ID for NTLM
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" /v UseMachineId /t REG_DWORD /d 0 /f
 :: Stop and disable the print spooler
 net stop spooler
 sc config spooler start=disabled
@@ -490,8 +484,6 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v restrictanonymoussam /t R
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v everyoneincludesanonymous /t REG_DWORD /d 0 /f
 :: Turn off Local Machine Hash
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v NoLMHash /t REG_DWORD /d 1 /f
-:: delete use machine id
-reg delete "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v UseMachineID /f
 :: Change notification packages
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\LSA" /v "Notification Packages" /t REG_MULTI_SZ /d "scecli" /f
 :: Show hidden users in gui
