@@ -18,6 +18,7 @@ fwupd.service
 gdm.service
 gdm3.service
 gdomap.service
+getty@tty1.service
 gssproxy.service
 hwclock.service
 ifupdown-pre.service
@@ -54,6 +55,7 @@ systemd-journal-flush.service
 systemd-journald.service
 systemd-logind.service
 systemd-modules-load.service
+systemd-networkd.service
 systemd-random-seed.service
 systemd-remount-fs.service
 systemd-sysctl.service
