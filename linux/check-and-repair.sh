@@ -4,7 +4,7 @@
 
 # Check if running as root
 if [ "$EUID" -ne 0 ]; then 
-    echo -e "${error}Error: This script must be run as root${NC}"
+    echo -e "${error}Error: This script must be run as root${reset}"
     exit 1
 fi
 
@@ -31,18 +31,18 @@ echo ""
 check_package() {
     echo "Running: $VERIFY_COMMAND $PACKAGE"
     if $VERIFY_COMMAND "$PACKAGE" 2>&1 | tee ./data-files/verify-packages.txt | grep -q .; then
-        echo -e "${error}[!] Package verification FAILED - files modified:${NC}"
+        echo -e "${error}[!] Package verification FAILED - files modified:${reset}"
         cat ./data-files/verify-packages.txt
         return 1
     else
-        echo -e "${info}[✓] Package verification PASSED${NC}"
+        echo -e "${info}[✓] Package verification PASSED${reset}"
         return 0
     fi
 }
 
 reinstall_package() {
     echo ""
-    echo -e "${warn}[!] Reinstalling package: $PACKAGE${NC}"
+    echo -e "${warn}[!] Reinstalling package: $PACKAGE${reset}"
     
     if [ "$PKG_MGR" = "rpm" ]; then
         $INSTALL_CMD "$PACKAGE"
@@ -51,14 +51,14 @@ reinstall_package() {
     fi
     
     if [ $? -eq 0 ]; then
-        echo -e "${info}[✓] Package reinstalled successfully${NC}"
+        echo -e "${info}[✓] Package reinstalled successfully${reset}"
         
         # Verify again after reinstall
         echo ""
         echo "=== Post-Reinstall Verification ==="
         check_package
     else
-        echo -e "${error}[!] Package reinstallation FAILED${NC}"
+        echo -e "${error}[!] Package reinstallation FAILED${reset}"
         exit 1
     fi
 }
