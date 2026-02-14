@@ -8,13 +8,13 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Detect package manager
+# Detect low-level package manager
 if command -v rpm &> /dev/null; then
-    PKG_MGR="rpm"
-    INSTALL_CMD="yum reinstall -y"
+    VERIFY_COMMAND="rpm -V"
+    INSTALL_CMD="${PKG_MAN} reinstall -y"
 elif command -v dpkg &> /dev/null; then
-    PKG_MGR="dpkg"
-    INSTALL_CMD="apt-get install --reinstall -y"
+    VERIFY_COMMAND="dpkg -V"
+    INSTALL_CMD="${PKG_MAN} install --reinstall -y"
 else
     echo -e "${error}Error: No supported package manager found${reset}"
     exit 1
@@ -28,12 +28,11 @@ echo "Checking package: $PACKAGE"
 echo "Package manager: $PKG_MGR"
 echo ""
 
-# Function to check RPM-based systems
-check_rpm() {
-    echo "Running: rpm -V $PACKAGE"
-    if rpm -V "$PACKAGE" 2>&1 | tee /tmp/rpm_verify.txt | grep -q .; then
+check_package() {
+    echo "Running: $VERIFY_COMMAND $PACKAGE"
+    if $VERIFY_COMMAND "$PACKAGE" 2>&1 | tee ./data-files/verify-packages.txt | grep -q .; then
         echo -e "${error}[!] Package verification FAILED - files modified:${NC}"
-        cat /tmp/rpm_verify.txt
+        cat ./data-files/verify-packages.txt
         return 1
     else
         echo -e "${info}[✓] Package verification PASSED${NC}"
@@ -41,27 +40,6 @@ check_rpm() {
     fi
 }
 
-# Function to check Debian-based systems
-check_debian() {
-    # Install debsums if not present
-    if ! command -v debsums &> /dev/null; then
-        echo -e "${warn}Installing debsums...${NC}"
-        apt-get update -qq
-        apt-get install -y debsums
-    fi
-    
-    echo "Running: debsums $PACKAGE"
-    if debsums "$PACKAGE" 2>&1 | tee /tmp/debsums_verify.txt | grep -i "FAILED\|changed"; then
-        echo -e "${error}[!] Package verification FAILED - files modified:${NC}"
-        cat /tmp/debsums_verify.txt
-        return 1
-    else
-        echo -e "${info}[✓] Package verification PASSED${NC}"
-        return 0
-    fi
-}
-
-# Function to reinstall package
 reinstall_package() {
     echo ""
     echo -e "${warn}[!] Reinstalling package: $PACKAGE${NC}"
@@ -78,11 +56,7 @@ reinstall_package() {
         # Verify again after reinstall
         echo ""
         echo "=== Post-Reinstall Verification ==="
-        if [ "$PKG_MGR" = "rpm" ]; then
-            check_rpm
-        else
-            check_debian
-        fi
+        check_package
     else
         echo -e "${error}[!] Package reinstallation FAILED${NC}"
         exit 1
@@ -91,14 +65,8 @@ reinstall_package() {
 
 # Main execution
 echo "=== Verifying Login Shells ==="
-if [ "$PKG_MGR" = "rpm" ]; then
-    if ! check_rpm; then
-        reinstall_package
-    fi
-else
-    if ! check_debian; then
-        reinstall_package
-    fi
+if ! check_package; then
+    reinstall_package
 fi
 
 echo ""
