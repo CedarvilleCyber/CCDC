@@ -30,9 +30,10 @@ if ($result && $result->num_rows > 0) {
 }
 echo "\n";
 
-$version = readline("Enter OpenCart major version (3 or 4): ");
 $user = readline("Enter username to update: ");
 $pass = readline("New password for $user: ");
+
+$version = readline("Enter OpenCart major version (3 or 4): ");
 
 if ($version == '3') {
     $salt = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 9);
