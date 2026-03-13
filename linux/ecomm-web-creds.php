@@ -7,19 +7,31 @@
 # import OpenCart config to get DB credentials (remember to harden these)
 require_once('/var/www/html/opencart/upload/config.php');
 
-$version = readline("Enter OpenCart major version (3 or 4): ");
-$user = readline("Enter username to update: ");
+$mysqli = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
 
-# eventually update this so passwords aren't visible
-$pass = readline("New password for $user: ");
-$pass_confirm = readline("Confirm password: ");
-
-if ($pass !== $pass_confirm) {
-    echo "Passwords do not match. Try again.\n";
+if (!$mysqli) {
+    echo "Database connection failed: " . mysqli_connect_error() . "\n";
     exit(1);
 }
 
-$mysqli = new mysqli(DB_HOSTNAME, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
+# List all users in oc_users table
+echo "\n=== Users in OpenCart ===\n";
+$result = $mysqli->query('SELECT user_id, username, email FROM oc_user ORDER BY user_id');
+
+if ($result && $result->num_rows > 0) {
+    printf("%-5s %-25s %-35s\n", "ID", "Username", "Email");
+    echo str_repeat("-", 70) . "\n";
+    while ($row = $result->fetch_assoc()) {
+        printf("%-5s %-25s %-35s\n", $row['user_id'], $row['username'], $row['email']);
+    }
+} else {
+    echo "No users found.\n";
+}
+echo "\n";
+
+$version = readline("Enter OpenCart major version (3 or 4): ");
+$user = readline("Enter username to update: ");
+$pass = readline("New password for $user: ");
 
 if ($version == '3') {
     $salt = substr(str_shuffle('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 9);
