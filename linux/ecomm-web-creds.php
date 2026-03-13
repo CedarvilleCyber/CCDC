@@ -26,6 +26,7 @@ if ($result && $result->num_rows > 0) {
     }
 } else {
     echo "No users found.\n";
+    exit(1);
 }
 echo "\n";
 
@@ -40,7 +41,8 @@ if ($version == '3') {
     $stmt->execute([$hash, $salt, $user]);
 }
 elseif ($version == '4') {
-    $hash = password_hash($pass, PASSWORD_DEFAULT); # change to PASSWORD_BCRYPT if you have issues with the default algorithm
+    # change to PASSWORD_BCRYPT if you have issues with the default algorithm
+    $hash = password_hash($pass, PASSWORD_DEFAULT); 
     $stmt = $mysqli->prepare('UPDATE oc_user SET password = ? WHERE username = ?');
     $stmt->execute([$hash, $user]);
 }
