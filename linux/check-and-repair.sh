@@ -25,7 +25,7 @@ PACKAGE="${1:-util-linux}"
 
 echo "=== Package Integrity Checker ==="
 echo "Checking package: $PACKAGE"
-echo "Package manager: $PKG_MGR"
+echo "Package manager: $PKG_MAN"
 echo ""
 
 check_package() {
@@ -64,10 +64,11 @@ reinstall_package() {
 }
 
 # Main execution
-echo "=== Verifying Login Shells ==="
+echo "=== Verifying Package ==="
 if ! check_package; then
-    reinstall_package
-fi
+    read -p "Reinstall package? (y/N): " confirm
 
-echo ""
-echo "=== Complete ==="
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        reinstall_package
+    fi
+fi
