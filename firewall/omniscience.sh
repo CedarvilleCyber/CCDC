@@ -76,7 +76,7 @@ if [[ "$gen" == "y" || "$gen" == "Y" ]]; then
     echo "exit" >> ./run-omniscience.txt
 
 
-    ssh -T admin@$IP < ./run-omniscience.txt
+    ssh -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@$IP < ./run-omniscience.txt
 else
     # get team ip
     printf "Enter team IP number should be between (21-40): "
@@ -100,7 +100,7 @@ else
     echo "commit" >> run-omniscience.txt
     echo "exit" >> run-omniscience.txt
     
-    ssh -T admin@172.20.242.150 < ./run-omniscience.txt
+    ssh -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@172.20.242.150 < ./run-omniscience.txt
 fi
 
 

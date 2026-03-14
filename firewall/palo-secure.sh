@@ -52,6 +52,6 @@ sed -i "s/SYSLOG_SERVER_IP/$syslog/" ./run-palo-secure.txt
 echo "commit" >> ./run-palo-secure.txt
 echo "exit" >> ./run-palo-secure.txt
 
-ssh -T admin@$IP < ./run-palo-secure.txt
+ssh -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@$IP < ./run-palo-secure.txt
 
 exit 0

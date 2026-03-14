@@ -60,7 +60,7 @@ if ($gen -eq "y" -or $gen -eq "Y") {
     "commit" | Add-Content .\run-omniscience.txt
     "exit" | Add-Content .\run-omniscience.txt
 
-    Get-Content .\run-omniscience.txt | ssh.exe -T admin@$IP
+    Get-Content .\run-omniscience.txt | ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@$IP
 
 } else {
     # Mode B - Hardcoded FW2 2026 state
@@ -87,5 +87,5 @@ if ($gen -eq "y" -or $gen -eq "Y") {
     "commit" | Add-Content .\run-omniscience.txt
     "exit" | Add-Content .\run-omniscience.txt
 
-    Get-Content .\run-omniscience.txt | ssh.exe -T admin@172.20.240.200
+    Get-Content .\run-omniscience.txt | ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@172.20.240.200
 }
