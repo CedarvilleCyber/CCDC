@@ -12,7 +12,8 @@ function Write-LF {
     param([string]$Path, [string[]]$Lines)
     $resolved = Resolve-Path $Path -ErrorAction SilentlyContinue
     if (-not $resolved) { $resolved = $Path }
-    [System.IO.File]::WriteAllLines($resolved, $Lines, [System.Text.UTF8Encoding]::new($false))
+    $content = ($Lines -join "`n") + "`n"
+    [System.IO.File]::WriteAllText([string]$resolved, $content, [System.Text.UTF8Encoding]::new($false))
 }
 function Add-LF {
     param([string]$Path, [string[]]$Lines)
@@ -70,7 +71,7 @@ if ($gen -eq "y" -or $gen -eq "Y") {
 
     Add-LF -Path .\run-omniscience.txt -Lines @("commit", "exit")
 
-    Get-Content .\run-omniscience.txt | ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@$IP
+    cmd /c "ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@$IP < run-omniscience.txt"
 
 } else {
     # Mode B - Hardcoded FW2 2026 state
@@ -93,5 +94,5 @@ if ($gen -eq "y" -or $gen -eq "Y") {
 
     Add-LF -Path .\run-omniscience.txt -Lines @("commit", "exit")
 
-    Get-Content .\run-omniscience.txt | ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@172.20.240.200
+    cmd /c "ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@172.20.240.200 < run-omniscience.txt"
 }
