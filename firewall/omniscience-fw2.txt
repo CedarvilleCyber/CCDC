@@ -385,10 +385,6 @@ set profile-group ccdc wildfire-analysis strict
 
 set profiles file-blocking ccdc-files rules block-scripts direction upload application [ web-browsing ftp ] file-type [ php asp aspx ] action block
 set profiles file-blocking ccdc-files rules block-scripts description "Block web shell uploads"
-set profiles file-blocking ccdc-files rules block-exe-uploads direction upload application any file-type [ pe elf ] action block
-set profiles file-blocking ccdc-files rules block-exe-uploads description "Block executable uploads"
-set profiles file-blocking ccdc-files rules alert-downloads direction download application any file-type [ pe elf ] action alert
-set profiles file-blocking ccdc-files rules alert-downloads description "Alert on exe downloads"
 set profile-group ccdc file-blocking ccdc-files
 
 set application-filter outbound-apps category [ general-internet business-systems ]
@@ -406,9 +402,12 @@ set rulebase security rules BLOCK_REVSHELL_PORTS log-end yes
 set rulebase security rules BLOCK_REVSHELL_PORTS log-setting default
 move rulebase security rules BLOCK_REVSHELL_PORTS before INSIDE2EXTERNAL
 
+delete rulebase security rules EXTERNAL2INTERNAL_http application any
 set rulebase security rules EXTERNAL2INTERNAL_http application web-browsing
+delete rulebase security rules EXTERNAL2INTERNAL_https application any
 set rulebase security rules EXTERNAL2INTERNAL_https application [ ssl web-browsing ]
 
+delete rulebase security rules ALLOW_DNS application any
 set rulebase security rules ALLOW_DNS application dns
 set rulebase security rules ALLOW_DNS service [ service-dns-udp service-dns-tcp ]
 

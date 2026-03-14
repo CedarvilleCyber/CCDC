@@ -10,10 +10,9 @@
 # Write lines to a file with LF (Unix) line endings so PAN-OS CLI doesn't choke on \r
 function Write-LF {
     param([string]$Path, [string[]]$Lines)
-    $resolved = Resolve-Path $Path -ErrorAction SilentlyContinue
-    if (-not $resolved) { $resolved = $Path }
+    $resolved = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)
     $content = ($Lines -join "`n") + "`n"
-    [System.IO.File]::WriteAllText([string]$resolved, $content, [System.Text.UTF8Encoding]::new($false))
+    [System.IO.File]::WriteAllText($resolved, $content, [System.Text.UTF8Encoding]::new($false))
 }
 function Add-LF {
     param([string]$Path, [string[]]$Lines)
