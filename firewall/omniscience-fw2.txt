@@ -297,8 +297,10 @@ set rulebase security rules KILL2EXTERNAL log-start no
 set rulebase security rules KILL2EXTERNAL log-end yes
 set rulebase security rules KILL2EXTERNAL log-setting default
 
+set application-filter outbound-apps category [ general-internet business-systems networking ]
+
 set rulebase security rules INSIDE2EXTERNAL profile-setting group ccdc
-set rulebase security rules INSIDE2EXTERNAL application [ icmp ping ssl web-browsing ntp-base dns ]
+set rulebase security rules INSIDE2EXTERNAL application outbound-apps
 set rulebase security rules INSIDE2EXTERNAL service application-default
 set rulebase security rules INSIDE2EXTERNAL to External
 set rulebase security rules INSIDE2EXTERNAL from Internal
@@ -377,3 +379,44 @@ set rulebase default-security-rules rules interzone-default action deny
 set rulebase default-security-rules rules interzone-default log-end yes
 set rulebase default-security-rules rules intrazone-default action deny
 set rulebase default-security-rules rules intrazone-default log-end yes
+
+set profile-group ccdc virus strict
+set profile-group ccdc wildfire-analysis strict
+
+set profiles file-blocking ccdc-files rules block-scripts direction upload application [ web-browsing ftp ] file-type [ php asp aspx ] action block
+set profiles file-blocking ccdc-files rules block-scripts description "Block web shell uploads"
+set profiles file-blocking ccdc-files rules block-exe-uploads direction upload application any file-type [ pe elf ] action block
+set profiles file-blocking ccdc-files rules block-exe-uploads description "Block executable uploads"
+set profiles file-blocking ccdc-files rules alert-downloads direction download application any file-type [ pe elf ] action alert
+set profiles file-blocking ccdc-files rules alert-downloads description "Alert on exe downloads"
+set profile-group ccdc file-blocking ccdc-files
+
+set application-filter outbound-apps category [ general-internet business-systems ]
+
+set service service-revshell-ports protocol tcp port 4444,1337,31337,8080,8888,9090,9999,6666,6667,7777
+set rulebase security rules BLOCK_REVSHELL_PORTS application any
+set rulebase security rules BLOCK_REVSHELL_PORTS service service-revshell-ports
+set rulebase security rules BLOCK_REVSHELL_PORTS to External
+set rulebase security rules BLOCK_REVSHELL_PORTS from Internal
+set rulebase security rules BLOCK_REVSHELL_PORTS source any
+set rulebase security rules BLOCK_REVSHELL_PORTS destination any
+set rulebase security rules BLOCK_REVSHELL_PORTS action deny
+set rulebase security rules BLOCK_REVSHELL_PORTS log-start yes
+set rulebase security rules BLOCK_REVSHELL_PORTS log-end yes
+set rulebase security rules BLOCK_REVSHELL_PORTS log-setting default
+move rulebase security rules BLOCK_REVSHELL_PORTS before INSIDE2EXTERNAL
+
+set rulebase security rules EXTERNAL2INTERNAL_http application web-browsing
+set rulebase security rules EXTERNAL2INTERNAL_https application [ ssl web-browsing ]
+
+set rulebase security rules ALLOW_DNS application dns
+set rulebase security rules ALLOW_DNS service [ service-dns-udp service-dns-tcp ]
+
+set rulebase security rules EXTERNAL2INTERNAL_http log-start yes
+set rulebase security rules EXTERNAL2INTERNAL_https log-start yes
+set rulebase security rules EXTERNAL2INTERNAL_ftp log-start yes
+set rulebase security rules EXTERNAL2INTERNAL_dns log-start yes
+
+set rulebase security rules any2any action deny
+set rulebase security rules any2any log-end yes
+set rulebase security rules any2any log-setting default
