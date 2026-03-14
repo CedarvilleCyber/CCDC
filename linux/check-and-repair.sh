@@ -72,6 +72,3 @@ if ! check_package; then
         reinstall_package
     fi
 fi
-
-echo ""
-echo "=== Complete ==="
