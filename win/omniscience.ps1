@@ -7,6 +7,17 @@
 #
 # FW2: Mgmt 172.20.240.200 | Outside 172.16.102.254 | Inside 172.20.240.254
 
+# Write lines to a file with LF (Unix) line endings so PAN-OS CLI doesn't choke on \r
+function Write-LF {
+    param([string]$Path, [string[]]$Lines)
+    [System.IO.File]::WriteAllLines((Resolve-Path $Path -ErrorAction SilentlyContinue ?? $Path), $Lines, [System.Text.UTF8Encoding]::new($false))
+}
+function Add-LF {
+    param([string]$Path, [string[]]$Lines)
+    $all = (Get-Content $Path) + $Lines
+    Write-LF -Path $Path -Lines $all
+}
+
 Write-Host "Starting omniscience script"
 
 $gen = Read-Host "Do you want to generate rules? [y/n]"
@@ -35,30 +46,27 @@ if ($gen -eq "y" -or $gen -eq "Y") {
     & "$PSScriptRoot\palo-gen.ps1"
 
     # Assemble run-omniscience.txt
-    "set cli scripting-mode on" | Set-Content .\run-omniscience.txt
-    "configure" | Add-Content .\run-omniscience.txt
-    "set address this-fw ip-netmask $this_fw" | Add-Content .\run-omniscience.txt
+    Write-LF -Path .\run-omniscience.txt -Lines @("set cli scripting-mode on", "configure", "set address this-fw ip-netmask $this_fw")
 
-    Get-Content "$PSScriptRoot\..\firewall\palo-base1.txt" | Add-Content .\run-omniscience.txt
+    Add-LF -Path .\run-omniscience.txt -Lines (Get-Content "$PSScriptRoot\..\firewall\palo-base1.txt")
 
     # Replace SYSLOG_SERVER_IP placeholder
-    (Get-Content .\run-omniscience.txt) -replace 'SYSLOG_SERVER_IP', $syslog | Set-Content .\run-omniscience.txt
+    Write-LF -Path .\run-omniscience.txt -Lines ((Get-Content .\run-omniscience.txt) -replace 'SYSLOG_SERVER_IP', $syslog)
 
-    Get-Content .\palo-gen.txt | Add-Content .\run-omniscience.txt
+    Add-LF -Path .\run-omniscience.txt -Lines (Get-Content .\palo-gen.txt)
 
-    Get-Content "$PSScriptRoot\..\firewall\palo-base2.txt" | Add-Content .\run-omniscience.txt
+    Add-LF -Path .\run-omniscience.txt -Lines (Get-Content "$PSScriptRoot\..\firewall\palo-base2.txt")
 
     # Replace zone name placeholders
-    (Get-Content .\run-omniscience.txt) -replace 'EXT_ZONE', $EXT_ZONE | Set-Content .\run-omniscience.txt
+    Write-LF -Path .\run-omniscience.txt -Lines ((Get-Content .\run-omniscience.txt) -replace 'EXT_ZONE', $EXT_ZONE)
 
     if ($INT_ZONES -match " ") {
-        (Get-Content .\run-omniscience.txt) -replace 'INT_ZONES', "[ $INT_ZONES ]" | Set-Content .\run-omniscience.txt
+        Write-LF -Path .\run-omniscience.txt -Lines ((Get-Content .\run-omniscience.txt) -replace 'INT_ZONES', "[ $INT_ZONES ]")
     } else {
-        (Get-Content .\run-omniscience.txt) -replace 'INT_ZONES', $INT_ZONES | Set-Content .\run-omniscience.txt
+        Write-LF -Path .\run-omniscience.txt -Lines ((Get-Content .\run-omniscience.txt) -replace 'INT_ZONES', $INT_ZONES)
     }
 
-    "commit" | Add-Content .\run-omniscience.txt
-    "exit" | Add-Content .\run-omniscience.txt
+    Add-LF -Path .\run-omniscience.txt -Lines @("commit", "exit")
 
     Get-Content .\run-omniscience.txt | ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@$IP
 
@@ -68,24 +76,20 @@ if ($gen -eq "y" -or $gen -eq "Y") {
     $teamNum = Read-Host "Enter team number (1-12)"
     $team = 20 + [int]$teamNum
 
-    "set cli scripting-mode on" | Set-Content .\run-omniscience.txt
-    "configure" | Add-Content .\run-omniscience.txt
+    Write-LF -Path .\run-omniscience.txt -Lines @(
+        "set cli scripting-mode on",
+        "configure",
+        "set address this-fw ip-netmask 172.16.102.254",
+        "set address this-fw2 ip-netmask 172.20.240.254",
+        "set address public-ad-dns ip-netmask 172.25.$team.155",
+        "set address public-web ip-netmask 172.25.$team.140",
+        "set address public-ftp ip-netmask 172.25.$team.162",
+        "set address public-win11wks ip-netmask 172.25.$team.144"
+    )
 
-    # FW2 interface address objects
-    "set address this-fw ip-netmask 172.16.102.254" | Add-Content .\run-omniscience.txt
-    "set address this-fw2 ip-netmask 172.20.240.254" | Add-Content .\run-omniscience.txt
+    Add-LF -Path .\run-omniscience.txt -Lines (Get-Content "$PSScriptRoot\..\firewall\omniscience-fw2.txt")
 
-    # Public address objects (team-specific)
-    # team = 20 + team_number (e.g. team 1 -> 172.25.21.x)
-    "set address public-ad-dns ip-netmask 172.25.$team.155" | Add-Content .\run-omniscience.txt
-    "set address public-web ip-netmask 172.25.$team.140" | Add-Content .\run-omniscience.txt
-    "set address public-ftp ip-netmask 172.25.$team.162" | Add-Content .\run-omniscience.txt
-    "set address public-win11wks ip-netmask 172.25.$team.144" | Add-Content .\run-omniscience.txt
-
-    Get-Content "$PSScriptRoot\..\firewall\omniscience-fw2.txt" | Add-Content .\run-omniscience.txt
-
-    "commit" | Add-Content .\run-omniscience.txt
-    "exit" | Add-Content .\run-omniscience.txt
+    Add-LF -Path .\run-omniscience.txt -Lines @("commit", "exit")
 
     Get-Content .\run-omniscience.txt | ssh.exe -T -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa admin@172.20.240.200
 }
