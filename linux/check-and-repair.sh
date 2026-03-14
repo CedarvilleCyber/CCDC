@@ -66,7 +66,11 @@ reinstall_package() {
 # Main execution
 echo "=== Verifying Package ==="
 if ! check_package; then
-    reinstall_package
+    read -p "Reinstall package? (y/N): " confirm
+
+    if [[ "$confirm" =~ ^[Yy]$ ]]; then
+        reinstall_package
+    fi
 fi
 
 echo ""
