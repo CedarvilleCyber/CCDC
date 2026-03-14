@@ -1,0 +1,379 @@
+set address priv-ad-dns ip-netmask 172.20.240.102
+set address priv-web ip-netmask 172.20.240.101
+set address priv-ftp ip-netmask 172.20.240.104
+set address priv-win11wks ip-netmask 172.20.240.100
+set address google-dns ip-netmask 8.8.8.8
+set address cloudflare-dns ip-netmask 1.1.1.1
+set address priv-10 ip-netmask 10.0.0.0/8
+set address priv-172 ip-netmask 172.16.0.0/12
+set address priv-192 ip-netmask 192.168.0.0/16
+
+set deviceconfig system dns-setting servers primary 8.8.8.8
+set deviceconfig system dns-setting servers secondary 1.1.1.1
+set deviceconfig system timezone US/Central
+set deviceconfig system update-server updates.paloaltonetworks.com
+
+set deviceconfig system update-schedule statistics-service threat-prevention-pcap no
+set deviceconfig system update-schedule statistics-service application-reports no
+set deviceconfig system update-schedule statistics-service threat-prevention-reports no
+set deviceconfig system update-schedule statistics-service threat-prevention-information no
+set deviceconfig system update-schedule statistics-service passive-dns-monitoring no
+set deviceconfig system update-schedule statistics-service url-reports no
+set deviceconfig system update-schedule statistics-service health-performance-reports no
+set deviceconfig system update-schedule statistics-service file-identification-reports no
+
+set profile-group ccdc virus default
+set profile-group ccdc spyware strict
+set profile-group ccdc vulnerability strict
+set profile-group ccdc wildfire-analysis default
+set profile-group ccdc url-filtering default
+
+set deviceconfig system service disable-telnet yes
+set deviceconfig system service disable-http yes
+set deviceconfig system service disable-snmp yes
+set deviceconfig system service disable-http-ocsp yes
+set deviceconfig system service disable-userid-syslog-listener-udp yes
+set deviceconfig system service disable-userid-service yes
+set deviceconfig system service disable-userid-syslog-listener-ssl yes
+set deviceconfig system login-banner "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
+set deviceconfig system ack-login-banner yes
+
+set network profiles interface-management-profile Base http no
+set network profiles interface-management-profile Base https no
+set network profiles interface-management-profile Base http-ocsp no
+set network profiles interface-management-profile Base ssh no
+set network profiles interface-management-profile Base snmp no
+set network profiles interface-management-profile Base userid-service no
+set network profiles interface-management-profile Base ping no
+set network profiles interface-management-profile Base response-pages no
+set network profiles interface-management-profile Base telnet no
+
+set network interface ethernet ethernet1/1 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/1 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/1 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/1 layer3 lldp enable no
+
+set network interface ethernet ethernet1/2 layer3 ipv6 enabled no
+set network interface ethernet ethernet1/2 layer3 untagged-sub-interface no
+set network interface ethernet ethernet1/2 layer3 interface-management-profile Base
+set network interface ethernet ethernet1/2 layer3 lldp enable no
+
+delete rulebase nat rules PA
+delete rulebase nat rules Router
+delete threats vulnerability 41111
+delete shared admin-role Honeypot
+delete shared admin-role "Configuration Admins"
+delete shared admin-role "Policy Admins"
+
+set network profiles zone-protection-profile Default discard-overlapping-tcp-segment-mismatch yes
+set network profiles zone-protection-profile Default discard-unknown-option yes
+set network profiles zone-protection-profile Default tcp-reject-non-syn yes
+set network profiles zone-protection-profile Default flood tcp-syn enable yes
+set network profiles zone-protection-profile Default flood tcp-syn syn-cookies maximal-rate 40000 activate-rate 10000 alarm-rate 10000
+set network profiles zone-protection-profile Default flood icmp enable yes
+set network profiles zone-protection-profile Default flood icmp red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood udp enable yes
+set network profiles zone-protection-profile Default flood udp red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood other-ip enable yes
+set network profiles zone-protection-profile Default flood other-ip red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default flood icmpv6 enable yes
+set network profiles zone-protection-profile Default flood icmpv6 red activate-rate 10000 alarm-rate 10000 maximal-rate 40000
+set network profiles zone-protection-profile Default scan 8001 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8001 interval 2
+set network profiles zone-protection-profile Default scan 8001 threshold 100
+set network profiles zone-protection-profile Default scan 8002 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8002 interval 10
+set network profiles zone-protection-profile Default scan 8002 threshold 100
+set network profiles zone-protection-profile Default scan 8003 action block-ip track-by source duration 3600
+set network profiles zone-protection-profile Default scan 8003 interval 2
+set network profiles zone-protection-profile Default scan 8003 threshold 100
+set network profiles zone-protection-profile Default discard-ip-frag yes
+set network profiles zone-protection-profile Default discard-malformed-option yes
+set network profiles zone-protection-profile Default non-ip-protocol list-type exclude
+set network profiles zone-protection-profile Default discard-strict-source-routing yes
+set network profiles zone-protection-profile Default discard-loose-source-routing yes
+set network profiles zone-protection-profile Default discard-tcp-split-handshake yes
+set network profiles zone-protection-profile Default remove-tcp-timestamp yes
+set network profiles zone-protection-profile Default discard-icmp-large-packet yes
+
+set zone External network zone-protection-profile Default
+set zone Internal network zone-protection-profile Default
+
+set shared log-settings syslog Syslog server "Syslog" transport UDP
+set shared log-settings syslog Syslog server "Syslog" port 514
+set shared log-settings syslog Syslog server "Syslog" format IETF
+set shared log-settings syslog Syslog server "Syslog" server 172.20.240.102
+set shared log-settings syslog Syslog server "Syslog" facility LOG_USER
+set shared log-settings profiles default match-list traffic send-syslog Syslog
+set shared log-settings profiles default match-list traffic log-type traffic
+set shared log-settings profiles default match-list traffic filter "All Logs"
+set shared log-settings profiles default match-list traffic send-to-panorama no
+set shared log-settings profiles default match-list traffic quarantine no
+set shared log-settings profiles default match-list auth send-syslog Syslog
+set shared log-settings profiles default match-list auth log-type auth
+set shared log-settings profiles default match-list auth filter "All Logs"
+set shared log-settings profiles default match-list auth send-to-panorama no
+set shared log-settings profiles default match-list auth quarantine no
+set shared log-settings profiles default match-list data send-syslog Syslog
+set shared log-settings profiles default match-list data log-type data
+set shared log-settings profiles default match-list data filter "All Logs"
+set shared log-settings profiles default match-list data send-to-panorama no
+set shared log-settings profiles default match-list data quarantine no
+set shared log-settings profiles default match-list gtp send-syslog Syslog
+set shared log-settings profiles default match-list gtp log-type gtp
+set shared log-settings profiles default match-list gtp filter "All Logs"
+set shared log-settings profiles default match-list gtp send-to-panorama no
+set shared log-settings profiles default match-list gtp quarantine no
+set shared log-settings profiles default match-list threat send-syslog Syslog
+set shared log-settings profiles default match-list threat log-type threat
+set shared log-settings profiles default match-list threat filter "All Logs"
+set shared log-settings profiles default match-list threat send-to-panorama no
+set shared log-settings profiles default match-list threat quarantine no
+set shared log-settings profiles default match-list tunnel send-syslog Syslog
+set shared log-settings profiles default match-list tunnel log-type tunnel
+set shared log-settings profiles default match-list tunnel filter "All Logs"
+set shared log-settings profiles default match-list tunnel send-to-panorama no
+set shared log-settings profiles default match-list tunnel quarantine no
+set shared log-settings profiles default match-list url send-syslog Syslog
+set shared log-settings profiles default match-list url log-type url
+set shared log-settings profiles default match-list url filter "All Logs"
+set shared log-settings profiles default match-list url send-to-panorama no
+set shared log-settings profiles default match-list url quarantine no
+set shared log-settings profiles default match-list wildfire send-syslog Syslog
+set shared log-settings profiles default match-list wildfire log-type wildfire
+set shared log-settings profiles default match-list wildfire filter "All Logs"
+set shared log-settings profiles default match-list wildfire send-to-panorama no
+set shared log-settings profiles default match-list wildfire quarantine no
+set shared log-settings system match-list Syslog send-syslog Syslog
+set shared log-settings system match-list Syslog filter "All Logs"
+set shared log-settings config match-list Syslog send-syslog Syslog
+set shared log-settings config match-list Syslog filter "All Logs"
+set shared log-settings userid match-list Syslog send-syslog Syslog
+set shared log-settings userid match-list Syslog filter "All Logs"
+set shared log-settings hipmatch match-list Syslog send-syslog Syslog
+set shared log-settings hipmatch match-list Syslog filter "All Logs"
+set shared log-settings globalprotect match-list Syslog send-syslog Syslog
+set shared log-settings globalprotect match-list Syslog filter "All Logs"
+set shared log-settings iptag match-list Syslog send-syslog Syslog
+set shared log-settings iptag match-list Syslog filter "All Logs"
+
+set service service-http protocol tcp port 80
+set service service-http protocol tcp override no
+set service service-https protocol tcp port 443
+set service service-https protocol tcp override no
+set service service-ftp protocol tcp port 21
+set service service-ftp protocol tcp override no
+set service service-ftp-data protocol tcp port 20
+set service service-ftp-data protocol tcp override no
+set service service-dns-tcp protocol tcp port 53
+set service service-dns-tcp protocol tcp override no
+set service service-dns-udp protocol udp port 53
+set service service-dns-udp protocol udp override no
+set service service-splunk protocol tcp port 8000
+set service service-splunk protocol tcp override no
+set service syslog protocol udp port 514
+set service syslog protocol udp override no
+
+set rulebase security rules EXTERNAL2SELF_DROP profile-setting group ccdc
+set rulebase security rules EXTERNAL2SELF_DROP application any
+set rulebase security rules EXTERNAL2SELF_DROP service application-default
+set rulebase security rules EXTERNAL2SELF_DROP to any
+set rulebase security rules EXTERNAL2SELF_DROP from External
+set rulebase security rules EXTERNAL2SELF_DROP source any
+set rulebase security rules EXTERNAL2SELF_DROP destination [ this-fw this-fw2 ]
+set rulebase security rules EXTERNAL2SELF_DROP action drop
+set rulebase security rules EXTERNAL2SELF_DROP log-start no
+set rulebase security rules EXTERNAL2SELF_DROP log-end yes
+set rulebase security rules EXTERNAL2SELF_DROP log-setting default
+
+set rulebase security rules EXTERNAL_PRIV profile-setting group ccdc
+set rulebase security rules EXTERNAL_PRIV application any
+set rulebase security rules EXTERNAL_PRIV service application-default
+set rulebase security rules EXTERNAL_PRIV to any
+set rulebase security rules EXTERNAL_PRIV from any
+set rulebase security rules EXTERNAL_PRIV source [ priv-10 priv-172 priv-192 ]
+set rulebase security rules EXTERNAL_PRIV destination any
+set rulebase security rules EXTERNAL_PRIV action drop
+set rulebase security rules EXTERNAL_PRIV negate-source yes
+set rulebase security rules EXTERNAL_PRIV log-start no
+set rulebase security rules EXTERNAL_PRIV log-end yes
+set rulebase security rules EXTERNAL_PRIV log-setting default
+
+set rulebase security rules EXTERNAL2INTERNAL_dns profile-setting group ccdc
+set rulebase security rules EXTERNAL2INTERNAL_dns application dns
+set rulebase security rules EXTERNAL2INTERNAL_dns service application-default
+set rulebase security rules EXTERNAL2INTERNAL_dns to Internal
+set rulebase security rules EXTERNAL2INTERNAL_dns from External
+set rulebase security rules EXTERNAL2INTERNAL_dns source any
+set rulebase security rules EXTERNAL2INTERNAL_dns destination public-ad-dns
+set rulebase security rules EXTERNAL2INTERNAL_dns action allow
+set rulebase security rules EXTERNAL2INTERNAL_dns log-start no
+set rulebase security rules EXTERNAL2INTERNAL_dns log-end yes
+set rulebase security rules EXTERNAL2INTERNAL_dns log-setting default
+
+set rulebase security rules EXTERNAL2INTERNAL_http profile-setting group ccdc
+set rulebase security rules EXTERNAL2INTERNAL_http application any
+set rulebase security rules EXTERNAL2INTERNAL_http service service-http
+set rulebase security rules EXTERNAL2INTERNAL_http to Internal
+set rulebase security rules EXTERNAL2INTERNAL_http from External
+set rulebase security rules EXTERNAL2INTERNAL_http source any
+set rulebase security rules EXTERNAL2INTERNAL_http destination public-web
+set rulebase security rules EXTERNAL2INTERNAL_http action allow
+set rulebase security rules EXTERNAL2INTERNAL_http log-start no
+set rulebase security rules EXTERNAL2INTERNAL_http log-end yes
+set rulebase security rules EXTERNAL2INTERNAL_http log-setting default
+
+set rulebase security rules EXTERNAL2INTERNAL_https profile-setting group ccdc
+set rulebase security rules EXTERNAL2INTERNAL_https application any
+set rulebase security rules EXTERNAL2INTERNAL_https service service-https
+set rulebase security rules EXTERNAL2INTERNAL_https to Internal
+set rulebase security rules EXTERNAL2INTERNAL_https from External
+set rulebase security rules EXTERNAL2INTERNAL_https source any
+set rulebase security rules EXTERNAL2INTERNAL_https destination public-web
+set rulebase security rules EXTERNAL2INTERNAL_https action allow
+set rulebase security rules EXTERNAL2INTERNAL_https log-start no
+set rulebase security rules EXTERNAL2INTERNAL_https log-end yes
+set rulebase security rules EXTERNAL2INTERNAL_https log-setting default
+
+set rulebase security rules EXTERNAL2INTERNAL_ftp profile-setting group ccdc
+set rulebase security rules EXTERNAL2INTERNAL_ftp application ftp
+set rulebase security rules EXTERNAL2INTERNAL_ftp service [ service-ftp service-ftp-data ]
+set rulebase security rules EXTERNAL2INTERNAL_ftp to Internal
+set rulebase security rules EXTERNAL2INTERNAL_ftp from External
+set rulebase security rules EXTERNAL2INTERNAL_ftp source any
+set rulebase security rules EXTERNAL2INTERNAL_ftp destination public-ftp
+set rulebase security rules EXTERNAL2INTERNAL_ftp action allow
+set rulebase security rules EXTERNAL2INTERNAL_ftp log-start no
+set rulebase security rules EXTERNAL2INTERNAL_ftp log-end yes
+set rulebase security rules EXTERNAL2INTERNAL_ftp log-setting default
+
+set rulebase security rules KILL_INSIDE2PRIVATE profile-setting group ccdc
+set rulebase security rules KILL_INSIDE2PRIVATE application any
+set rulebase security rules KILL_INSIDE2PRIVATE service application-default
+set rulebase security rules KILL_INSIDE2PRIVATE to External
+set rulebase security rules KILL_INSIDE2PRIVATE from [ External Internal ]
+set rulebase security rules KILL_INSIDE2PRIVATE source any
+set rulebase security rules KILL_INSIDE2PRIVATE destination [ priv-10 priv-172 priv-192 ]
+set rulebase security rules KILL_INSIDE2PRIVATE action deny
+set rulebase security rules KILL_INSIDE2PRIVATE log-start no
+set rulebase security rules KILL_INSIDE2PRIVATE log-end yes
+set rulebase security rules KILL_INSIDE2PRIVATE log-setting default
+
+set rulebase security rules QUICK_ALLOW_WEB profile-setting group ccdc
+set rulebase security rules QUICK_ALLOW_WEB application any
+set rulebase security rules QUICK_ALLOW_WEB service [ service-http service-https ]
+set rulebase security rules QUICK_ALLOW_WEB to External
+set rulebase security rules QUICK_ALLOW_WEB from Internal
+set rulebase security rules QUICK_ALLOW_WEB source any
+set rulebase security rules QUICK_ALLOW_WEB destination any
+set rulebase security rules QUICK_ALLOW_WEB action allow
+set rulebase security rules QUICK_ALLOW_WEB disabled yes
+set rulebase security rules QUICK_ALLOW_WEB log-start no
+set rulebase security rules QUICK_ALLOW_WEB log-end yes
+set rulebase security rules QUICK_ALLOW_WEB log-setting default
+
+set rulebase security rules ALLOW_DNS profile-setting group ccdc
+set rulebase security rules ALLOW_DNS application any
+set rulebase security rules ALLOW_DNS service any
+set rulebase security rules ALLOW_DNS to External
+set rulebase security rules ALLOW_DNS from Internal
+set rulebase security rules ALLOW_DNS source any
+set rulebase security rules ALLOW_DNS destination [ cloudflare-dns google-dns ]
+set rulebase security rules ALLOW_DNS action allow
+set rulebase security rules ALLOW_DNS log-start no
+set rulebase security rules ALLOW_DNS log-end yes
+set rulebase security rules ALLOW_DNS log-setting default
+
+set rulebase security rules KILL2EXTERNAL profile-setting group ccdc
+set rulebase security rules KILL2EXTERNAL application any
+set rulebase security rules KILL2EXTERNAL service any
+set rulebase security rules KILL2EXTERNAL to External
+set rulebase security rules KILL2EXTERNAL from Internal
+set rulebase security rules KILL2EXTERNAL source any
+set rulebase security rules KILL2EXTERNAL destination any
+set rulebase security rules KILL2EXTERNAL action drop
+set rulebase security rules KILL2EXTERNAL disabled yes
+set rulebase security rules KILL2EXTERNAL log-start no
+set rulebase security rules KILL2EXTERNAL log-end yes
+set rulebase security rules KILL2EXTERNAL log-setting default
+
+set rulebase security rules INSIDE2EXTERNAL profile-setting group ccdc
+set rulebase security rules INSIDE2EXTERNAL application [ icmp ping ssl web-browsing ntp-base dns ]
+set rulebase security rules INSIDE2EXTERNAL service application-default
+set rulebase security rules INSIDE2EXTERNAL to External
+set rulebase security rules INSIDE2EXTERNAL from Internal
+set rulebase security rules INSIDE2EXTERNAL source any
+set rulebase security rules INSIDE2EXTERNAL destination any
+set rulebase security rules INSIDE2EXTERNAL action allow
+set rulebase security rules INSIDE2EXTERNAL log-start no
+set rulebase security rules INSIDE2EXTERNAL log-end yes
+set rulebase security rules INSIDE2EXTERNAL log-setting default
+
+set rulebase security rules INSIDE2INSIDE profile-setting group ccdc
+set rulebase security rules INSIDE2INSIDE application [ dns syslog ntp ping ssh ]
+set rulebase security rules INSIDE2INSIDE service application-default
+set rulebase security rules INSIDE2INSIDE to Internal
+set rulebase security rules INSIDE2INSIDE from Internal
+set rulebase security rules INSIDE2INSIDE source any
+set rulebase security rules INSIDE2INSIDE destination any
+set rulebase security rules INSIDE2INSIDE action allow
+set rulebase security rules INSIDE2INSIDE log-start no
+set rulebase security rules INSIDE2INSIDE log-end yes
+set rulebase security rules INSIDE2INSIDE log-setting default
+
+set service 53-tcp protocol tcp port 53
+set rulebase nat rules ad-dns-dnat to External
+set rulebase nat rules ad-dns-dnat from External
+set rulebase nat rules ad-dns-dnat source any
+set rulebase nat rules ad-dns-dnat destination public-ad-dns
+set rulebase nat rules ad-dns-dnat service any
+set rulebase nat rules ad-dns-dnat destination-translation translated-address priv-ad-dns
+set rulebase nat rules ad-dns-dnat source-translation dynamic-ip-and-port interface-address interface ethernet1/1
+move rulebase nat rules ad-dns-dnat top
+
+set service 80-tcp protocol tcp port 80
+set rulebase nat rules web-http-dnat to External
+set rulebase nat rules web-http-dnat from External
+set rulebase nat rules web-http-dnat source any
+set rulebase nat rules web-http-dnat destination public-web
+set rulebase nat rules web-http-dnat service 80-tcp
+set rulebase nat rules web-http-dnat destination-translation translated-address priv-web
+set rulebase nat rules web-http-dnat destination-translation translated-port 80
+set rulebase nat rules web-http-dnat source-translation dynamic-ip-and-port interface-address interface ethernet1/1
+move rulebase nat rules web-http-dnat top
+
+set service 443-tcp protocol tcp port 443
+set rulebase nat rules web-https-dnat to External
+set rulebase nat rules web-https-dnat from External
+set rulebase nat rules web-https-dnat source any
+set rulebase nat rules web-https-dnat destination public-web
+set rulebase nat rules web-https-dnat service 443-tcp
+set rulebase nat rules web-https-dnat destination-translation translated-address priv-web
+set rulebase nat rules web-https-dnat destination-translation translated-port 443
+set rulebase nat rules web-https-dnat source-translation dynamic-ip-and-port interface-address interface ethernet1/1
+move rulebase nat rules web-https-dnat top
+
+set service 21-tcp protocol tcp port 21
+set rulebase nat rules ftp-dnat to External
+set rulebase nat rules ftp-dnat from External
+set rulebase nat rules ftp-dnat source any
+set rulebase nat rules ftp-dnat destination public-ftp
+set rulebase nat rules ftp-dnat service any
+set rulebase nat rules ftp-dnat destination-translation translated-address priv-ftp
+set rulebase nat rules ftp-dnat source-translation dynamic-ip-and-port interface-address interface ethernet1/1
+move rulebase nat rules ftp-dnat top
+
+set rulebase security rules any2any application any
+set rulebase security rules any2any service application-default
+set rulebase security rules any2any to any
+set rulebase security rules any2any from any
+set rulebase security rules any2any source any
+set rulebase security rules any2any destination any
+set rulebase security rules any2any action allow
+move rulebase security rules any2any bottom
+
+set rulebase application-override
+set rulebase default-security-rules rules interzone-default action deny
+set rulebase default-security-rules rules interzone-default log-end yes
+set rulebase default-security-rules rules intrazone-default action deny
+set rulebase default-security-rules rules intrazone-default log-end yes
